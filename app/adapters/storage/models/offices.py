@@ -33,7 +33,7 @@ class City(BaseModel):
 
     name: Mapped[str] = mapped_column(sa.String(30))
 
-    offices: Mapped[set["Office"]] = relationship("Office", back_populates="city")
+    offices: Mapped[list["Office"]] = relationship("Office", back_populates="city")
 
     def __str__(self) -> str:
         return self.name

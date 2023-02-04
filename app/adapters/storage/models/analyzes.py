@@ -19,7 +19,7 @@ class AnalysisType(BaseModel):
     name: Mapped[str] = mapped_column(sa.String(30))
     description: Mapped[str | None] = mapped_column(sa.Text())
 
-    analyzes: Mapped[set["Analysis"]] = relationship(
+    analyzes: Mapped[list["Analysis"]] = relationship(
         "Analysis", secondary=analyzes_types_analyzes_table, back_populates="analyzes_types"
     )
 
@@ -37,7 +37,7 @@ class Analysis(BaseModel):
     period: Mapped[str] = mapped_column(sa.String(length=30))
     is_active: Mapped[bool] = mapped_column(default=False)
 
-    analyzes_types: Mapped[set["AnalysisType"]] = relationship(
+    analyzes_types: Mapped[list["AnalysisType"]] = relationship(
         "AnalysisType", secondary=analyzes_types_analyzes_table, back_populates="analyzes"
     )
 

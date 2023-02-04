@@ -78,7 +78,7 @@
                </div>
 
                <div class="px-2 pt-3">
-                  <a href="{{ url_for('get_specialist', id='{{specialist.id}}') }}"
+                  <a href="{{ url_for('get_specialist', id=specialist.id) }}"
                      class="stretched-link d-block text-decoration-none link-secondary fw-medium mb-2">{{ specialist.surname }}
                      <br>{{ specialist.name }}{% if specialist.patronymic %} {{ specialist.patronymic }} {% endif %}</a>
 

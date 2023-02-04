@@ -1,7 +1,11 @@
 from sqladmin import ModelView
 from wtforms.fields import BooleanField, FileField
 
-from app.adapters.storage.models.specialists import Specialist, Specialization
+from app.adapters.storage.models.specialists import (
+    Specialist,
+    SpecialistCertificate,
+    Specialization,
+)
 from utils.admin.files import save_file
 
 
@@ -16,6 +20,34 @@ class SpecializationAdmin(ModelView, model=Specialization):
     column_labels = {"id": "ID", "name": "Специальность", "specialists": "Специалисты"}
 
     form_ajax_refs = {"specialists": {"fields": ("name",), "order_by": "name"}}
+
+
+class SpecialistCertificateAdmin(ModelView, model=SpecialistCertificate):
+    """Сертификаты специалистов в админ панели."""
+
+    name = "Сертификат специалиста"
+    name_plural = "Сертификаты специалиста"
+    icon = "fa-solid fa-file"
+
+    create_template = "sqladmin/create.html"
+    edit_template = "sqladmin/edit.html"
+
+    column_list = ("id", "name")
+    column_labels = {"id": "ID", "specialist": "Специалист", "name": "Название", "path": "Документ"}
+
+    form_overrides = {"path": FileField}
+
+    async def insert_model(self, data: dict) -> None:
+        """Переопределение создания модели."""
+
+        await save_file(("path",), data, f"specialists/{data['specialist']}")
+        return await super().insert_model(data)
+
+    async def update_model(self, pk, data) -> None:
+        """Переопределение обновления модели."""
+
+        await save_file(("path",), data, f"specialists/{data['specialist']}")
+        return await super().update_model(pk, data)
 
 
 class SpecialistAdmin(ModelView, model=Specialist):
@@ -34,16 +66,21 @@ class SpecialistAdmin(ModelView, model=Specialist):
     }
 
     column_list = ("id", "surname", "name", "on_main", "is_active")
+    form_excluded_columns = ("certificates",)
     column_labels = {
         "id": "ID",
         "surname": "Фамилия",
         "name": "Имя",
         "patronymic": "Отчество",
         "description": "Описание",
+        "certificates": "Сертификаты",
+        "education": "Образование",
+        "activity": "Деятельность",
         "titles": "Титулы",
         "photo": "Фото",
         "on_main": "Вывод на главной",
         "is_active": "Актуален",
+        "can_online": "Проводит онлайн консультацию",
         "start_work_date": "Начало работы",
         "specializations": "Специальности",
     }
@@ -53,11 +90,11 @@ class SpecialistAdmin(ModelView, model=Specialist):
     async def insert_model(self, data: dict) -> None:
         """Переопределение создания модели."""
 
-        await save_file(("photo",), data)
+        await save_file(("photo",), data, "specialists")
         return await super().insert_model(data)
 
     async def update_model(self, pk, data) -> None:
         """Переопределение обновления модели."""
 
-        await save_file(("photo",), data)
+        await save_file(("photo",), data, "specialists")
         return await super().update_model(pk, data)

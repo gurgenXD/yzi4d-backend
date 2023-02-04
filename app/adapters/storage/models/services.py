@@ -12,7 +12,7 @@ class ServiceType(BaseModel):
     name: Mapped[str] = mapped_column(sa.String(30))
     on_main: Mapped[bool] = mapped_column(default=False)
 
-    services: Mapped[set["ServiceType"]] = relationship("Service", back_populates="service_type")
+    services: Mapped[list["ServiceType"]] = relationship("Service", back_populates="service_type")
 
     def __str__(self) -> str:
         return self.name
