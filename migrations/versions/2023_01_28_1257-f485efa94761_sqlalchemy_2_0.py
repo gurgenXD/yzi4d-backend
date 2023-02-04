@@ -29,9 +29,7 @@ def upgrade() -> None:
     op.alter_column("services", "on_main", existing_type=sa.BOOLEAN(), nullable=False)
     op.alter_column("services_types", "on_main", existing_type=sa.BOOLEAN(), nullable=False)
     op.add_column("specialists", sa.Column("titles", sa.Text(), nullable=True))
-    op.alter_column(
-        "specialists", "patronymic", existing_type=sa.VARCHAR(length=50), nullable=False
-    )
+    op.alter_column("specialists", "patronymic", existing_type=sa.VARCHAR(length=50), nullable=True)
     op.alter_column("specialists", "on_main", existing_type=sa.BOOLEAN(), nullable=False)
     op.alter_column("specialists", "is_active", existing_type=sa.BOOLEAN(), nullable=False)
     op.drop_column("specialists", "titules")

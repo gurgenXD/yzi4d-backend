@@ -28,7 +28,10 @@ class SpecialistsAdapter:
 
         query = (
             select(self._specialist)
-            .options(joinedload(self._specialist.specializations))
+            .options(
+                joinedload(self._specialist.specializations),
+                joinedload(self._specialist.certificates),
+            )
             .where(self._specialist.is_active.is_(True))
             .order_by(self._specialist.id)
         )
@@ -45,15 +48,20 @@ class SpecialistsAdapter:
     async def get(self, id: int) -> "SpecialistSchema":
         """Получить специалиста."""
 
-        query = select(self._specialist).where(
-            self._specialist.id == id, self._specialist.is_active.is_(True)
+        query = (
+            select(self._specialist)
+            .options(
+                joinedload(self._specialist.specializations),
+                joinedload(self._specialist.certificates),
+            )
+            .where(self._specialist.id == id, self._specialist.is_active.is_(True))
         )
 
         async with self._session_factory() as session:
             row = await session.execute(query)
 
             try:
-                specialist = SpecialistSchema.from_orm(row.one()[0])
+                specialist = SpecialistSchema.from_orm(row.unique().one()[0])
             except NoResultFound:
                 raise NotFoundError(f"Специалист с {id=} не найден.")
 
