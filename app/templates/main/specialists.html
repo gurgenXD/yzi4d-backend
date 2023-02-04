@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Специалисты</title>
+{% endblock %}
+
+{% block content %}
+
+<main role="main" class="flex-shrink-0">
+
+   <div class="container pt-md-5 pt-4">
+
+      <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="{{ url_for('get_index') }}">Главная</a></li>
+         <li class="breadcrumb-item active">Cпециалисты</li>
+      </ol>
+
+      <h1 class="mb-md-5 mb-4">Cпециалисты</h1>
+
+      <div class="bg-white rounded-4 p-sm-4 p-3 mb-xl-6 mb-md-5 mb-4">
+         <form>
+            <div class="form-check mb-3">
+               <input class="form-check-input" type="checkbox" value="" id="HasOnline">
+               <label class="form-check-label" for="HasOnline">
+                  Онлайн консультация
+               </label>
+            </div>
+
+            <div class="row align-items-end g-3">
+               <div class="col-lg col-md-6">
+                  <input type="text" class="form-control" id="" value="" placeholder="Фамилия или имя врача">
+               </div>
+
+               <div class="col-lg col-md-6">
+
+                  <select class="form-select" id="">
+                     <option selected>Все специальности</option>
+                     <option>Акушер-гинеколог</option>
+                     <option>Аллерголог-иммунолог</option>
+                     <option>Ангиохирург</option>
+                     <option>Андролог</option>
+                     <option>Анестезиолог-реаниматолог</option>
+                     <option>Вертебролог</option>
+                     <option>Гастроэнтеролог</option>
+                     <option>Гематолог</option>
+                     <option>Генетик</option>
+                     <option>Дерматовенеролог</option>
+                     <option>Дет. травматолог-ортопед</option>
+                     <option>Детский аллерголог-иммунолог</option>
+                  </select>
+               </div>
+
+               <div class="col-lg col-md-6">
+                  <select class="form-select" id="">
+                     <option selected>Все города</option>
+                     <option>Пятигорск</option>
+                     <option>Ессентуки</option>
+                     <option>Минеральные Воды</option>
+                  </select>
+               </div>
+
+               <div class="col-lg-auto col-md-6">
+                  <button class="btn btn-danger w-100 text-nowrap" type="submit">Найти врача</button>
+               </div>
+            </div>
+         </form>
+      </div>
+
+      <div class="row g-xl-5 gx-3 gy-4">
+         {% for specialist in specialists %}
+         <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="doctor-card d-flex flex-column h-100 position-relative">
+               <div class="ratio ratio-5x6 overflow-hidden rounded-3">
+                  {% if specialist.photo %}
+                     <div class="doctor-card__img"
+                        style="background-image:url({{ url_for('media', path='/' + specialist.photo) }});"></div>
+                  {% endif %}
+               </div>
+
+               <div class="px-2 pt-3">
+                  <a href="{{ url_for('get_specialist', id='{{specialist.id}}') }}"
+                     class="stretched-link d-block text-decoration-none link-secondary fw-medium mb-2">{{ specialist.surname }}
+                     <br>{{ specialist.name }}{% if specialist.patronymic %} {{ specialist.patronymic }} {% endif %}</a>
+
+                  <div class="fs-8 text-muted mb-1">{{ specialist.specializations|join(" / ", attribute="name") }}</div>
+                  <div class="fs-8 text-muted mb-2">Стаж {{ specialist.start_work_date|calculate_ages|humanize_age }} </div>
+                  {% if specialist.titles %}
+                     {% for title in specialist.titles.split('\n') %}
+                     <div class="d-inline-block bg-danger text-white fs-9 px-1">{{ title }}</div>
+                     {% endfor %}
+                  {% endif %}
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+
+      </div>
+
+      <nav class="pt-5">
+         <ul class="pagination mb-0 justify-content-end">
+            <!-- <li class="page-item">
+               <a class="page-link rounded-2" href="#">Назад</a>
+            </li> -->
+            <li class="page-item active"><a class="page-link rounded-2" href="#">1</a></li>
+            <li class="page-item"><a class="page-link rounded-2" href="#">2</a></li>
+            <li class="page-item"><a class="page-link rounded-2" href="#">3</a></li>
+            <li class="page-item disabled"><a class="page-link rounded-2" href="#">...</a></li>
+            <li class="page-item"><a class="page-link rounded-2" href="#">7</a></li>
+            <li class="page-item">
+               <a class="page-link rounded-2" href="#">Далее</a>
+            </li>
+         </ul>
+      </nav>
+   </div>
+
+   <section class="section py-md-6 py-5">
+      <div class="container pb-md-6 pb-5">
+         <div class="cta bg-light-blue rounded-4 px-sm-5 pt-sm-5 px-4 pt-4 px-xl-0 pt-xl-0">
+            <div class="row align-items-end align-items-xl-stretch gx-0">
+               <div class="col-xl-4">
+                  <div class="cta__header ps-xl-6 py-xl-6 mb-5 mb-xl-0">
+                     <h2 class="cta__title mb-3">У вас остались вопросы?</h2>
+                     <p class="fs-5 mb-0 text-secondary">Оставьте свой телефон. Мы свяжемся с вами в ближайшее время.
+                     </p>
+                  </div>
+               </div>
+
+               <div class="col-lg-4 col-md-6 cta__left">
+                  <div class="position-relative w-100 h-100">
+                     <div class="cta__img ms-xxl-4 ms-xl-1 me-2">
+                        <img src="@img/cta-img.png" alt="">
+                     </div>
+                  </div>
+               </div>
+
+               <div class="col-lg-4 col-md-6">
+                  <div class="pe-xl-6 py-xl-6 pb-4">
+                     <form>
+                        <div class="form-floating mb-4">
+                           <input type="text" class="form-control form-control__no-border input-phone" id="ctaPhone"
+                              placeholder="Ваш телефон" pattern=".{16}" required>
+                           <label for="ctaPhone">Ваш телефон</label>
+                        </div>
+
+                        <button class="btn btn-danger btn-form w-100" type="submit">Отправить</button>
+
+                        <div class="fs-9 pt-4 text-secondary">Нажимая на кнопку «Отправить», вы даёте своё
+                           согласие
+                           на
+                           <a href="content.html" title="" target="_blank">обработку персональных данных</a>.
+                        </div>
+                     </form>
+                  </div>
+               </div>
+
+               <div class="col-4 cta__right">
+                  <div class="position-relative w-100 h-100">
+                     <div class="cta__img ms-xxl-4 ms-xl-1 ms-2">
+                        <img src="@img/cta-img2.png" alt="">
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </div>
+   </section>
+
+</main>
+{% endblock %}
