@@ -22,12 +22,12 @@ class PromotionsAdapter:
         self._session_factory = session_factory
         self._promotion = Promotion
 
-    async def get_all(self, on_main: bool) -> list["PromotionSchema"]:
+    async def get_all(self, for_main: bool) -> list["PromotionSchema"]:
         """Получить все активные акции."""
 
         query = select(self._promotion).where(self._promotion.is_active.is_(True))
 
-        if on_main:
+        if for_main:
             query = query.where(self._promotion.on_main.is_(True))
 
         async with self._session_factory() as session:

@@ -15,7 +15,7 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 async def get_promotions(request: Request) -> "HTMLResponse":
     """Получить акции."""
     adapter = CONTAINER.promotions_adapter()
-    promotions = await adapter.get_all(on_main=False)
+    promotions = await adapter.get_all(for_main=False)
 
     return TEMPLATES.TemplateResponse(
         "promotions.html", {"request": request, "promotions": promotions}
