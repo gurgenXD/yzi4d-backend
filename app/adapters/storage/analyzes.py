@@ -22,12 +22,12 @@ class AnalyzesAdapter:
         self._session_factory = session_factory
         self._analysis = Analysis
 
-    async def get_all(self, on_main: bool) -> list["AnalysisSchema"]:
+    async def get_all(self, for_main: bool) -> list["AnalysisSchema"]:
         """Получить все активные анализы."""
 
         query = select(self._analysis).where(self._analysis.is_active.is_(True))
 
-        if on_main:
+        if for_main:
             query = query.where(self._analysis.on_main.is_(True))
 
         async with self._session_factory() as session:

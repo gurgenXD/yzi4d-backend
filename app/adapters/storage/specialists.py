@@ -6,9 +6,9 @@ from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import joinedload
 
-from app.adapters.storage.models import Specialist
+from app.adapters.storage.models import Specialist, Specialization
 from app.services.exceptions import NotFoundError
-from app.services.schemas.specialists import SpecialistSchema
+from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
@@ -23,7 +23,7 @@ class SpecialistsAdapter:
         self._session_factory = session_factory
         self._specialist = Specialist
 
-    async def get_all(self, on_main: bool) -> list["SpecialistSchema"]:
+    async def get_all(self, for_main: bool) -> list["SpecialistSchema"]:
         """Получить всех активных специалистов."""
 
         query = (
@@ -36,7 +36,7 @@ class SpecialistsAdapter:
             .order_by(self._specialist.id)
         )
 
-        if on_main:
+        if for_main:
             query = query.where(self._specialist.on_main.is_(True))
 
         async with self._session_factory() as session:
@@ -66,3 +66,26 @@ class SpecialistsAdapter:
                 raise NotFoundError(f"Специалист с {id=} не найден.")
 
         return specialist
+
+
+class SpecializationAdapter:
+    """Адаптер для доступа к специальностям."""
+
+    def __init__(
+        self, session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
+    ) -> None:
+        self._session_factory = session_factory
+        self._specialization = Specialization
+
+    async def get_all(self) -> list["SpecializationSchema"]:
+        """Получить все специальности."""
+
+        query = select(self._specialization)
+
+        async with self._session_factory() as session:
+            rows = await session.execute(query)
+            specializations = [
+                SpecializationSchema.from_orm(row) for row in rows.unique().scalars()
+            ]
+
+        return specializations

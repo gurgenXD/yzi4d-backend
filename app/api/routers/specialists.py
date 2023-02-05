@@ -15,10 +15,14 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 async def get_specialists(request: Request) -> "HTMLResponse":
     """Получить специалистов."""
     adapter = CONTAINER.specialists_adapter()
-    specialists = await adapter.get_all(on_main=False)
+    specializations_adapter = CONTAINER.specializations_adapter()
+
+    specialists = await adapter.get_all(for_main=False)
+    specializations = await specializations_adapter.get_all()
 
     return TEMPLATES.TemplateResponse(
-        "specialists.html", {"request": request, "specialists": specialists}
+        "specialists.html",
+        {"request": request, "specialists": specialists, "specializations": specializations},
     )
 
 

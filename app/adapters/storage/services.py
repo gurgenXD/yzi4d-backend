@@ -22,12 +22,12 @@ class ServicesAdapter:
         self._session_factory = session_factory
         self._service = Service
 
-    async def get_all(self, on_main: bool) -> list["ServiceSchema"]:
+    async def get_all(self, for_main: bool) -> list["ServiceSchema"]:
         """Получить все активные услуги."""
 
         query = select(self._service).where(self._service.is_active.is_(True))
 
-        if on_main:
+        if for_main:
             query = query.where(self._service.on_main.is_(True))
 
         async with self._session_factory() as session:

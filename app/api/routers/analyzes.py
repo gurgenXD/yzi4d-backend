@@ -15,7 +15,7 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 async def get_analyzes(request: Request) -> "HTMLResponse":
     """Получить анализы."""
     adapter = CONTAINER.analyzes_adapter()
-    analyzes = await adapter.get_all(on_main=False)
+    analyzes = await adapter.get_all(for_main=False)
 
     return TEMPLATES.TemplateResponse("analyzes.html", {"request": request, "analyzes": analyzes})
 

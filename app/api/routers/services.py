@@ -15,7 +15,7 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 async def get_services(request: Request) -> "HTMLResponse":
     """Получить услуги."""
     adapter = CONTAINER.services_adapter()
-    services = await adapter.get_all(on_main=False)
+    services = await adapter.get_all(for_main=False)
 
     return TEMPLATES.TemplateResponse("services.html", {"request": request, "services": services})
 
