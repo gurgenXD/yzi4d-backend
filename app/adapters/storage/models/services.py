@@ -11,6 +11,7 @@ class ServiceType(BaseModel):
 
     name: Mapped[str] = mapped_column(sa.String(30))
     on_main: Mapped[bool] = mapped_column(default=False)
+    is_active: Mapped[bool] = mapped_column(default=False)
 
     services: Mapped[list["ServiceType"]] = relationship("Service", back_populates="service_type")
 
@@ -26,7 +27,8 @@ class Service(BaseModel):
     service_type_id: Mapped[int] = mapped_column(
         sa.BigInteger(), sa.ForeignKey("services_types.id")
     )
-    name: Mapped[str] = mapped_column(sa.String(30))
+    name: Mapped[str] = mapped_column(sa.String(100))
+    description: Mapped[str | None] = mapped_column(sa.Text())
     is_active: Mapped[bool] = mapped_column(default=False)
     on_main: Mapped[bool] = mapped_column(default=False)
 

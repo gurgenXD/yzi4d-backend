@@ -14,11 +14,12 @@ class ServiceTypeAdmin(ModelView, model=ServiceType):
     form_overrides = {"on_main": BooleanField}
     form_widget_args = {"on_main": {"class": "form-check-input"}}
 
-    column_list = ("id", "name")
+    column_list = ("id", "name", "is_active", "on_main")
     column_labels = {
         "id": "ID",
         "name": "Категория услуг",
-        "on_main": "Выводить на гланой",
+        "is_active": "Активно",
+        "on_main": "Выводить на главной",
         "services": "Услуги",
     }
 
@@ -41,7 +42,8 @@ class ServiceAdmin(ModelView, model=Service):
     column_list = ("id", "name", "is_active", "on_main")
     column_labels = {
         "id": "ID",
-        "name": "Услуги",
+        "name": "Услуга",
+        "description": "Описание услуги",
         "is_active": "Активно",
         "on_main": "Вывод на главной",
         "service_type": "Категория услуг",
