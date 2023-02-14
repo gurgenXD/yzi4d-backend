@@ -12,18 +12,29 @@ PREFIX = f"/{TAG}"
 router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 
-@router.get("", response_class=HTMLResponse)
-async def get_services(request: Request) -> "HTMLResponse":
+@router.get("/category/{type_id}", response_class=HTMLResponse)
+async def get_services(request: Request, type_id: int) -> "HTMLResponse":
     """Получить услуги."""
-    adapter = CONTAINER.services_adapter()
-    services = await adapter.get_all(for_main=False)
 
-    return TEMPLATES.TemplateResponse("services.html", {"request": request, "services": services})
+    services_types_adapter = CONTAINER.services_types_adapter()
+
+    service_type_current = await services_types_adapter.get(id=type_id)
+    services_types = await services_types_adapter.get_all()
+
+    return TEMPLATES.TemplateResponse(
+        "services.html",
+        {
+            "request": request,
+            "service_type_current": service_type_current,
+            "services_types": services_types,
+        },
+    )
 
 
 @router.get("/{id}", response_class=HTMLResponse)
 async def get_service(request: Request, id: int) -> "HTMLResponse":
     """Получить услугу."""
+
     adapter = CONTAINER.services_adapter()
     service = await adapter.get(id=id)
 

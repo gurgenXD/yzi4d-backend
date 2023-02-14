@@ -140,7 +140,7 @@ def upgrade() -> None:
         "services",
         sa.Column("id", sa.BigInteger(), autoincrement=True, nullable=False),
         sa.Column("service_type_id", sa.BigInteger(), nullable=True),
-        sa.Column("name", sa.String(length=30), nullable=False),
+        sa.Column("name", sa.String(length=100), nullable=False),
         sa.Column("is_active", sa.Boolean(), nullable=True),
         sa.Column("on_main", sa.Boolean(), nullable=True),
         sa.ForeignKeyConstraint(["service_type_id"], ["services_types.id"]),
