@@ -1,4 +1,4 @@
-"""offices
+"""offices.
 
 Revision ID: 4a7cdbf0969f
 Revises: a253537e2498
@@ -7,6 +7,7 @@ Create Date: 2022-12-25 13:51:10.817375
 """
 import sqlalchemy as sa
 from alembic import op
+
 
 # revision identifiers, used by Alembic.
 revision = "4a7cdbf0969f"

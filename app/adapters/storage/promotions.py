@@ -9,6 +9,7 @@ from app.adapters.storage.models import Promotion
 from app.services.exceptions import NotFoundError
 from app.services.schemas.promotions import PromotionSchema
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,9 +23,8 @@ class PromotionsAdapter:
         self._session_factory = session_factory
         self._promotion = Promotion
 
-    async def get_all(self, for_main: bool) -> list["PromotionSchema"]:
+    async def get_all(self, *, for_main: bool) -> list["PromotionSchema"]:
         """Получить все активные акции."""
-
         query = select(self._promotion).where(self._promotion.is_active.is_(True))
 
         if for_main:
@@ -32,13 +32,10 @@ class PromotionsAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            promotions = [PromotionSchema.from_orm(row) for row in rows.scalars()]
-
-        return promotions
+            return [PromotionSchema.from_orm(row) for row in rows.scalars()]
 
     async def get(self, id: int) -> "PromotionSchema":
         """Получить акцию."""
-
         query = select(self._promotion).where(
             self._promotion.id == id, self._promotion.is_active.is_(True)
         )
@@ -48,7 +45,8 @@ class PromotionsAdapter:
 
             try:
                 promotion = PromotionSchema.from_orm(row.one()[0])
-            except NoResultFound:
-                raise NotFoundError(f"Акция с {id=} не найдена.")
+            except NoResultFound as exc:
+                message = f"Акция с {id=} не найдена."
+                raise NotFoundError(message) from exc
 
         return promotion

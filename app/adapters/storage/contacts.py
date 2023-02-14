@@ -8,6 +8,7 @@ from sqlalchemy.orm import joinedload
 from app.adapters.storage.models import City
 from app.services.schemas.offices import CitySchema
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -23,11 +24,8 @@ class ContactsAdapter:
 
     async def get_cities(self) -> list["CitySchema"]:
         """Получить все города."""
-
         query = select(self._city).options(joinedload(self._city.offices))
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            cities = [CitySchema.from_orm(row) for row in rows.unique().scalars()]
-
-        return cities
+            return [CitySchema.from_orm(row) for row in rows.unique().scalars()]

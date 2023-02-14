@@ -1,3 +1,5 @@
+from typing import Any
+
 from sqladmin import ModelView
 from wtforms.fields import BooleanField, FileField
 
@@ -37,15 +39,13 @@ class SpecialistCertificateAdmin(ModelView, model=SpecialistCertificate):
 
     form_overrides = {"path": FileField}
 
-    async def insert_model(self, data: dict) -> None:
+    async def insert_model(self, data: dict[str, Any]) -> None:
         """Переопределение создания модели."""
-
         await save_file(("path",), data, f"specialists/{data['specialist']}")
         return await super().insert_model(data)
 
-    async def update_model(self, pk, data) -> None:
+    async def update_model(self, pk: int, data: dict[str, Any]) -> None:
         """Переопределение обновления модели."""
-
         await save_file(("path",), data, f"specialists/{data['specialist']}")
         return await super().update_model(pk, data)
 
@@ -87,14 +87,12 @@ class SpecialistAdmin(ModelView, model=Specialist):
 
     form_ajax_refs = {"specializations": {"fields": ("name",), "order_by": "name"}}
 
-    async def insert_model(self, data: dict) -> None:
+    async def insert_model(self, data: dict[str, Any]) -> None:
         """Переопределение создания модели."""
-
         await save_file(("photo",), data, "specialists")
         return await super().insert_model(data)
 
-    async def update_model(self, pk, data) -> None:
+    async def update_model(self, pk: int, data: dict[str, Any]) -> None:
         """Переопределение обновления модели."""
-
         await save_file(("photo",), data, "specialists")
         return await super().update_model(pk, data)

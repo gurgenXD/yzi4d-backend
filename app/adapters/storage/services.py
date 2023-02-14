@@ -9,6 +9,7 @@ from app.adapters.storage.models import Service
 from app.services.exceptions import NotFoundError
 from app.services.schemas.services import ServiceSchema
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,9 +23,8 @@ class ServicesAdapter:
         self._session_factory = session_factory
         self._service = Service
 
-    async def get_all(self, for_main: bool) -> list["ServiceSchema"]:
+    async def get_all(self, *, for_main: bool) -> list["ServiceSchema"]:
         """Получить все активные услуги."""
-
         query = select(self._service).where(self._service.is_active.is_(True))
 
         if for_main:
@@ -32,13 +32,10 @@ class ServicesAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            services = [ServiceSchema.from_orm(row) for row in rows.scalars()]
-
-        return services
+            return [ServiceSchema.from_orm(row) for row in rows.scalars()]
 
     async def get(self, id: int) -> "ServiceSchema":
         """Получить услугу."""
-
         query = select(self._service).where(
             self._service.id == id, self._service.is_active.is_(True)
         )
@@ -48,7 +45,8 @@ class ServicesAdapter:
 
             try:
                 service = ServiceSchema.from_orm(row.one()[0])
-            except NoResultFound:
-                raise NotFoundError(f"Услуга с {id=} не найден.")
+            except NoResultFound as exc:
+                message = f"Услуга с {id=} не найден."
+                raise NotFoundError(message) from exc
 
         return service

@@ -1,5 +1,4 @@
 from sqladmin import ModelView
-from wtforms.fields import TextAreaField
 
 from app.adapters.storage.models.offices import City, Office
 

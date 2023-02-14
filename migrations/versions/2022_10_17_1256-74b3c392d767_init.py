@@ -1,4 +1,4 @@
-"""init
+"""init.
 
 Revision ID: 74b3c392d767
 Revises: 
@@ -7,6 +7,7 @@ Create Date: 2022-10-17 12:56:25.743822
 """
 import sqlalchemy as sa
 from alembic import op
+
 
 # revision identifiers, used by Alembic.
 revision = "74b3c392d767"

@@ -14,6 +14,7 @@ from app.adapters.storage.services import ServicesAdapter
 from app.adapters.storage.specialists import SpecialistsAdapter, SpecializationAdapter
 from app.settings.db import DatabaseSettings
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 

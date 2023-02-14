@@ -42,12 +42,8 @@ class SpecialistSchema(BaseModel):
     @property
     def full_name(self) -> str:
         """Полное имя."""
-        name = f"{self.surname} {self.name}"
-
-        if self.patronymic:
-            name = f"{name} {self.patronymic}"
-
-        return name
+        patronymic = f" {self.patronymic}" if self.patronymic else ""
+        return f"{self.surname} {self.name}" + patronymic
 
     class Config:
         orm_mode = True
