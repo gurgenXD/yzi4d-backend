@@ -15,7 +15,6 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 @router.get("/category/{type_id}", response_class=HTMLResponse)
 async def get_services(request: Request, type_id: int) -> "HTMLResponse":
     """Получить услуги."""
-
     services_types_adapter = CONTAINER.services_types_adapter()
 
     service_type_current = await services_types_adapter.get(id=type_id)
@@ -34,7 +33,6 @@ async def get_services(request: Request, type_id: int) -> "HTMLResponse":
 @router.get("/{id}", response_class=HTMLResponse)
 async def get_service(request: Request, id: int) -> "HTMLResponse":
     """Получить услугу."""
-
     adapter = CONTAINER.services_adapter()
     service = await adapter.get(id=id)
 

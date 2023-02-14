@@ -21,8 +21,8 @@ start-api: ## Запусть API.
 
 .PHONY: lint
 lint: ## Проверить код.
-	$(POETRY_RUN) isort --check-only .
 	$(POETRY_RUN) black --check .
+	$(POETRY_RUN) ruff check .
 
 .PHONY: test
 test: ## Запустить тесты.
