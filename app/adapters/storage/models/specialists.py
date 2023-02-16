@@ -10,7 +10,9 @@ specializations_specialists_table = sa.Table(
     "specializations_specialists",
     BaseModel.metadata,
     sa.Column("specialization_id", sa.ForeignKey("specializations.id"), primary_key=True),
-    sa.Column("specialist_id", sa.ForeignKey("specialists.id"), primary_key=True),
+    sa.Column(
+        "specialist_id", sa.ForeignKey("specialists.id", ondelete="CASCADE"), primary_key=True
+    ),
 )
 
 
@@ -34,6 +36,7 @@ class Specialist(BaseModel):
 
     __tablename__ = "specialists"
 
+    guid_1c: Mapped[str] = mapped_column(sa.String(32))
     name: Mapped[str] = mapped_column(sa.String(50))
     surname: Mapped[str] = mapped_column(sa.String(50))
     patronymic: Mapped[str | None] = mapped_column(sa.String(50))
@@ -63,7 +66,9 @@ class SpecialistCertificate(BaseModel):
 
     __tablename__ = "specialist_certificates"
 
-    specialist_id: Mapped[int] = mapped_column(sa.BigInteger(), sa.ForeignKey("specialists.id"))
+    specialist_id: Mapped[int] = mapped_column(
+        sa.BigInteger(), sa.ForeignKey("specialists.id", ondelete="CASCADE")
+    )
     name: Mapped[str] = mapped_column(sa.String(250))
     path: Mapped[str] = mapped_column(sa.String(150))
 

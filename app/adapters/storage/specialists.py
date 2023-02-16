@@ -2,7 +2,7 @@ from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from typing import TYPE_CHECKING
 
-from sqlalchemy import select
+from sqlalchemy import insert, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import joinedload
 
@@ -13,6 +13,8 @@ from app.services.schemas.specialists import SpecialistSchema, SpecializationSch
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
+
+    from app.adapters.source import SourceSpecialistSchema
 
 
 class SpecialistsAdapter:
@@ -64,6 +66,11 @@ class SpecialistsAdapter:
                 raise NotFoundError(message) from exc
 
         return specialist
+
+    async def create_or_update(self, data: list["SourceSpecialistSchema"]) -> None:
+        """Создание или обновление данных."""
+        async with self._session_factory() as session:
+            session.execute(insert(self._specialist), [specialist.dict() for specialist in data])
 
 
 class SpecializationAdapter:

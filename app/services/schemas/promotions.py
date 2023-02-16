@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 from pydantic import BaseModel
 
@@ -6,15 +6,12 @@ from pydantic import BaseModel
 class PromotionSchema(BaseModel):
     """Схема акции."""
 
+    name: str
     sale: str
-    title: str
     description: str
-    photo: str | None
-    services: str
-    date_start: datetime
-    date_end: datetime
-    url: str
-    is_active: bool
+    photo: str
+    date_start: date
+    date_end: date
     on_main: bool
 
     class Config:

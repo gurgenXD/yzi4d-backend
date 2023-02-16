@@ -79,7 +79,7 @@ class SpecialistAdmin(ModelView, model=Specialist):
         "titles": "Титулы",
         "photo": "Фото",
         "on_main": "Вывод на главной",
-        "is_active": "Актуален",
+        "is_active": "Работает",
         "can_online": "Проводит онлайн консультацию",
         "start_work_date": "Начало работы",
         "specializations": "Специальности",
