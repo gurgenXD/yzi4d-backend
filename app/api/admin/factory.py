@@ -5,6 +5,7 @@ from sqladmin import Admin
 from app.adapters.storage.db import engine
 from app.api.admin.routers.analyzes import AnalysisAdmin, AnalysisTypeAdmin
 from app.api.admin.routers.callbacks import CallbacksAdmin
+from app.api.admin.routers.departments import DepartmentAdmin
 from app.api.admin.routers.news import NewsAdmin
 from app.api.admin.routers.offices import CityAdmin, OfficeAdmin
 from app.api.admin.routers.pages import PagesAdmin
@@ -49,3 +50,4 @@ def create_app(app: "FastAPI") -> None:
     admin.add_view(PromotionsAdmin)
     admin.add_view(PagesAdmin)
     admin.add_view(CallbacksAdmin)
+    admin.add_view(DepartmentAdmin)

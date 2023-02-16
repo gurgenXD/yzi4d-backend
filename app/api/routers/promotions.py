@@ -21,14 +21,3 @@ async def get_promotions(request: Request) -> "HTMLResponse":
     return TEMPLATES.TemplateResponse(
         "promotions.html", {"request": request, "promotions": promotions}
     )
-
-
-@router.get("/{id}", response_class=HTMLResponse)
-async def get_promotion(request: Request, id: int) -> "HTMLResponse":
-    """Получить акцию."""
-    adapter = CONTAINER.promotions_adapter()
-    promotion = await adapter.get(id=id)
-
-    return TEMPLATES.TemplateResponse(
-        "promotion.html", {"request": request, "promotion": promotion}
-    )

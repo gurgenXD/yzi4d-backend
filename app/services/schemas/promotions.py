@@ -12,7 +12,6 @@ class PromotionSchema(BaseModel):
     photo: str
     date_start: date
     date_end: date
-    is_active: bool
     on_main: bool
 
     class Config:

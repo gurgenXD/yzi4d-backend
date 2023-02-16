@@ -16,13 +16,10 @@ class PromotionsAdmin(ModelView, model=Promotion):
     create_template = "sqladmin/create.html"
     edit_template = "sqladmin/edit.html"
 
-    form_overrides = {"is_active": BooleanField, "on_main": BooleanField, "photo": FileField}
-    form_widget_args = {
-        "is_active": {"class": "form-check-input"},
-        "on_main": {"class": "form-check-input"},
-    }
+    form_overrides = {"on_main": BooleanField, "photo": FileField}
+    form_widget_args = {"on_main": {"class": "form-check-input"}}
 
-    column_list = ("id", "name", "is_active", "on_main")
+    column_list = ("id", "name", "on_main", "date_end")
     column_labels = {
         "id": "ID",
         "name": "Название акции",
@@ -31,7 +28,6 @@ class PromotionsAdmin(ModelView, model=Promotion):
         "date_start": "Дата начала акции",
         "date_end": "Дата окончания акции",
         "photo": "Фото",
-        "is_active": "Актуально",
         "on_main": "Выводить на главной",
     }
 

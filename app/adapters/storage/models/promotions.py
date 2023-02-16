@@ -17,5 +17,4 @@ class Promotion(BaseModel):
     photo: Mapped[str] = mapped_column(sa.String(150))
     date_start: Mapped[date]
     date_end: Mapped[date]
-    is_active: Mapped[bool] = mapped_column(default=False)
     on_main: Mapped[bool] = mapped_column(default=False)

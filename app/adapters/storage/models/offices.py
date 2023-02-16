@@ -1,7 +1,13 @@
+from typing import TYPE_CHECKING
+
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.adapters.storage.db.base_model import BaseModel
+
+
+if TYPE_CHECKING:
+    from app.adapters.storage.models.departments import Department
 
 
 class Office(BaseModel):
@@ -21,6 +27,7 @@ class Office(BaseModel):
     coor_y: Mapped[str] = mapped_column(sa.String(10))
 
     city: Mapped["City"] = relationship("City", back_populates="offices")
+    departments: Mapped["Department"] = relationship("Department", back_populates="office")
 
     def __str__(self) -> str:
         return self.address
