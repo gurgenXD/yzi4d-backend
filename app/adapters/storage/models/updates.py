@@ -1,7 +1,7 @@
+from datetime import datetime
+
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column
-
-from datetime import datetime
 
 from app.adapters.storage.db.base_model import BaseModel
 

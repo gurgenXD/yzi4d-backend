@@ -11,6 +11,5 @@ class SourceAdapter:
 
     def get_specialists(self) -> list["SourceSpecialistSchema"]:
         """Получить всех специалистов."""
-
-        response = requests.get(f"{self._host}/doctor/GetDoctorList")
+        response = requests.get(f"{self._host}/doctor/GetDoctorList", timeout=60)
         return [SourceSpecialistSchema(**item) for item in response.json()]

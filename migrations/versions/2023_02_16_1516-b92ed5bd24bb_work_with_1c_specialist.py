@@ -1,12 +1,12 @@
-"""work with 1c specialist
+"""work with 1c specialist.
 
 Revision ID: b92ed5bd24bb
 Revises: 1a9e81503d02
 Create Date: 2023-02-16 15:16:21.116486
 
 """
-from alembic import op
 import sqlalchemy as sa
+from alembic import op
 
 
 # revision identifiers, used by Alembic.
