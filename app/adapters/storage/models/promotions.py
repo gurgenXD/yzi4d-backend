@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column
@@ -11,13 +11,11 @@ class Promotion(BaseModel):
 
     __tablename__ = "promotions"
 
+    name: Mapped[str] = mapped_column(sa.String(30))
     sale: Mapped[str] = mapped_column(sa.String(30))
-    title: Mapped[str] = mapped_column(sa.String(20))
-    description: Mapped[str] = mapped_column(sa.String(100))
-    photo: Mapped[str | None] = mapped_column(sa.String(150))
-    services: Mapped[str] = mapped_column(sa.String(100))
-    date_start: Mapped[datetime]
-    date_end: Mapped[datetime]
-    url: Mapped[str] = mapped_column(sa.String(100))
+    description: Mapped[str] = mapped_column(sa.String(500))
+    photo: Mapped[str] = mapped_column(sa.String(150))
+    date_start: Mapped[date]
+    date_end: Mapped[date]
     is_active: Mapped[bool] = mapped_column(default=False)
     on_main: Mapped[bool] = mapped_column(default=False)

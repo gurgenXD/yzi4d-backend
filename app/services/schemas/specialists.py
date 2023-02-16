@@ -33,7 +33,7 @@ class SpecialistSchema(BaseModel):
     start_work_date: date
     education: str
     activity: str | None
-    description: str
+    description: str | None
     titles: str | None
     can_online: bool
     specializations: list[SpecializationSchema]

@@ -41,11 +41,13 @@ class SpecialistCertificateAdmin(ModelView, model=SpecialistCertificate):
 
     async def insert_model(self, data: dict[str, Any]) -> None:
         """Переопределение создания модели."""
+
         await save_file(("path",), data, f"specialists/{data['specialist']}")
         return await super().insert_model(data)
 
     async def update_model(self, pk: int, data: dict[str, Any]) -> None:
         """Переопределение обновления модели."""
+
         await save_file(("path",), data, f"specialists/{data['specialist']}")
         return await super().update_model(pk, data)
 
@@ -79,7 +81,7 @@ class SpecialistAdmin(ModelView, model=Specialist):
         "titles": "Титулы",
         "photo": "Фото",
         "on_main": "Вывод на главной",
-        "is_active": "Актуален",
+        "is_active": "Работает",
         "can_online": "Проводит онлайн консультацию",
         "start_work_date": "Начало работы",
         "specializations": "Специальности",
@@ -89,10 +91,12 @@ class SpecialistAdmin(ModelView, model=Specialist):
 
     async def insert_model(self, data: dict[str, Any]) -> None:
         """Переопределение создания модели."""
+
         await save_file(("photo",), data, "specialists")
         return await super().insert_model(data)
 
     async def update_model(self, pk: int, data: dict[str, Any]) -> None:
         """Переопределение обновления модели."""
+
         await save_file(("photo",), data, "specialists")
         return await super().update_model(pk, data)

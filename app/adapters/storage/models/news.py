@@ -12,8 +12,8 @@ class News(BaseModel):
     __tablename__ = "news"
 
     title: Mapped[str] = mapped_column(sa.String(50))
-    preview: Mapped[str] = mapped_column(sa.String(50))
+    preview: Mapped[str] = mapped_column(sa.String(150))
     created: Mapped[datetime] = mapped_column(default=datetime.now)
     description: Mapped[str] = mapped_column(sa.String(500))
-    photo: Mapped[str] = mapped_column(sa.String(50))
+    photo: Mapped[str | None] = mapped_column(sa.String(150))
     is_active: Mapped[bool] = mapped_column(default=False)

@@ -1,15 +1,16 @@
-import datetime
 from datetime import date
 
 
 def calculate_ages(start_date: date) -> int:
     """Посчитать пройденные года."""
-    today = datetime.UTC.date()
+
+    today = date.today()
     return today.year - start_date.year
 
 
 def humanize_age(age: int) -> str:
     """Очеловечивание возраста."""
+
     if age % 100 in (11, 12, 13, 14):
         return f"{age} лет"
 
