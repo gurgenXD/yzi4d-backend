@@ -8,12 +8,8 @@ from sqlalchemy.orm import joinedload
 
 from app.adapters.storage.models import Service, ServiceType
 from app.services.exceptions import NotFoundError
-from app.services.schemas.services import (
-    ServiceSchema,
-    ServiceTypeSchema,
-    ServiceTypeWithServicesSchema,
-)
-
+from app.services.schemas.services import (ServiceSchema, ServiceTypeSchema,
+                                           ServiceTypeWithServicesSchema)
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession

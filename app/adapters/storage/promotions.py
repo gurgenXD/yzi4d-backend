@@ -9,7 +9,6 @@ from app.adapters.storage.models import Promotion
 from app.services.exceptions import NotFoundError
 from app.services.schemas.promotions import PromotionSchema
 
-
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 

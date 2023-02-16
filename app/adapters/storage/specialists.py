@@ -8,8 +8,8 @@ from sqlalchemy.orm import joinedload
 
 from app.adapters.storage.models import Specialist, Specialization
 from app.services.exceptions import NotFoundError
-from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
-
+from app.services.schemas.specialists import (SpecialistSchema,
+                                              SpecializationSchema)
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession

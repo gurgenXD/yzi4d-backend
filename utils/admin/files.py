@@ -6,7 +6,6 @@ import aiofiles
 
 from utils.constants import MEDIA_DIR
 
-
 if TYPE_CHECKING:
     from starlette.datastructures import UploadFile
 

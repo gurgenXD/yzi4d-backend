@@ -5,7 +5,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.adapters.storage.db.base_model import BaseModel
 
-
 specializations_specialists_table = sa.Table(
     "specializations_specialists",
     BaseModel.metadata,

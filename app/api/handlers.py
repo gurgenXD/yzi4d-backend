@@ -5,7 +5,6 @@ from fastapi.responses import JSONResponse
 
 from app.services.exceptions import NotFoundError
 
-
 if TYPE_CHECKING:
     from fastapi import FastAPI, Request
 

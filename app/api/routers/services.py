@@ -4,7 +4,6 @@ from fastapi.responses import HTMLResponse
 from app.api.templates import TEMPLATES
 from app.container import CONTAINER
 
-
 TAG = "services"
 PREFIX = f"/{TAG}"
 

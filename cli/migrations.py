@@ -5,7 +5,6 @@ import click
 
 from utils.constants import BASE_DIR
 
-
 ALEMBIC_CONFIG_FILE = BASE_DIR / "migrations" / "alembic.ini"
 
 

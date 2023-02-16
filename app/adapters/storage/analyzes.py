@@ -9,7 +9,6 @@ from app.adapters.storage.models import Analysis
 from app.services.exceptions import NotFoundError
 from app.services.schemas.analyzes import AnalysisSchema
 
-
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 

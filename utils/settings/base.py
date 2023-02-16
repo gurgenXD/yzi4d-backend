@@ -1,6 +1,5 @@
 from pydantic import BaseSettings as PydanticBaseSettings
 
-
 _ENV_FILE = ".env"
 _ENV_FILE_ENCODING = "utf-8"
 

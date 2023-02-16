@@ -3,7 +3,6 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.adapters.storage.db.base_model import BaseModel
 
-
 analyzes_types_analyzes_table = sa.Table(
     "analyzes_types_analyzes",
     BaseModel.metadata,

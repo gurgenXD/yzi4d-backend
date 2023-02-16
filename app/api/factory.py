@@ -2,9 +2,9 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.api import admin, handlers
-from app.api.routers import analyzes, index, news, offices, pages, promotions, services, specialists
+from app.api.routers import (analyzes, index, news, offices, pages, promotions,
+                             services, specialists)
 from utils.constants import MEDIA_DIR, STATIC_DIR
-
 
 STATIC_PREFIX = "/static"
 MEDIA_PREFIX = "/media"

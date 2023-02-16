@@ -4,7 +4,6 @@ from sqladmin import ModelView
 from wtforms.fields import BooleanField, FileField
 
 from app.adapters.storage.models.promotions import Promotion
-
 from utils.admin.files import save_file
 
 

@@ -9,7 +9,6 @@ from app.adapters.storage.models import Page
 from app.services.exceptions import NotFoundError
 from app.services.schemas.pages import PageSchema
 
-
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
