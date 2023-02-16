@@ -48,7 +48,7 @@ target-version = "py311"
 select = ["ALL"]
 ignore = [
     "RUF001", "RUF002", "RUF003", "D104", "D100", "D107", "COM812", "ANN101", "D106",
-    "A002", "A003", "FBT003", "D105", "TCH003", "TCH002", "D203", "D213"
+    "A002", "A003", "FBT003", "D105", "TCH003", "TCH002", "D203", "D213", "UP017"
 ]
 
 [tool.ruff.per-file-ignores]

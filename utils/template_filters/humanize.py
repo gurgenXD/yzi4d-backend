@@ -1,12 +1,9 @@
-from datetime import date, datetime
-
-import pytz
+from datetime import date, datetime, timezone
 
 
 def calculate_ages(start_date: date) -> int:
     """Посчитать пройденные года."""
-    target_time_zone = pytz.timezone("Europe/Moscow")
-    today = datetime.now(tz=target_time_zone).date()
+    today = datetime.now(tz=timezone.utc).date()
     return today.year - start_date.year
 
 
