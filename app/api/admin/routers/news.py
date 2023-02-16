@@ -32,12 +32,10 @@ class NewsAdmin(ModelView, model=News):
 
     async def insert_model(self, data: dict[str, Any]) -> None:
         """Переопределение создания модели."""
-
         await save_file(("photo",), data, "news")
         return await super().insert_model(data)
 
     async def update_model(self, pk: int, data: dict[str, Any]) -> None:
         """Переопределение обновления модели."""
-
         await save_file(("photo",), data, "news")
         return await super().update_model(pk, data)

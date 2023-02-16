@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse
 
 from app.api.templates import TEMPLATES
 
+
 TAG = "index"
 PREFIX = ""
 

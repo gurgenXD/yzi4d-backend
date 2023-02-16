@@ -9,6 +9,7 @@ from app.adapters.storage.models import News
 from app.services.exceptions import NotFoundError
 from app.services.schemas.news import NewsSchema
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 

@@ -9,6 +9,7 @@ from app.adapters.storage.models import Promotion
 from app.services.exceptions import NotFoundError
 from app.services.schemas.promotions import PromotionSchema
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -24,7 +25,6 @@ class PromotionsAdapter:
 
     async def get_all(self, *, for_main: bool) -> list["PromotionSchema"]:
         """Получить все активные акции."""
-
         query = select(self._promotion).where(self._promotion.is_active.is_(True))
 
         if for_main:
@@ -36,7 +36,6 @@ class PromotionsAdapter:
 
     async def get(self, id: int) -> "PromotionSchema":
         """Получить акцию."""
-
         query = select(self._promotion).where(
             self._promotion.id == id, self._promotion.is_active.is_(True)
         )

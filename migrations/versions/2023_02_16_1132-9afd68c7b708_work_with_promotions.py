@@ -1,4 +1,4 @@
-"""work with promotions
+"""work with promotions.
 
 Revision ID: 9afd68c7b708
 Revises: cd38cad7acb9
@@ -7,6 +7,7 @@ Create Date: 2023-02-16 11:32:39.298979
 """
 import sqlalchemy as sa
 from alembic import op
+
 
 # revision identifiers, used by Alembic.
 revision = "9afd68c7b708"

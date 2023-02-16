@@ -8,6 +8,7 @@ from sqlalchemy.orm import joinedload
 from app.adapters.storage.models import City
 from app.services.schemas.offices import CitySchema
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 

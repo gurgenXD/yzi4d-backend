@@ -1,4 +1,4 @@
-"""work with news
+"""work with news.
 
 Revision ID: cd38cad7acb9
 Revises: a5e06e2725cd
@@ -7,6 +7,7 @@ Create Date: 2023-02-16 10:42:04.686177
 """
 import sqlalchemy as sa
 from alembic import op
+
 
 # revision identifiers, used by Alembic.
 revision = "cd38cad7acb9"

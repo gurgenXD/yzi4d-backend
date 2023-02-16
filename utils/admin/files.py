@@ -6,13 +6,13 @@ import aiofiles
 
 from utils.constants import MEDIA_DIR
 
+
 if TYPE_CHECKING:
     from starlette.datastructures import UploadFile
 
 
 async def save_file(fields: tuple[str], data: dict, file_dir: str) -> None:
     """Сохранение медиа."""
-
     file_path = MEDIA_DIR / file_dir
     file_path.mkdir(parents=True, exist_ok=True)
 
