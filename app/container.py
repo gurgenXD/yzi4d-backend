@@ -11,8 +11,7 @@ from app.adapters.storage.news import NewsAdapter
 from app.adapters.storage.pages import PagesAdapter
 from app.adapters.storage.promotions import PromotionsAdapter
 from app.adapters.storage.services import ServicesAdapter, ServiceTypeAdapter
-from app.adapters.storage.specialists import (SpecialistsAdapter,
-                                              SpecializationAdapter)
+from app.adapters.storage.specialists import SpecialistsAdapter, SpecializationAdapter
 from app.settings.db import DatabaseSettings
 
 if TYPE_CHECKING:

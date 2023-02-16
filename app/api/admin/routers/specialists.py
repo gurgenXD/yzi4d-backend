@@ -3,9 +3,11 @@ from typing import Any
 from sqladmin import ModelView
 from wtforms.fields import BooleanField, FileField
 
-from app.adapters.storage.models.specialists import (Specialist,
-                                                     SpecialistCertificate,
-                                                     Specialization)
+from app.adapters.storage.models.specialists import (
+    Specialist,
+    SpecialistCertificate,
+    Specialization,
+)
 from utils.admin.files import save_file
 
 

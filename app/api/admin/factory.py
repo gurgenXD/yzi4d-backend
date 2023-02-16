@@ -10,9 +10,11 @@ from app.api.admin.routers.offices import CityAdmin, OfficeAdmin
 from app.api.admin.routers.pages import PagesAdmin
 from app.api.admin.routers.promotions import PromotionsAdmin
 from app.api.admin.routers.services import ServiceAdmin, ServiceTypeAdmin
-from app.api.admin.routers.specialists import (SpecialistAdmin,
-                                               SpecialistCertificateAdmin,
-                                               SpecializationAdmin)
+from app.api.admin.routers.specialists import (
+    SpecialistAdmin,
+    SpecialistCertificateAdmin,
+    SpecializationAdmin,
+)
 from app.api.admin.routers.users import UsersAdmin
 from utils.constants import TEMPLATES_DIR
 
