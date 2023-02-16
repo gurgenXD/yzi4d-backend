@@ -3,7 +3,7 @@ POETRY_RUN = poetry run
 
 
 .PHONY: migrations-make
-migration-make: ## Создать миграцию базы данных.
+migrations-make: ## Создать миграцию базы данных.
 	$(POETRY_RUN) python manage.py migrations make "Migration message."
 
 .PHONY: migrations-up

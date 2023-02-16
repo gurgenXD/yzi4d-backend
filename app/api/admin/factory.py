@@ -16,6 +16,7 @@ from app.api.admin.routers.specialists import (
     SpecialistCertificateAdmin,
     SpecializationAdmin,
 )
+from app.api.admin.routers.updates import UpdatesAdmin
 from app.api.admin.routers.users import UsersAdmin
 from utils.constants import TEMPLATES_DIR
 
@@ -51,3 +52,4 @@ def create_app(app: "FastAPI") -> None:
     admin.add_view(PagesAdmin)
     admin.add_view(CallbacksAdmin)
     admin.add_view(DepartmentAdmin)
+    admin.add_view(UpdatesAdmin)

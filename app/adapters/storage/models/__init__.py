@@ -15,4 +15,5 @@ from app.adapters.storage.models.specialists import (
     Specialization,
     specializations_specialists_table,
 )
+from app.adapters.storage.models.updates import Update
 from app.adapters.storage.models.users import User

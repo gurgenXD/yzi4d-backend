@@ -12,7 +12,7 @@ class DepartmentAdmin(ModelView, model=Department):
 
     name = "Отделение"
     name_plural = "Отделения"
-    icon = "fa-solid fa-tablets"
+    icon = "fa-solid fa-hospital"
     create_template = "sqladmin/create.html"
     edit_template = "sqladmin/edit.html"
 
