@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "clinic-async"
+name = "clinic"
 version = "0.1.0"
 description = ""
 authors = [
@@ -8,7 +8,7 @@ authors = [
 ]
 readme = "README.md"
 packages = [
-    {include = "clinic_async"}
+    {include = "clinic"}
 ]
 
 [tool.poetry.dependencies]
@@ -20,18 +20,17 @@ SQLAlchemy = "2.0.0"
 alembic = "1.9.2"
 pydantic = {extras = ["dotenv"], version = "1.10.4"}
 asyncpg = "0.27.0"
-sqladmin = {git = "https://github.com/aminalaee/sqladmin.git", branch = "main"}
+sqladmin = "0.9.0"
 dependency-injector = "4.41.0"
 aiofiles = "22.1.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "23.1.0"
 mypy = "0.991"
-pylint = "2.15.10"
-isort = "5.11.4"
 pytest = "7.2.1"
 pytest-cov = "4.0.0"
 pytest-deadfixtures = "2.2.1"
+ruff = "0.0.246"
 
 [build-system]
 requires = ["poetry-core"]
@@ -42,6 +41,18 @@ line-length = 100
 target-version = ["py311"]
 skip-magic-trailing-comma = true
 
-[tool.isort]
-profile = "black"
-line_length = 100
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["ALL"]
+ignore = [
+    "RUF001", "RUF002", "RUF003", "D104", "D100", "D107", "COM812", "ANN101", "D106",
+    "A002", "A003", "FBT003", "D105", "TCH003", "TCH002", "D203", "D213"
+]
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+"migrations/versions/*.py" = ["D103"]
+
+[tool.ruff.isort]
+lines-after-imports = 2

@@ -14,6 +14,7 @@ from app.services.schemas.services import (
     ServiceTypeWithServicesSchema,
 )
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -27,9 +28,8 @@ class ServicesAdapter:
         self._session_factory = session_factory
         self._service = Service
 
-    async def get_all(self, for_main: bool) -> list["ServiceSchema"]:
+    async def get_all(self, *, for_main: bool) -> list["ServiceSchema"]:
         """Получить все активные услуги."""
-
         query = select(self._service).where(self._service.is_active.is_(True))
 
         if for_main:
@@ -37,13 +37,10 @@ class ServicesAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            services = [ServiceSchema.from_orm(row) for row in rows.scalars()]
-
-        return services
+            return [ServiceSchema.from_orm(row) for row in rows.scalars()]
 
     async def get(self, id: int) -> "ServiceSchema":
         """Получить услугу."""
-
         query = select(self._service).where(
             self._service.id == id, self._service.is_active.is_(True)
         )
@@ -53,8 +50,9 @@ class ServicesAdapter:
 
             try:
                 service = ServiceSchema.from_orm(row.one()[0])
-            except NoResultFound:
-                raise NotFoundError(f"Услуга с {id=} не найден.")
+            except NoResultFound as exc:
+                message = f"Услуга с {id=} не найден."
+                raise NotFoundError(message) from exc
 
         return service
 
@@ -70,18 +68,14 @@ class ServiceTypeAdapter:
 
     async def get_all(self) -> list["ServiceTypeSchema"]:
         """Получить все категории услуг."""
-
         query = select(self._service_type).where(self._service_type.is_active.is_(True))
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            service_types = [ServiceTypeSchema.from_orm(row) for row in rows.unique().scalars()]
-
-        return service_types
+            return [ServiceTypeSchema.from_orm(row) for row in rows.unique().scalars()]
 
     async def get(self, id: int) -> "ServiceTypeWithServicesSchema":
         """Получить категорию услуги."""
-
         query = (
             select(self._service_type)
             .options(joinedload(self._service_type.services))
@@ -93,7 +87,8 @@ class ServiceTypeAdapter:
 
             try:
                 service_type = ServiceTypeWithServicesSchema.from_orm(row.unique().one()[0])
-            except NoResultFound:
-                raise NotFoundError(f"Категория услуги с {id=} не найдена.")
+            except NoResultFound as exc:
+                message = f"Категория услуги с {id=} не найдена."
+                raise NotFoundError(message) from exc
 
         return service_type

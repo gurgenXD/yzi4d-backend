@@ -10,6 +10,7 @@ from app.adapters.storage.models import Specialist, Specialization
 from app.services.exceptions import NotFoundError
 from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
 
+
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -23,9 +24,8 @@ class SpecialistsAdapter:
         self._session_factory = session_factory
         self._specialist = Specialist
 
-    async def get_all(self, for_main: bool) -> list["SpecialistSchema"]:
+    async def get_all(self, *, for_main: bool) -> list["SpecialistSchema"]:
         """Получить всех активных специалистов."""
-
         query = (
             select(self._specialist)
             .options(
@@ -41,13 +41,10 @@ class SpecialistsAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            specialists = [SpecialistSchema.from_orm(row) for row in rows.unique().scalars()]
-
-        return specialists
+            return [SpecialistSchema.from_orm(row) for row in rows.unique().scalars()]
 
     async def get(self, id: int) -> "SpecialistSchema":
         """Получить специалиста."""
-
         query = (
             select(self._specialist)
             .options(
@@ -62,8 +59,9 @@ class SpecialistsAdapter:
 
             try:
                 specialist = SpecialistSchema.from_orm(row.unique().one()[0])
-            except NoResultFound:
-                raise NotFoundError(f"Специалист с {id=} не найден.")
+            except NoResultFound as exc:
+                message = f"Специалист с {id=} не найден."
+                raise NotFoundError(message) from exc
 
         return specialist
 
@@ -79,13 +77,8 @@ class SpecializationAdapter:
 
     async def get_all(self) -> list["SpecializationSchema"]:
         """Получить все специальности."""
-
         query = select(self._specialization)
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            specializations = [
-                SpecializationSchema.from_orm(row) for row in rows.unique().scalars()
-            ]
-
-        return specializations
+            return [SpecializationSchema.from_orm(row) for row in rows.unique().scalars()]

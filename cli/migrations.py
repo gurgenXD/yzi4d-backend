@@ -1,8 +1,10 @@
 import subprocess
+import sys
 
 import click
 
 from utils.constants import BASE_DIR
+
 
 ALEMBIC_CONFIG_FILE = BASE_DIR / "migrations" / "alembic.ini"
 
@@ -21,7 +23,7 @@ def make(message: str) -> None:
             f'alembic -c {ALEMBIC_CONFIG_FILE} revision --autogenerate -m "{message}"', shell=True
         )
     except subprocess.CalledProcessError as exc:
-        exit(exc.returncode)
+        sys.exit(exc.returncode)
 
 
 @migrations.command()
@@ -33,7 +35,7 @@ def up(revision: str) -> None:
     try:
         subprocess.check_call(f"alembic -c {ALEMBIC_CONFIG_FILE} upgrade {revision}", shell=True)
     except subprocess.CalledProcessError as exc:
-        exit(exc.returncode)
+        sys.exit(exc.returncode)
 
 
 @migrations.command()
@@ -45,7 +47,7 @@ def down(revision: str) -> None:
     try:
         subprocess.check_call(f"alembic -c {ALEMBIC_CONFIG_FILE} downgrade {revision}", shell=True)
     except subprocess.CalledProcessError as exc:
-        exit(exc.returncode)
+        sys.exit(exc.returncode)
 
 
 def _validate_revision(revision: str) -> None:
@@ -53,7 +55,6 @@ def _validate_revision(revision: str) -> None:
 
     :param revision: Revision name.
     """
+    message = f"Invalid revision: '{revision}'. Revision must be one word without any spaces."
     if " " in revision.strip():
-        raise click.BadArgumentUsage(
-            f"Invalid revision: '{revision}'. " "Revision must be one word without any spaces."
-        )
+        raise click.BadArgumentUsage(message)

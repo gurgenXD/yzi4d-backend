@@ -1,4 +1,4 @@
-"""spec_titules
+"""spec_titules.
 
 Revision ID: c897cf1f6b25
 Revises: 0fb73dc4a411
@@ -7,6 +7,7 @@ Create Date: 2023-01-14 14:27:20.115839
 """
 import sqlalchemy as sa
 from alembic import op
+
 
 # revision identifiers, used by Alembic.
 revision = "c897cf1f6b25"

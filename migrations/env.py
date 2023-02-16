@@ -1,18 +1,15 @@
 import asyncio
 import platform
 from logging.config import fileConfig
-from typing import TYPE_CHECKING
 
 from alembic import context
 from sqlalchemy.future.engine import Connection
 
 from app.adapters.storage.db import engine
 from app.adapters.storage.db.base_model import BaseModel
-from app.adapters.storage.models import *
+from app.adapters.storage.models import *  # noqa: F403
 from app.settings.db import DatabaseSettings
 
-if TYPE_CHECKING:
-    pass
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -25,16 +22,15 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-# from myapp import mymodel
 target_metadata = BaseModel.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 
 
 def do_run_migrations(connection: Connection) -> None:
+    """Запустить миграции."""
     settings = DatabaseSettings()
 
     context.configure(connection=connection, target_metadata=target_metadata)
@@ -56,7 +52,8 @@ async def run_migrations_online() -> None:
 
 
 if context.is_offline_mode():
-    raise RuntimeError("Unsupported operation. Online mode is available only.")
+    message = "Unsupported operation. Online mode is available only."
+    raise RuntimeError(message)
 
 if platform.system() == "Windows":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())

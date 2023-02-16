@@ -1,4 +1,4 @@
-"""spec_name
+"""spec_name.
 
 Revision ID: 0fb73dc4a411
 Revises: 3813bc49ebc7
@@ -7,6 +7,7 @@ Create Date: 2023-01-14 12:45:33.243023
 """
 import sqlalchemy as sa
 from alembic import op
+
 
 # revision identifiers, used by Alembic.
 revision = "0fb73dc4a411"

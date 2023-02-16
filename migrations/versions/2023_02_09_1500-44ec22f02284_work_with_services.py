@@ -1,4 +1,4 @@
-"""work with services
+"""work with services.
 
 Revision ID: 44ec22f02284
 Revises: dc764bf5bb06
@@ -7,6 +7,7 @@ Create Date: 2023-02-09 15:00:31.291194
 """
 import sqlalchemy as sa
 from alembic import op
+
 
 # revision identifiers, used by Alembic.
 revision = "44ec22f02284"

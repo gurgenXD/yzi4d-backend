@@ -1,4 +1,4 @@
-"""specialsts certificates
+"""specialsts certificates.
 
 Revision ID: 5cc888a799dc
 Revises: f485efa94761
@@ -7,6 +7,7 @@ Create Date: 2023-02-04 15:52:56.373300
 """
 import sqlalchemy as sa
 from alembic import op
+
 
 # revision identifiers, used by Alembic.
 revision = "5cc888a799dc"

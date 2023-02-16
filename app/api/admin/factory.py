@@ -18,6 +18,7 @@ from app.api.admin.routers.specialists import (
 from app.api.admin.routers.users import UsersAdmin
 from utils.constants import TEMPLATES_DIR
 
+
 if TYPE_CHECKING:
     from fastapi import FastAPI
 
@@ -26,7 +27,6 @@ PREFIX = "/admin"
 
 def create_app(app: "FastAPI") -> None:
     """Добавить роутеры админ-панели."""
-
     admin = Admin(
         app,
         engine.get_async(),
