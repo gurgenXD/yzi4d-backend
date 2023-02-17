@@ -4,7 +4,7 @@ from app.adapters.storage.models.updates import Update
 
 
 class UpdatesAdmin(ModelView, model=Update):
-    """Сведения об обновлении."""
+    """Сведения об обновлениях."""
 
     name = "Обновление"
     name_plural = "Обновления"
@@ -12,6 +12,8 @@ class UpdatesAdmin(ModelView, model=Update):
     can_edit = False
     can_create = False
     can_delete = False
+    update_button = True
+    list_template = "sqladmin/list.html"
 
     column_list = ("status", "start_update", "end_update", "error_log")
     column_labels = {
