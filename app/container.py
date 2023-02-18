@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Callable, Singleton
 
+from app.adapters.source import SourceAdapter
 from app.adapters.storage.analyzes import AnalyzesAdapter
 from app.adapters.storage.contacts import ContactsAdapter
 from app.adapters.storage.db import engine, session
@@ -12,6 +13,7 @@ from app.adapters.storage.pages import PagesAdapter
 from app.adapters.storage.promotions import PromotionsAdapter
 from app.adapters.storage.services import ServicesAdapter, ServiceTypeAdapter
 from app.adapters.storage.specialists import SpecialistsAdapter, SpecializationAdapter
+from app.services.updater.repo import RepoUdapterService
 from app.settings.db import DatabaseSettings
 
 
@@ -55,6 +57,13 @@ class Container(DeclarativeContainer):
     )
     promotions_adapter: Singleton["PromotionsAdapter"] = Singleton(
         PromotionsAdapter, session_factory=session_ctx.provider
+    )
+    source_adapter: Singleton["SourceAdapter"] = Singleton(
+        SourceAdapter, host="http://195.2.192.1:8880/4d_portalz_08/hs/site/v1"
+    )
+
+    repo_updater_service: Singleton["RepoUdapterService"] = Singleton(
+        RepoUdapterService, source_adapter.provided, specialists_adapter.provided
     )
 
 
