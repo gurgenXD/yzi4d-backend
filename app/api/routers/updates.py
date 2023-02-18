@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
 from fastapi.responses import RedirectResponse
 
 from app.container import CONTAINER
@@ -12,8 +12,9 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 
 @router.get("")
-async def update_data() -> "RedirectResponse":
+async def update_data(tasks: BackgroundTasks) -> "RedirectResponse":
     """Обновить данные."""
     updater = CONTAINER.repo_updater_service()
-    await updater.update()
-    return RedirectResponse(url="/admin/update/list")
+    tasks.add_task(updater.update)
+
+    return RedirectResponse(url="/admin/updater/list")

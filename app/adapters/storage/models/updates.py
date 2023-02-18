@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.adapters.storage.db.base_model import BaseModel
 
 
-class Update(BaseModel):
+class Updater(BaseModel):
     """Обновление."""
 
     __tablename__ = "updates"
@@ -14,7 +14,7 @@ class Update(BaseModel):
     start_update: Mapped[datetime]
     end_update: Mapped[datetime | None]
     status: Mapped[str] = mapped_column(sa.String(20))
-    error_log: Mapped[str | None] = mapped_column(sa.String(500))
+    error_log: Mapped[str | None] = mapped_column(sa.Text())
 
     def __str__(self) -> str:
         return self.status
