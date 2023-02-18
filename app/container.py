@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Callable, Singleton
 
+from app.adapters.source import SourceAdapter
 from app.adapters.storage.analyzes import AnalyzesAdapter
 from app.adapters.storage.contacts import ContactsAdapter
 from app.adapters.storage.db import engine, session
@@ -12,7 +13,6 @@ from app.adapters.storage.pages import PagesAdapter
 from app.adapters.storage.promotions import PromotionsAdapter
 from app.adapters.storage.services import ServicesAdapter, ServiceTypeAdapter
 from app.adapters.storage.specialists import SpecialistsAdapter, SpecializationAdapter
-from app.adapters.source import SourceAdapter
 from app.services.updater.repo import RepoUdapterService
 from app.settings.db import DatabaseSettings
 

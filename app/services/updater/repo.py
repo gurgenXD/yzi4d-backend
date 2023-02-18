@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
     from app.adapters.source import SourceAdapter
     from app.adapters.storage.specialists import SpecialistsAdapter
@@ -14,6 +15,5 @@ class RepoUdapterService:
 
     async def update(self) -> None:
         """Обновить данные."""
-
         specialists = self._source.get_specialists()
-        print(specialists)
+        print(specialists)  # noqa: T201

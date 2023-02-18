@@ -3,6 +3,7 @@ from fastapi.responses import RedirectResponse
 
 from app.container import CONTAINER
 
+
 TAG = "updates"
 PREFIX = f"/{TAG}"
 
