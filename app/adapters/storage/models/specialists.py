@@ -46,9 +46,9 @@ class Specialist(BaseModel):
     activity: Mapped[str | None] = mapped_column(sa.Text())
     description: Mapped[str | None] = mapped_column(sa.Text())
     titles: Mapped[str | None] = mapped_column(sa.Text())
-    on_main: Mapped[bool] = mapped_column(default=False)
-    is_active: Mapped[bool] = mapped_column(default=False)
-    can_online: Mapped[bool] = mapped_column(default=False)
+    on_main: Mapped[bool]
+    is_active: Mapped[bool]
+    can_online: Mapped[bool]
 
     specializations: Mapped[list["Specialization"]] = relationship(
         "Specialization", secondary=specializations_specialists_table, back_populates="specialists"

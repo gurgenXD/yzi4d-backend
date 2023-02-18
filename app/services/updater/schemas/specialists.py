@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from datetime import date
 
 
 class SourceSpecialistSchema(BaseModel):
@@ -8,3 +9,9 @@ class SourceSpecialistSchema(BaseModel):
     name: str = Field(alias="Name")
     surname: str = Field(alias="Surname")
     patronymic: str | None = Field(alias="MiddleName")
+
+    education: str = "education"
+    start_work_date: date = Field(default_factory=date.today)
+    on_main: bool = False
+    is_active: bool = True
+    can_online: bool = False

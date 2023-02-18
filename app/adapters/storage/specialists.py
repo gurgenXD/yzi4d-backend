@@ -2,6 +2,7 @@ from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from typing import TYPE_CHECKING
 
+
 from sqlalchemy import insert, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import joinedload
@@ -70,7 +71,9 @@ class SpecialistsAdapter:
     async def create_or_update(self, data: list["SourceSpecialistSchema"]) -> None:
         """Создание или обновление данных."""
         async with self._session_factory() as session:
-            session.execute(insert(self._specialist), [specialist.dict() for specialist in data])
+            await session.execute(
+                insert(self._specialist), [specialist.dict() for specialist in data]
+            )
 
 
 class SpecializationAdapter:

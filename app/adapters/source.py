@@ -1,4 +1,4 @@
-import requests
+import httpx
 
 from app.services.updater.schemas.specialists import SourceSpecialistSchema
 
@@ -9,7 +9,8 @@ class SourceAdapter:
     def __init__(self, host: str) -> None:
         self._host = host
 
-    def get_specialists(self) -> list["SourceSpecialistSchema"]:
+    async def get_specialists(self) -> list["SourceSpecialistSchema"]:
         """Получить всех специалистов."""
-        response = requests.get(f"{self._host}/doctor/GetDoctorList", timeout=60)
-        return [SourceSpecialistSchema(**item) for item in response.json()]
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"{self._host}/doctor/GetDoctorList", timeout=60)
+            return [SourceSpecialistSchema(**item) for item in response.json()]
