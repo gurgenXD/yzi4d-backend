@@ -2,7 +2,17 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.api import admin, handlers
-from app.api.routers import analyzes, index, news, offices, pages, promotions, services, specialists
+from app.api.routers import (
+    analyzes,
+    index,
+    news,
+    offices,
+    pages,
+    promotions,
+    services,
+    specialists,
+    updates,
+)
 from utils.constants import MEDIA_DIR, STATIC_DIR
 
 
@@ -34,5 +44,6 @@ def create_app() -> "FastAPI":
     app.include_router(pages.router)
     app.include_router(promotions.router)
     app.include_router(services.router)
+    app.include_router(updates.router)
 
     return app
