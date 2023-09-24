@@ -1,105 +1,85 @@
-from typing import Any
-
 from sqladmin import ModelView
-from wtforms.fields import FileField
 
 from app.adapters.storage.models.specialists import (
     Specialist,
     SpecialistCertificate,
     Specialization,
 )
-from utils.admin.files import save_file
 
 
 class SpecializationAdmin(ModelView, model=Specialization):
     """Специальности в админ панели."""
 
-    name = "Специальность"
-    name_plural = "Специальности"
+    name = "Specialization"
+    name_plural = "Specializations"
     icon = "fa-solid fa-stethoscope"
+    category = "Specialists"
+
+    can_edit = False
     can_create = False
+    can_delete = False
+    can_export = False
 
-    column_list = ("id", "name")
-    column_labels = {"id": "ID", "name": "Специальность", "specialists": "Специалисты"}
-    column_default_sort = [("name", False)]
-
-    form_ajax_refs = {
-        "specialists": {"fields": ("name", "surname", "patronymic"), "order_by": "name"}
+    column_list = ("id", "name", "is_active")
+    column_labels = {
+        "id": "ID",
+        "name": "Specialization",
+        "specialists": "Specialists",
+        "is_active": "Is active",
     }
-    form_widget_args = {"id": {"readonly": True}}
-    form_include_pk = True
+    column_default_sort = [("name", False)]
 
 
 class SpecialistCertificateAdmin(ModelView, model=SpecialistCertificate):
     """Сертификаты специалистов в админ панели."""
 
-    name = "Сертификат специалиста"
-    name_plural = "Сертификаты специалиста"
-    icon = "fa-solid fa-file"
+    name = "Certificate"
+    name_plural = "Certificates"
+    icon = "fa-solid fa-file-medical"
+    category = "Specialists"
+
+    can_edit = False
     can_create = False
+    can_delete = False
+    can_export = False
 
-    column_list = ("id", "name")
-    column_labels = {"id": "ID", "specialist": "Специалист", "name": "Название", "path": "Документ"}
-
-    form_overrides = {"path": FileField}
-    form_widget_args = {"path": {"required": False}}
-    form_include_pk = True
-
-    async def insert_model(self, data: dict[str, Any]) -> None:
-        """Переопределение создания модели."""
-        await save_file(("path",), data, f"specialists/{data['specialist']}")
-        return await super().insert_model(data)
-
-    async def update_model(self, pk: str, data: dict[str, Any]) -> None:
-        """Переопределение обновления модели."""
-        await save_file(("path",), data, f"specialists/{data['specialist']}")
-        return await super().update_model(pk, data)
+    column_list = ("id", "name", "file")
+    column_details_exclude_list = ("specialist_id",)
+    column_labels = {"id": "ID", "specialist": "Specialist", "name": "Name", "file": "File"}
 
 
 class SpecialistAdmin(ModelView, model=Specialist):
     """Специалисты в админ панели."""
 
-    name = "Специалист"
-    name_plural = "Специалисты"
+    name = "Specialist"
+    name_plural = "Specialists"
     icon = "fa-solid fa-user-doctor"
+    category = "Specialists"
+
+    can_edit = False
     can_create = False
     can_delete = False
+    can_export = False
 
-    form_overrides = {"photo": FileField}
-    form_widget_args = {"photo": {"required": False}}
-    form_include_pk = True
-    form_excluded_columns = ("certificates",)
-    form_ajax_refs = {"specializations": {"fields": ("name",), "order_by": "name"}}
-
-    column_list = ("surname", "name", "patronymic", "id", "on_main", "is_active")
+    column_list = ("id", "surname", "name", "patronymic", "on_main", "is_active")
     column_default_sort = [("surname", False)]
     column_searchable_list = ["surname", "name", "patronymic", "id"]
     column_labels = {
         "id": "ID",
-        "surname": "Фамилия",
-        "name": "Имя",
-        "patronymic": "Отчество",
-        "description": "Описание",
-        "certificates": "Сертификаты",
-        "education": "Образование",
-        "activity": "Деятельность",
-        "titles": "Титулы",
-        "photo": "Фото",
-        "on_main": "Вывод на главной",
-        "is_active": "Активно",
-        "can_adult": "Принимает взрослых",
-        "can_child": "Принимает детей",
-        "can_online": "Проводит онлайн консультацию",
-        "start_work_date": "Начало работы",
-        "specializations": "Специальности",
+        "surname": "Surname",
+        "name": "Name",
+        "patronymic": "Patronymic",
+        "description": "Description",
+        "education": "Education",
+        "activity": "Activity",
+        "titles": "Titles",
+        "photo": "Photo",
+        "on_main": "On amin",
+        "is_active": "Is active",
+        "can_adult": "Can adult",
+        "can_child": "Can child",
+        "can_online": "Can online",
+        "start_work_date": "Start work date",
+        "specializations": "Specializations",
+        "certificates": "Certificates",
     }
-
-    async def insert_model(self, data: dict[str, Any]) -> None:
-        """Переопределение создания модели."""
-        await save_file(("photo",), data, "specialists")
-        return await super().insert_model(data)
-
-    async def update_model(self, pk: str, data: dict[str, Any]) -> None:
-        """Переопределение обновления модели."""
-        await save_file(("photo",), data, "specialists")
-        return await super().update_model(pk, data)

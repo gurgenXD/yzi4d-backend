@@ -8,7 +8,7 @@ from sqlalchemy import insert, select, text
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import joinedload
 
-from app.adapters.storage.models import Service, ServiceType
+# from app.adapters.storage.models import Service
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
@@ -31,7 +31,7 @@ class ServicesAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    _service: ClassVar = Service
+    # _service: ClassVar = Service
 
     async def get(self, id: str) -> "ServiceWithTypeSchema":
         """Получить услугу."""
@@ -84,8 +84,7 @@ class ServiceTypeAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    _service_type: ClassVar = ServiceType
-    _service: ClassVar = Service
+    # _service: ClassVar = Service
 
     async def get_all(self) -> list["ServiceTypeSchema"]:
         """Получить все категории услуг."""

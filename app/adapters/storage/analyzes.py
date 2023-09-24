@@ -7,7 +7,6 @@ from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import joinedload
 
-from app.adapters.storage.models import Analysis, AnalysisType
 from app.services.exceptions import NotFoundError
 from app.services.schemas.analyzes import (
     AnalysisSchema,
@@ -25,8 +24,6 @@ class AnalyzesAdapter:
     """Адаптер для доступа к данным анализов."""
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
-
-    _analysis: ClassVar = Analysis
 
     async def get_all(self, *, for_main: bool) -> list["AnalysisSchema"]:
         """Получить все активные анализы."""

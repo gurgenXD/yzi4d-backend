@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, ClassVar
 
 from sqlalchemy import insert, update
 
-from app.adapters.storage.models import Updater
+from app.adapters.storage.models import Update
 from app.services.updater.types import UpdaterStatusType
 
 
@@ -20,7 +20,7 @@ class UpdaterAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    _updater: ClassVar = Updater
+    _updater: ClassVar = Update
 
     async def start(self) -> int:
         """Создать запись о начале обновления."""

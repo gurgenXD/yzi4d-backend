@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 
-class LicenseSchema(BaseModel):
-    """Схема лицензии."""
+class DocumentSchema(BaseModel):
+    """Схема документа."""
 
     title: str
     photo: str | None

@@ -10,7 +10,7 @@ class Page(BaseModel):
     __tablename__ = "pages"
 
     id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
-    slug: Mapped[str] = mapped_column(sa.String(100), unique=True)
-    title: Mapped[str] = mapped_column(sa.String(20))
-    body: Mapped[str] = mapped_column(sa.Text())
+    url: Mapped[str] = mapped_column(sa.String(100), unique=True)
+    title: Mapped[str] = mapped_column(sa.String(100))
+    content: Mapped[str] = mapped_column(sa.Text())
     is_active: Mapped[bool]

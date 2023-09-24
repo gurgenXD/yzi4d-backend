@@ -1,36 +1,87 @@
 from sqladmin import ModelView
 
-from app.adapters.storage.models.services import Service
+from app.adapters.storage.models.services import Service, ServiceCategory, ServiceCatalog
 
 
 class ServiceAdmin(ModelView, model=Service):
     """Услуги в админ панели."""
 
-    name = "Услуга"
-    name_plural = "Услуги"
+    name = "Service"
+    name_plural = "Services"
+    category = "Services"
     icon = "fa-solid fa-syringe"
+
+    can_edit = False
     can_create = False
     can_delete = False
+    can_export = False
 
-    form_include_pk = True
-    form_widget_args = {
-        "id": {"readonly": True},
-        "parent_id": {"readonly": True},
-        "name": {"readonly": True},
-        "parent": {"readonly": True},
-        "patronymic": {"readonly": True},
-    }
-
-    column_list = ("name", "id", "parent_id", "is_active", "on_main")
+    column_list = ("id", "name", "is_active")
     column_labels = {
         "id": "ID",
-        "name": "Услуга",
-        "short_description": "Короткое описание услуги",
-        "description": "Описание услуги",
-        "is_active": "Активно",
-        "on_main": "Вывод на главной",
-        "parent": "Родитель",
-        "parent_id": "ID родителя",
-        "is_group": "Группа услуг",
+        "name": "Name",
+        "short_description": "Short description",
+        "description": "Description",
+        "preparation": "Preparation",
+        "ready_from": "Ready from",
+        "ready_to": "Ready to",
+        "is_active": "Is active",
+        "categories": "Categories",
+    }
+    column_default_sort = [("name", False)]
+
+
+class ServiceCategoryAdmin(ModelView, model=ServiceCategory):
+    """Категории услуг в админ панели."""
+
+    name = "Category"
+    name_plural = "Categories"
+    category = "Services"
+    icon = "fa-solid fa-folder-tree"
+
+    can_edit = False
+    can_create = False
+    can_delete = False
+    can_export = False
+
+    column_list = ("id", "name", "is_active")
+    column_details_exclude_list = ("parent_id", "catalog_id")
+    column_labels = {
+        "id": "ID",
+        "name": "Name",
+        "is_active": "Is active",
+        "children": "Children",
+        "parent": "Parent",
+        "catalog": "Catalog",
+        "services": "Services",
+    }
+    column_default_sort = [("name", False)]
+
+
+class ServiceCatalogAdmin(ModelView, model=ServiceCatalog):
+    """Каталоги услуг в админ панели."""
+
+    name = "Catalog"
+    name_plural = "Catalogs"
+    category = "Services"
+    icon = "fa-solid fa-list"
+
+    can_create = False
+    can_delete = False
+    can_export = False
+
+    form_widget_args = {
+        "name": {"readonly": True},
+        "is_active": {"readonly": True},
+        "categories": {"readonly": True},
+    }
+
+    column_list = ("id", "name", "page", "is_active")
+    column_labels = {
+        "id": "ID",
+        "name": "Name",
+        "page": "Page",
+        "is_active": "Is active",
+        "categories": "Categories",
     }
     column_default_sort = [("name", False)]

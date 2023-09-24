@@ -9,7 +9,7 @@ from app.adapters.source import SourceAdapter
 from app.adapters.storage.analyzes import AnalysisTypeAdapter, AnalyzesAdapter
 from app.adapters.storage.contacts import ContactsAdapter
 from app.adapters.storage.db import engine, session
-from app.adapters.storage.licenses import LicenseAdapter
+from app.adapters.storage.documents import DocumentAdapter
 from app.adapters.storage.news import NewsAdapter
 from app.adapters.storage.pages import PagesAdapter
 from app.adapters.storage.promotions import PromotionsAdapter
@@ -62,7 +62,7 @@ class Container(DeclarativeContainer):
         ContactsAdapter, session_ctx.provider
     )
     news_adapter: Singleton["NewsAdapter"] = Singleton(NewsAdapter, session_ctx.provider)
-    license_adapter: Singleton["LicenseAdapter"] = Singleton(LicenseAdapter, session_ctx.provider)
+    license_adapter: Singleton["DocumentAdapter"] = Singleton(DocumentAdapter, session_ctx.provider)
     pages_adapter: Singleton["PagesAdapter"] = Singleton(PagesAdapter, session_ctx.provider)
     promotions_adapter: Singleton["PromotionsAdapter"] = Singleton(
         PromotionsAdapter, session_ctx.provider

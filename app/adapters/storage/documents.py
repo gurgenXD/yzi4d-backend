@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING, ClassVar
 
 from sqlalchemy import select
 
-from app.adapters.storage.models import License
-from app.services.schemas.licenses import LicenseSchema
+from app.adapters.storage.models import Document
+from app.services.schemas.documents import DocumentSchema
 
 
 if TYPE_CHECKING:
@@ -14,17 +14,17 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class LicenseAdapter:
-    """Адаптер для доступа к данным лицензий."""
+class DocumentAdapter:
+    """Адаптер для доступа к данным документов."""
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    _license: ClassVar = License
+    _document: ClassVar = Document
 
-    async def get_all(self) -> list["LicenseSchema"]:
+    async def get_all(self) -> list["DocumentSchema"]:
         """Получить все активные лицензии."""
-        query = select(self._license).where(self._license.is_active.is_(True))
+        query = select(self._document).where(self._document.is_active.is_(True))
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [LicenseSchema.from_orm(row) for row in rows.scalars()]
+            return [DocumentSchema.from_orm(row) for row in rows.scalars()]
