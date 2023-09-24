@@ -73,7 +73,7 @@ class Container(DeclarativeContainer):
     )
     updater_adapter: Singleton["UpdaterAdapter"] = Singleton(UpdaterAdapter, session_ctx.provider)
     source_adapter: Singleton["SourceAdapter"] = Singleton(
-        SourceAdapter, service_settings.provided.host_1c
+        SourceAdapter, service_settings.provided.updater_host, service_settings.provided.timeout
     )
 
     repo_updater_service: Singleton["RepoUpdaterService"] = Singleton(

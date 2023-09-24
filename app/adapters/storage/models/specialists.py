@@ -1,4 +1,5 @@
 from datetime import date
+from typing import Any, TYPE_CHECKING
 
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -9,6 +10,9 @@ from fastapi_storages.integrations.sqlalchemy import FileType
 
 from fastapi_storages import FileSystemStorage
 from utils.constants import MEDIA_DIR
+
+if TYPE_CHECKING:
+    from app.adapters.storage.models.services import Service
 
 
 specializations_specialists_table = sa.Table(
@@ -55,10 +59,11 @@ class Specialist(BaseModel):
         FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "specialists")))
     )
     start_work_date: Mapped[date]
-    education: Mapped[str | None] = mapped_column(sa.Text())
-    activity: Mapped[str | None] = mapped_column(sa.Text())
+    education: Mapped[list[dict[str, Any]] | None] = mapped_column(sa.JSON())
+    activity: Mapped[list[dict[str, Any]] | None] = mapped_column(sa.JSON())
+    titles: Mapped[list[dict[str, Any]] | None] = mapped_column(sa.JSON())
     description: Mapped[str | None] = mapped_column(sa.Text())
-    titles: Mapped[str | None] = mapped_column(sa.Text())
+    short_description: Mapped[str | None] = mapped_column(sa.String(250))
     can_adult: Mapped[bool]
     can_child: Mapped[bool]
     can_online: Mapped[bool]
@@ -71,6 +76,9 @@ class Specialist(BaseModel):
     certificates: Mapped[list["SpecialistCertificate"]] = relationship(
         "SpecialistCertificate", back_populates="specialist"
     )
+    services: Mapped[list["Service"]] = relationship(
+        "Service", secondary="specialists_services", back_populates="specialists"
+    )
 
     def __str__(self) -> str:
         patronymic = f" {self.patronymic}" if self.patronymic else ""
@@ -80,7 +88,7 @@ class Specialist(BaseModel):
 class SpecialistCertificate(BaseModel):
     """Сертификаты специалиста."""
 
-    __tablename__ = "specialist_certificates"
+    __tablename__ = "specialists_certificates"
 
     id: Mapped[str] = mapped_column(sa.String(36), primary_key=True)
     name: Mapped[str] = mapped_column(sa.String(250))
@@ -96,3 +104,19 @@ class SpecialistCertificate(BaseModel):
 
     def __str__(self) -> str:
         return self.name
+
+
+class SpecialistService(BaseModel):
+    """Услуга специалиста."""
+
+    __tablename__ = "specialists_services"
+
+    price: Mapped[int]
+    is_active: Mapped[bool]
+
+    service_id: Mapped[str] = mapped_column(
+        sa.String(36), sa.ForeignKey("services.id", ondelete="CASCADE"), primary_key=True
+    )
+    specialist_id: Mapped[str] = mapped_column(
+        sa.String(36), sa.ForeignKey("specialists.id", ondelete="CASCADE"), primary_key=True
+    )

@@ -3,7 +3,7 @@ from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, ClassVar
 
-from sqlalchemy import insert, or_, select, text
+from sqlalchemy import update, or_, select, insert
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import contains_eager, joinedload
 
@@ -109,13 +109,25 @@ class SpecialistsAdapter:
         return specialist
 
     async def create_or_update(self, data: list["SourceSpecialistSchema"]) -> None:
-        """Создание или обновление данных."""
+        """Создание или обновление специалистов и специальностей."""
         async with self._session_factory() as session:
-            await session.execute(text(f"TRUNCATE {self._specialist.__tablename__} CASCADE;"))
+            await session.execute(update(self._specialist).values(is_active=False))
+            await session.execute(update(self._specialization).values(is_active=False))
 
-            await session.execute(
-                insert(self._specialist), [specialist.dict() for specialist in data]
-            )
+            for specialist in data:
+                specialist_model = self._specialist(
+                    **specialist.model_dump(exclude={"specializations"})
+                )
+                specialist_model.specializations.clear()
+
+                for specialization in specialist.specializations:
+                    specialization_model = self._specialization(**specialization.model_dump())
+                    await session.merge(specialization_model)
+                    specialist_model.specializations.append(specialization_model)
+
+                await session.merge(specialist_model)
+                await session.flush()
+                session.expunge_all()
 
 
 @dataclass

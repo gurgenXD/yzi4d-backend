@@ -12,7 +12,5 @@ class UpdaterStatusType(Enum):
 class UpdaterDataType(Enum):
     """Обновляемая таблица."""
 
-    SERVICES = "services"
-    SPECIALISTS = "specialists"
+    MAIN = "main"
     IMAGES = "images"
-    CATALOGS = "catalogs"

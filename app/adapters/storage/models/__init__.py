@@ -7,13 +7,14 @@ from app.adapters.storage.models.promotions import Promotion
 
 from app.adapters.storage.models.services import (
     Service,
-    ServiceCatalog,
-    ServiceCategory,
+    Catalog,
+    Category,
     categories_services_table,
 )
 from app.adapters.storage.models.specialists import (
     Specialist,
     Specialization,
     specializations_specialists_table,
+    SpecialistService,
 )
 from app.adapters.storage.models.updates import Update

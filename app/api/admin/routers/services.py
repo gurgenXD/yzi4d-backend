@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from app.adapters.storage.models.services import Service, ServiceCategory, ServiceCatalog
+from app.adapters.storage.models.services import Service, Category, Catalog
 
 
 class ServiceAdmin(ModelView, model=Service):
@@ -31,7 +31,7 @@ class ServiceAdmin(ModelView, model=Service):
     column_default_sort = [("name", False)]
 
 
-class ServiceCategoryAdmin(ModelView, model=ServiceCategory):
+class ServiceCategoryAdmin(ModelView, model=Category):
     """Категории услуг в админ панели."""
 
     name = "Category"
@@ -58,7 +58,7 @@ class ServiceCategoryAdmin(ModelView, model=ServiceCategory):
     column_default_sort = [("name", False)]
 
 
-class ServiceCatalogAdmin(ModelView, model=ServiceCatalog):
+class ServiceCatalogAdmin(ModelView, model=Catalog):
     """Каталоги услуг в админ панели."""
 
     name = "Catalog"

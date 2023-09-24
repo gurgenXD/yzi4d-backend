@@ -61,7 +61,7 @@ class SpecialistAdmin(ModelView, model=Specialist):
     can_delete = False
     can_export = False
 
-    column_list = ("id", "surname", "name", "patronymic", "on_main", "is_active")
+    column_list = ("surname", "name", "patronymic", "id", "on_main", "is_active")
     column_default_sort = [("surname", False)]
     column_searchable_list = ["surname", "name", "patronymic", "id"]
     column_labels = {
@@ -74,7 +74,7 @@ class SpecialistAdmin(ModelView, model=Specialist):
         "activity": "Activity",
         "titles": "Titles",
         "photo": "Photo",
-        "on_main": "On amin",
+        "on_main": "On main",
         "is_active": "Is active",
         "can_adult": "Can adult",
         "can_child": "Can child",

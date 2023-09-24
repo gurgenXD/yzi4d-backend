@@ -1,5 +1,6 @@
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter, BackgroundTasks, Request
 from fastapi.responses import RedirectResponse
+from app.services.updater.types import UpdaterDataType
 
 from app.container import CONTAINER
 
@@ -12,9 +13,9 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 
 @router.get("")
-async def update_data(tasks: BackgroundTasks) -> "RedirectResponse":
+async def update_data(request: Request, tasks: BackgroundTasks) -> "RedirectResponse":
     """Обновить данные."""
     updater = CONTAINER.repo_updater_service()
-    tasks.add_task(updater.update)
+    tasks.add_task(updater.update, data_type=UpdaterDataType.MAIN)
 
-    return RedirectResponse(url="/admin/updater/list")
+    return RedirectResponse(url=request.url_for("admin:list", identity="update"))

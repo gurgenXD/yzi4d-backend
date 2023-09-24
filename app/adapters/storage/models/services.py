@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 
 from app.adapters.storage.db.base_model import BaseModel
 from fastapi_storages.integrations.sqlalchemy import FileType
@@ -8,14 +9,15 @@ from fastapi_storages.integrations.sqlalchemy import FileType
 from fastapi_storages import FileSystemStorage
 from utils.constants import MEDIA_DIR
 
+if TYPE_CHECKING:
+    from app.adapters.storage.models.specialists import Specialist
+
 
 categories_services_table = sa.Table(
     "categories_services_rel",
     BaseModel.metadata,
     sa.Column(
-        "service_category_id",
-        sa.ForeignKey("services_categories.id", ondelete="CASCADE"),
-        primary_key=True,
+        "service_category_id", sa.ForeignKey("categories.id", ondelete="CASCADE"), primary_key=True
     ),
     sa.Column("service_id", sa.ForeignKey("services.id", ondelete="CASCADE"), primary_key=True),
 )
@@ -35,40 +37,41 @@ class Service(BaseModel):
     ready_to: Mapped[int | None]
     is_active: Mapped[bool]
 
-    categories: Mapped[list["ServiceCategory"]] = relationship(
-        "ServiceCategory", secondary=categories_services_table, back_populates="services"
+    categories: Mapped[list["Category"]] = relationship(
+        "Category", secondary=categories_services_table, back_populates="services"
+    )
+    specialists: Mapped[list["Specialist"]] = relationship(
+        "Specialist", secondary="specialists_services", back_populates="services"
     )
 
     def __str__(self) -> str:
         return self.name
 
 
-class ServiceCategory(BaseModel):
+class Category(BaseModel):
     """Категория услуг."""
 
-    __tablename__ = "services_categories"
+    __tablename__ = "categories"
 
     id: Mapped[str] = mapped_column(sa.String(36), primary_key=True)
     name: Mapped[str] = mapped_column(sa.String(255))
     icon: Mapped[str | None] = mapped_column(
-        FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "services_categories")))
+        FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "categories")))
     )
     is_active: Mapped[bool]
 
     parent_id: Mapped[str | None] = mapped_column(
-        sa.String(36), sa.ForeignKey("services_categories.id", ondelete="SET NULL")
+        sa.String(36), sa.ForeignKey("categories.id", ondelete="SET NULL")
     )
     catalog_id: Mapped[str] = mapped_column(
-        sa.String(36), sa.ForeignKey("services_catalogs.id", ondelete="CASCADE")
+        sa.String(36), sa.ForeignKey("catalogs.id", ondelete="CASCADE")
     )
 
-    children: Mapped[list["ServiceCategory"]] = relationship(
-        "ServiceCategory", back_populates="parent"
+    children: Mapped[list["Category"]] = relationship("Category", back_populates="parent")
+    parent: Mapped["Category"] = relationship(
+        "Category", back_populates="children", remote_side=[id]
     )
-    parent: Mapped["ServiceCategory"] = relationship(
-        "ServiceCategory", back_populates="children", remote_side=[id]
-    )
-    catalog: Mapped["ServiceCatalog"] = relationship("ServiceCatalog", back_populates="categories")
+    catalog: Mapped["Catalog"] = relationship("Catalog", back_populates="categories")
     services: Mapped[list["Service"]] = relationship(
         "Service", secondary=categories_services_table, back_populates="categories"
     )
@@ -77,19 +80,17 @@ class ServiceCategory(BaseModel):
         return self.name
 
 
-class ServiceCatalog(BaseModel):
+class Catalog(BaseModel):
     """Каталог услуг."""
 
-    __tablename__ = "services_catalogs"
+    __tablename__ = "catalogs"
 
     id: Mapped[str] = mapped_column(sa.String(36), primary_key=True)
     name: Mapped[str] = mapped_column(sa.String(255))
     page: Mapped[str] = mapped_column(sa.String(16))
     is_active: Mapped[bool]
 
-    categories: Mapped[list["ServiceCategory"]] = relationship(
-        "ServiceCategory", back_populates="catalog"
-    )
+    categories: Mapped[list["Category"]] = relationship("Category", back_populates="catalog")
 
     def __str__(self) -> str:
         return self.name

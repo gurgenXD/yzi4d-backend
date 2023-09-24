@@ -1,28 +1,28 @@
-from collections import defaultdict
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, ClassVar
 
-from sqlalchemy import insert, select, text
+from sqlalchemy import update, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import joinedload
+from itertools import groupby
 
-# from app.adapters.storage.models import Service
+from app.adapters.storage.models import Service, Catalog, Category, SpecialistService
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
 from app.services.schemas.services import ServiceSchema, ServiceTypeSchema, ServiceWithTypeSchema
-from utils.chunks import divide_chunks
 
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
-    from app.services.updater.schemas.services import SourceServiceGroupSchema, SourceServiceSchema
-
-
-CHUNK_SIZE = 100
+    from app.services.updater.schemas.services import (
+        CatalogSchema,
+        CatalogItemSchema,
+        ServiceExtSchema,
+    )
 
 
 @dataclass
@@ -31,7 +31,10 @@ class ServicesAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    # _service: ClassVar = Service
+    _service: ClassVar = Service
+    _catalog: ClassVar = Catalog
+    _category: ClassVar = Category
+    _specialist_service: ClassVar = SpecialistService
 
     async def get(self, id: str) -> "ServiceWithTypeSchema":
         """Получить услугу."""
@@ -52,30 +55,59 @@ class ServicesAdapter:
 
         return service
 
-    async def create_or_update_groups(self, data: list["SourceServiceGroupSchema"]) -> None:
-        """Создание или обновление данных групп."""
-        groups = defaultdict(list)
-        for service_group in data:
-            groups[service_group.level].append(service_group)
-
+    async def create_or_update_catalogs(self, data: list["CatalogSchema"]) -> None:
+        """Создание или обновление каталогов."""
         async with self._session_factory() as session:
-            await session.execute(text(f"TRUNCATE {self._service.__tablename__} CASCADE;"))
+            await session.execute(update(self._catalog).values(is_active=False))
 
-            for _, service_groups in sorted(groups.items(), key=lambda item: item[0]):
-                await session.execute(
-                    insert(self._service),
-                    [service_group.dict() for service_group in service_groups],
-                )
-                await session.flush()
+            for catalog in data:
+                catalog = self._catalog(**catalog.model_dump())
+                await session.merge(catalog)
 
-    async def create_or_update(self, data: list["SourceServiceSchema"]) -> None:
-        """Создание или обновление данных."""
+    async def create_or_update_categories(self, data: list["CatalogItemSchema"]) -> None:
+        """Создание или обновление категорий и связей с услугами."""
         async with self._session_factory() as session:
-            for services in divide_chunks(data, CHUNK_SIZE):
-                await session.execute(
-                    insert(self._service), [service.dict() for service in services]
-                )
+            await session.execute(update(self._category).values(is_active=False))
+
+            for category in data:
+                category_model = self._category(**category.model_dump(exclude={"services"}))
+                category_model.services.clear()
+
+                for service in category.services:
+                    service_model = self._service(**service.model_dump())
+                    category_model.services.append(service_model)
+
+                await session.merge(service_model)
                 await session.flush()
+                session.expunge_all()
+
+    async def create_or_update(self, data: list["ServiceExtSchema"]) -> None:
+        """Создание или обновление услуг и цен."""
+        async with self._session_factory() as session:
+            await session.execute(update(self._service).values(is_active=False))
+            await session.execute(update(self._specialist_service).values(is_active=False))
+
+            for service in data:
+                service_model = self._service(**service.model_dump(exclude={"prices"}))
+                await session.merge(service_model)
+
+                groups = groupby(
+                    sorted(service.prices, key=lambda x: x.specialist_id),
+                    key=lambda x: x.specialist_id,
+                )
+
+                for _, group_items in groups:
+                    specialist_service = max(group_items, key=lambda x: x.price)
+
+                    specialist_service_model = self._specialist_service(
+                        service_id=service_model.id,
+                        specialist_id=specialist_service.specialist_id,
+                        **specialist_service.model_dump(exclude={"office_id", "specialist_id"}),
+                    )
+                    await session.merge(specialist_service_model)
+
+                await session.flush()
+                session.expunge_all()
 
 
 @dataclass

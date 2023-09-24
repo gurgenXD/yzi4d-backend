@@ -26,9 +26,9 @@ loguru = "0.7.2"
 fastapi-users = "12.1.2"
 pydantic-settings = "2.0.3"
 itsdangerous = "2.1.2"
-httpx = "^0.25.0"
-fastapi-storages = "^0.2.0"
-python-jose = "^3.3.0"
+httpx = "0.25.0"
+fastapi-storages = "0.2.0"
+python-jose = "3.3.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "23.9.1"
