@@ -1,7 +1,7 @@
 import click
 import uvicorn
 
-from app.settings.uvicorn import UvicornSettings
+from app.settings.server import ServerSettings
 
 
 @click.group()
@@ -12,4 +12,4 @@ def start() -> None:
 @start.command()
 def api() -> None:
     """Сервис API."""
-    uvicorn.run(**UvicornSettings().dict())
+    uvicorn.run(**ServerSettings().dict())

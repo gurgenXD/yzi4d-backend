@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class RepoUdapterService:
+class RepoUpdaterService:
     """Сервис обновления репозитория."""
 
     _source: "SourceAdapter"

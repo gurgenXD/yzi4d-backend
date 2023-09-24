@@ -3,10 +3,10 @@ from pydantic_settings import SettingsConfigDict
 from utils.settings.base import BaseSettings
 
 
-class UvicornSettings(BaseSettings):
-    """Настройки uvicorn сервера."""
+class ServerSettings(BaseSettings):
+    """Настройки сервера."""
 
-    model_config = SettingsConfigDict(env_prefix="uvicorn_")
+    model_config = SettingsConfigDict(env_prefix="server_")
 
     # Путь до ASGI в формате "<module>:<attribute>".
     app: str = "app.api.factory:create_app"

@@ -16,9 +16,11 @@ from app.adapters.storage.promotions import PromotionsAdapter
 from app.adapters.storage.services import ServicesAdapter, ServiceTypeAdapter
 from app.adapters.storage.specialists import SpecialistsAdapter, SpecializationAdapter
 from app.adapters.storage.updater import UpdaterAdapter
-from app.services.updater.repo import RepoUdapterService
+from app.services.updater.repo import RepoUpdaterService
 from app.settings.db import DatabaseSettings
 from app.settings.service import ServiceSettings
+from app.settings.auth import AuthSettings
+from app.settings.server import ServerSettings
 
 
 if TYPE_CHECKING:
@@ -32,6 +34,8 @@ class Container(DeclarativeContainer):
 
     db_settings: Singleton["DatabaseSettings"] = Singleton(DatabaseSettings)
     service_settings: Singleton["ServiceSettings"] = Singleton(ServiceSettings)
+    server_settings: Singleton["ServerSettings"] = Singleton(ServerSettings)
+    auth_settings: Singleton["AuthSettings"] = Singleton(AuthSettings)
 
     logger: Object["Logger"] = Object(logger)  # type: ignore
 
@@ -72,8 +76,8 @@ class Container(DeclarativeContainer):
         SourceAdapter, service_settings.provided.host_1c
     )
 
-    repo_updater_service: Singleton["RepoUdapterService"] = Singleton(
-        RepoUdapterService,
+    repo_updater_service: Singleton["RepoUpdaterService"] = Singleton(
+        RepoUpdaterService,
         source_adapter.provided,
         specialists_adapter.provided,
         updater_adapter.provided,
