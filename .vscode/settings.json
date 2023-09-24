@@ -1,0 +1,6 @@
+{
+    "editor.rulers": [
+        100
+    ],
+    "python.pythonPath": ".venv/bin/python",
+}

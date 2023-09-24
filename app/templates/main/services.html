@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Услуги</title>
+{% endblock %}
+
+{% block content %}
+
+<main role="main" class="flex-shrink-0">
+
+   <div class="container pt-md-5 pt-4">
+
+      <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="{{ url_for('get_index') }}">Главная</a></li>
+         <li class="breadcrumb-item active">Услуги</li>
+      </ol>
+
+      <div class="d-md-flex align-items-end justify-content-between mb-md-3 mb-2">
+         <h1 class="mb-3 me-4">Услуги</h1>
+
+         <button class="d-xl-none btn btn-primary btn-sm text-nowrap mb-3" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasFilters" aria-controls="offcanvasFilters">
+
+            <?xml version="1.0" encoding="UTF-8"?><svg id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 512.02 468.85" fill="#fff" height="14px" class="me-1 mb-1">
+               <path
+                  d="M85.35,468.85c-16.99,.04-33.29-6.71-45.27-18.75l-32.94-29.31c-8.8-7.85-9.57-21.34-1.73-30.14,7.85-8.8,21.34-9.57,30.14-1.73l33.81,30.17c7.84,8.8,21.32,9.58,30.12,1.74,.32-.29,.64-.58,.94-.89l76.8-73.19c8.26-8.4,21.77-8.52,30.17-.25,8.4,8.26,8.52,21.77,.25,30.17-.33,.34-.67,.66-1.03,.98l-76.48,72.83c-11.9,11.83-28.02,18.45-44.8,18.39h0Zm405.33-21.33h-213.33c-11.78,0-21.33-9.55-21.33-21.33s9.55-21.33,21.33-21.33h213.33c11.78,0,21.33,9.55,21.33,21.33s-9.55,21.33-21.33,21.33ZM85.35,298.18c-16.99,.04-33.29-6.71-45.27-18.75L6.27,245.61c-8.19-8.47-7.95-21.98,.52-30.17,8.27-7.98,21.37-7.98,29.64,0l33.83,33.81c8.44,8.07,21.73,8.07,30.17,0l76.8-73.19c8.53-8.14,22.05-7.83,30.19,.7,8.14,8.53,7.83,22.05-.7,30.19l-76.57,72.83c-11.9,11.83-28.02,18.45-44.8,18.39h0Zm405.33-21.33h-213.33c-11.78,0-21.33-9.55-21.33-21.33s9.55-21.33,21.33-21.33h213.33c11.78,0,21.33,9.55,21.33,21.33s-9.55,21.33-21.33,21.33ZM85.35,127.51c-16.99,.04-33.29-6.71-45.27-18.75L7.14,79.45c-8.8-7.85-9.57-21.34-1.73-30.14,7.85-8.8,21.34-9.57,30.14-1.73h0l33.81,30.17c7.84,8.8,21.32,9.58,30.12,1.74,.32-.29,.64-.58,.94-.89L177.32,5.4c8.8-7.83,22.28-7.05,30.12,1.75,7.47,8.39,7.15,21.13-.72,29.14l-76.57,72.83c-11.9,11.83-28.02,18.45-44.8,18.39h0Zm405.33-21.33h-213.33c-11.78,0-21.33-9.55-21.33-21.33s9.55-21.33,21.33-21.33h213.33c11.78,0,21.33,9.55,21.33,21.33s-9.55,21.33-21.33,21.33Z" />
+            </svg>
+
+            Каталог услуг
+         </button>
+      </div>
+
+      <div class="row">
+
+         <div class="col-xxl-3 col-xl-4">
+
+            <div class="offcanvas-xl offcanvas-start bg-light" tabindex="-1" id="offcanvasFilters"
+               aria-labelledby="offcanvasFiltersLabel">
+               <div class="offcanvas-header pb-3">
+
+                  <h5 class="offcanvas-title" id="offcanvasFiltersLabel">Услуги</h5>
+
+                  <button type="button" class="btn-close ms-auto" data-bs-dismiss="offcanvas"
+                     data-bs-target="#offcanvasFilters" aria-label="Close"></button>
+               </div>
+               <div class="offcanvas-body pt-0">
+
+                  <nav class="sidebar bg-white rounded-3 py-3">
+                     <ul class="nav flex-column">
+                        {% for service_type in services_types %}
+                        <li class="nav-item">
+                           <a class="nav-link" href="{{ url_for('get_services', type_id=service_type.id) }}" 
+                              aria-expanded="{% if service_type.id == services.0.service_type_id %}true{% else %}false{% endif %}">
+                              {{ service_type.name }}
+                           </a>
+                        </li>
+                        {% endfor %}
+
+                     </ul>
+                  </nav>
+
+               </div>
+            </div>
+
+         </div>
+
+         <div class="col-xxl-9 col-xl-8">
+            <div class="pt-xl-4">
+               {% for service in services %}
+               <div class="service-item position-relative">
+                  <div class="row">
+                     <div class="col-md mb-4 mb-md-0">
+                        <div class="d-inline-block bg-danger text-white fs-9 mb-1 px-1">Скидка 10%</div>
+                        <a href="{{ url_for('get_service', id=service.id) }}"
+                           class="stretched-link d-block f-2 fs-5 fw-bold link-secondary text-decoration-none mb-2 pt-md-1">{{ service.name }}</a>
+                        {% if service.short_description %}
+                           <p class="fw-light text-muted fs-7 mb-0">{{ service.short_description }}</p>
+                        {% endif %}
+                     </div>
+
+                     <div class="col-auto text-md-end">
+
+                        <div class="text-decoration-line-through text-muted f-2 fs-9 fw-semibold">&nbsp;<span
+                              class="number me-1">3500</span>₽&nbsp;
+                        </div>
+
+                        <div class="f-2 fs-4 lh-1 fw-black text-secondary mb-3">
+                           <span class="number">2290</span>
+                           ₽
+                        </div>
+
+                        <div class="d-flex align-items-center justify-md-content-end">
+
+                           <a href="#" class="btn btn-danger btn-sm me-2">Записаться</a>
+
+                           <a href="#" class="btn btn-outline-secondary btn-sm">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="16">
+                                 <path style="stroke:none;fill-rule:nonzero;fill-opacity:1"
+                                    d="M24.027 0h-11.93c-.476 0-.796.32-.796.8v14.4c0 .48.32.8.797.8h11.93c.476 0 .796-.32.796-.8V.8c0-.48-.32-.8-.797-.8zm-8.75 14.398h-2.386v-1.597h2.386zm0-3.199h-2.386V9.602h2.386zm0-3.199h-2.386V6.398h2.386zm3.977 6.398H16.87v-1.597h2.383zm0-3.199H16.87V9.602h2.383zm0-3.199H16.87V6.398h2.383zm3.98 6.398h-2.386v-1.597h2.386zm0-3.199h-2.386V9.602h2.386zm0-3.199h-2.386V6.398h2.386zm0-3.2H12.891V1.603h10.343zm0 0" />
+                                 <path style="stroke:none;fill-rule:evenodd;fill-opacity:1"
+                                    d="M3.402 4.8H4.45a.43.43 0 0 1 .43.423v2.41h2.387c.23 0 .421.195.421.426v1.05a.43.43 0 0 1-.421.434H4.879v2.398a.43.43 0 0 1-.43.426H3.402a.428.428 0 0 1-.418-.426V9.543H.598a.433.433 0 0 1-.422-.434V8.06c0-.23.195-.426.422-.426h2.386v-2.41c0-.227.192-.422.418-.422zm0 0" />
+                              </svg>
+                           </a>
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+               {% endfor %}
+
+               {% include "includes/pagination.html" %}
+
+            </div>
+         </div>
+
+      </div>
+   </div>
+
+</main>
+
+{% endblock %}

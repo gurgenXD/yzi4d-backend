@@ -1,0 +1,58 @@
+<section class="section py-md-6 py-5">
+   <div class="container pb-md-6 pb-5">
+      <div class="cta bg-light-blue rounded-4 px-sm-5 pt-sm-5 px-4 pt-4 px-xl-0 pt-xl-0">
+         <div class="row align-items-end align-items-xl-stretch gx-0">
+            <div class="col-xl-4">
+               <div class="cta__header ps-xl-6 py-xl-6 mb-5 mb-xl-0">
+                  <h2 class="cta__title mb-3">У вас остались вопросы?</h2>
+                  <p class="fs-5 mb-0 text-secondary">Оставьте свой телефон. Мы свяжемся с вами в ближайшее время.
+                  </p>
+               </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 cta__left">
+               <div class="position-relative w-100 h-100">
+                  <div class="cta__img ms-xxl-4 ms-xl-1 me-2">
+                     <picture>
+                        <source srcset="{{ url_for('static', path='/img/cta-img.webp') }}" type="image/webp"><img
+                           src="{{ url_for('static', path='/img/cta-img.png') }}" alt="">
+                     </picture>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+               <div class="pe-xl-6 py-xl-6 pb-4">
+                  <form>
+                     <div class="form-floating mb-4">
+                        <input type="text" class="form-control form-control__no-border input-phone" id="ctaPhone"
+                           placeholder="Ваш телефон" pattern=".{16}" required>
+                        <label for="ctaPhone">Ваш телефон</label>
+                     </div>
+
+                     <button class="btn btn-danger btn-form w-100" type="submit">Отправить</button>
+
+                     <div class="fs-9 pt-4 text-secondary">Нажимая на кнопку «Отправить», вы даёте своё
+                        согласие
+                        на
+                        <a href="content.html" title="" target="_blank">обработку персональных данных</a>.
+                     </div>
+                  </form>
+               </div>
+            </div>
+
+            <div class="col-4 cta__right">
+               <div class="position-relative w-100 h-100">
+                  <div class="cta__img ms-xxl-4 ms-xl-1 ms-2">
+                     <picture>
+                        <source srcset="{{ url_for('static', path='/img/cta-img2.webp') }}" type="image/webp"><img
+                           src="{{ url_for('static', path='/img/cta-img2.png') }}" alt="">
+                     </picture>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+   </div>
+</section>

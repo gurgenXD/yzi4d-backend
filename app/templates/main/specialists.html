@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Специалисты</title>
+{% endblock %}
+
+{% block content %}
+
+<main role="main" class="flex-shrink-0">
+
+   <div class="container pt-md-5 pt-4">
+
+      <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="{{ url_for('get_index') }}">Главная</a></li>
+         <li class="breadcrumb-item active">Cпециалисты</li>
+      </ol>
+
+      <h1 class="mb-md-5 mb-4">Cпециалисты</h1>
+
+      <div class="bg-white rounded-4 p-sm-4 p-3 mb-xl-6 mb-md-5 mb-4">
+         <form action="{{ url_for('get_specialists') }}" method="get">
+            <div class="form-check form-check-inline mb-3">
+               <input class="form-check-input" type="checkbox" id="HasOnline"
+                  name="can_online" {% if can_online %}checked{% endif %}>
+               <label class="form-check-label" for="HasOnline">
+                  Онлайн консультация
+               </label>
+            </div>
+            <div class="form-check form-check-inline mb-3">
+               <input class="form-check-input" type="checkbox" id="HasAdult"
+                  name="can_adult" {% if can_adult %}checked{% endif %}>
+               <label class="form-check-label" for="HasAdult">
+                  Принимает взрослых
+               </label>
+            </div>
+            <div class="form-check form-check-inline mb-3">
+               <input class="form-check-input" type="checkbox" id="HasChild"
+                  name="can_child" {% if can_child %}checked{% endif %}>
+               <label class="form-check-label" for="HasChild">
+                  Принимает детей
+               </label>
+            </div>
+
+            <div class="row align-items-end g-3">
+               <div class="col-lg col-md-6">
+                  <input type="text" class="form-control" id="SpecialitName" placeholder="Фамилия или имя врача"
+                     name="search_query" value="{{ search_query }}">
+               </div>
+
+               <div class="col-lg col-md-6">
+
+                  <select class="form-select" id="" name="specialization_id">
+                     <option value=""
+                        {% if not specialization_id %}selected{% endif %}>Все специальности
+                     </option>
+                     {% for specialization in specializations %}
+                     <option value="{{ specialization.id }}"
+                        {% if specialization_id==specialization.id %}selected{% endif %}>
+                        {{ specialization.name }}
+                     </option>
+                     {% endfor %}
+                  </select>
+               </div>
+
+               <div class="col-lg-auto col-md-6">
+                  <button class="btn btn-danger w-100 text-nowrap" type="submit">Найти врача</button>
+               </div>
+            </div>
+         </form>
+      </div>
+
+      <div class="row g-xl-5 gx-3 gy-4">
+         {% for specialist in specialists %}
+         <div class="col-lg-3 col-md-4 col-sm-6">
+            {% include "includes/specialist_card.html" %}
+         </div>
+         {% endfor %}
+      </div>
+
+      {% include "includes/pagination.html" %}
+
+</main>
+
+{% endblock %}

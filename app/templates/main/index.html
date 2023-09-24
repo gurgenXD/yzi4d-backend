@@ -1,0 +1,758 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title> Главная </title>
+{% endblock %}
+
+{% block content %}
+<main role="main" class="flex-shrink-0">
+
+    <div class="overflow-hidden">
+        <div class="container py-md-6 pt-5 pb-6">
+            <div class="row">
+                <div class="col-xl-8 mb-5 mb-xl-0">
+                    <div class="position-relative">
+                        <div class="swiper-button-next sbn-1"></div>
+                        <div class="swiper-button-prev sbp-1"></div>
+
+                        <div class="swiper main-slider">
+                            <div class="swiper-wrapper">
+                                {% for promotion in promotions %}
+                                    <div class="swiper-slide">
+                                        <div class="main-slide bg-white position-relative">
+                                            <div class="row flex-column flex-md-row gx-0">
+                                                <div class="col">
+                                                    <div
+                                                        class="h-100 d-flex align-items-center py-sm-4 py-3 px-sm-4 px-3 py-lg-5 ps-lg-6 pe-lg-4">
+                                                        <div>
+                                                            <div
+                                                                class="d-inline-block bg-danger text-white rounded f-2 fw-semibold lh-1 py-2 px-3 mb-3">
+                                                                {{ promotion.sale }}
+                                                            </div>
+                                                            <a href="#"
+                                                                class="stretched-link d-block text-decoration-none link-secondary fs-2 fw-extrabold mb-3">{{ promotion.name }}</a>
+                                                            <div
+                                                                class="d-inline-block bg-light-blue rounded f-2 fw-semibold lh-1 py-2 px-3 mb-4">
+                                                                {{ promotion.date_start.strftime("%d %B") }} - {{ promotion.date_end.strftime("%d %B") }}
+                                                            </div>
+                                                            {% if promotion.description %} {{ promotion.description | safe }} {% endif %} 
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-auto">
+                                                    <div class="main-slide__img bg-img"
+                                                        style="background-image: url({{ url_for('media', path='/' + promotion.photo) }});">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4">
+                    <div
+                        class="main-banner d-flex align-content-stretch h-100 bg-white shadow-lg rounded-4 overflow-hidden">
+                        <div class="pt-md-5 pt-sm-4 pt-3 pb-xl-3 pb-md-5 pb-sm-4 pb-3 px-lg-5 px-sm-4 px-3 flex-grow-1">
+                            <h3 class="fw-extrabold mb-2">Онлайн-консультация</h3>
+                            <div class="mb-4">Общайтесь с доктором не выходя из дома</div>
+                            <a href="{{ url_for('get_specialists') }}?can_online=True" class="btn btn-danger">Попробовать</a>
+                        </div>
+
+                        <div class="main-banner__img h-100 bg-img"
+                            style="background-image: url({{ url_for('static', path='/img/dynamic-img/main-banner-img.jpg') }});">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section overflow-hidden py-md-6 pb-5 pt-3">
+        <div class="container">
+
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                <h2 class="mb-3 me-4">Услуги</h2>
+
+                <a href="services-startpoint.html"
+                    class="btn btn-outline-secondary d-flex align-items-center text-nowrap mb-3">
+                    Все услуги
+
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12.98 7" height="7px"
+                        class="ms-2">
+                        <path
+                            d="M12.51,2.33L10.42,.16c-.2-.21-.54-.22-.75-.02,0,0,0,0-.01,.01h0c-.21,.22-.21,.57,0,.78l1.92,1.99H.54C.24,2.94,0,3.19,0,3.49c0,0,0,0,0,0C0,3.8,.24,4.04,.54,4.04H11.61l-1.96,2c-.21,.22-.22,.57,0,.78h0c.21,.22,.55,.22,.77,0h0s2.1-2.16,2.1-2.16c.62-.64,.62-1.69,0-2.35Z" />
+                    </svg>
+
+                </a>
+            </div>
+
+            <div class="row gx-xxl-6 gx-xl-5">
+                <div class="col-lg-auto">
+                    <div class="nav-links-vertical-wrapper mb-3 mb-lg-0">
+                        <div class="nav nav-links-vertical flex-nowrap flex-lg-column" id="services-tab" role="tablist"
+                            aria-orientation="vertical">
+                            <a href="#" class="nav-link active" id="services-1-tab" data-bs-toggle="pill"
+                                data-bs-target="#services-1" role="tab" aria-controls="services-1"
+                                aria-selected="true">УЗИ</a>
+
+                            <a href="#" class="nav-link" id="services-2-tab" data-bs-toggle="pill"
+                                data-bs-target="#services-2" role="tab" aria-controls="services-2"
+                                aria-selected="false">Приём специалиста</a>
+
+                            <a href="#" class="nav-link" id="services-3-tab" data-bs-toggle="pill"
+                                data-bs-target="#services-3" role="tab" aria-controls="services-3"
+                                aria-selected="false">МРТ</a>
+
+                            <a href="#" class="nav-link" id="services-4-tab" data-bs-toggle="pill"
+                                data-bs-target="#services-4" role="tab" aria-controls="services-4"
+                                aria-selected="false">Хирургия</a>
+
+                            <a href="#" class="nav-link" id="services-5-tab" data-bs-toggle="pill"
+                                data-bs-target="#services-5" role="tab" aria-controls="services-5"
+                                aria-selected="false">Рентгенология</a>
+
+                            <a href="#" class="nav-link" id="services-6-tab" data-bs-toggle="pill"
+                                data-bs-target="#services-6" role="tab" aria-controls="services-6"
+                                aria-selected="false">Компьютерная
+                                томография</a>
+
+                            <a href="#" class="nav-link" id="services-7-tab" data-bs-toggle="pill"
+                                data-bs-target="#services-7" role="tab" aria-controls="services-7"
+                                aria-selected="false">Анализы</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg">
+                    <div class="tab-content" id="services-tabContent">
+                        <div class="tab-pane fade show active" id="services-1" role="tabpanel"
+                            aria-labelledby="services-1-tab" tabindex="0">
+
+                            <div class="row g-xxl-5 g-4">
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_1.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">УЗИ
+                                            плода 4D</a>
+
+                                        <div class="fs-8 mb-3">Позволяет получить полную информацию о развитии плода и
+                                            течении
+                                            беременности</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">1000</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_1.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">УЗИ
+                                            поджелудочной железы</a>
+
+                                        <div class="fs-8 mb-3">Предупреждает панкреатит, панкреонекроз, диабет,
+                                            рак</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">1500</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_1.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">УЗИ
+                                            почек</a>
+
+                                        <div class="fs-8 mb-3">Выявление воспалительных процессов, патологий,
+                                            повреждений
+                                            тканей</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">1400</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_1.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">УЗИ
+                                            брюшной полости</a>
+
+                                        <div class="fs-8 mb-3">Исследование желчного пузыря, поджелудочной железы,
+                                            селезёнки и
+                                            кишечника</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">1500</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-4 col-md-6">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_1.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">УЗИ
+                                            сердца</a>
+
+                                        <div class="fs-8 mb-3">Показывает полную структуру сердца. Например, размеры и
+                                            целостность камер сердца и т.д.</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">2000</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="services-2" role="tabpanel" aria-labelledby="services-2-tab"
+                            tabindex="0">
+
+                            <div class="row g-5">
+                                <div class="col-4">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_2.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Акушер-гинеколог</a>
+
+                                        <div class="fs-8 mb-3">Амбулаторное обследование и лечение беременных женщин.
+                                            Диспансерное наблюдение беременности</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">1000</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_2.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Гастроэнтеролог</a>
+
+                                        <div class="fs-8 mb-3">Диагностика, профилактика и лечение заболеваний
+                                            желудочно-кишечного тракта и пищевой аллергии</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">1500</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_2.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Невролог</a>
+
+                                        <div class="fs-8 mb-3">Консультативный приём, диагностика, лечение,
+                                            профилактические
+                                            курсы лечения заболеваний нервной системы</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">1400</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_2.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Флеболог</a>
+
+                                        <div class="fs-8 mb-3">Консультативный прием и хирургическое или консервативное
+                                            лечение пациентов с патологией сердечно-сосудистой системы.</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">1500</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_2.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Эндокринолог</a>
+
+                                        <div class="fs-8 mb-3">Показывает полную структуру сердца. Например, размеры и
+                                            целостность камер сердца и т.д.</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">2000</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="services-3" role="tabpanel" aria-labelledby="services-3-tab"
+                            tabindex="0">
+
+                            <div class="row g-5">
+                                <div class="col-4">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_3.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">МРТ
+                                            головы</a>
+
+                                        <div class="fs-8 mb-3">Выявление опухолей, аневризм, заболеваний в области
+                                            сосудистых
+                                            и нервных систем</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">2900</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_3.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">МРТ
+                                            позвоночника</a>
+
+                                        <div class="fs-8 mb-3">Магнитно-резонансное исследование всех отделов
+                                            позвоночника
+                                        </div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">2700</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_3.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">МРТ
+                                            суставов</a>
+
+                                        <div class="fs-8 mb-3">Исследование различных нарушений суставов</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">3400</span>
+                                            ₽
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <div class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                                        style="background-image:url({{ url_for('static', path='/img/service-bg-icon_3.svg') }});">
+
+                                        <a href="#"
+                                            class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">МРТ
+                                            органов и мягких тканей</a>
+
+                                        <div class="fs-8 mb-3">Исследование состояния мышц и связок, сухожилий, сосудов,
+                                            нервных волокон и иных составляющих мягких тканей</div>
+                                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                                            <span class="me-1">от</span>
+                                            <span class="number">3900</span>
+                                            ₽
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section overflow-hidden py-md-6 py-5">
+        <div class="container pb-md-6 pb-5">
+
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                <h2 class="mb-3 me-4">Наши специалисты</h2>
+
+                <a href="{{ url_for('get_specialists') }}" class="btn btn-outline-secondary d-flex align-items-center text-nowrap mb-3">
+                    Все специалисты
+
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12.98 7" height="7px"
+                        class="ms-2">
+                        <path
+                            d="M12.51,2.33L10.42,.16c-.2-.21-.54-.22-.75-.02,0,0,0,0-.01,.01h0c-.21,.22-.21,.57,0,.78l1.92,1.99H.54C.24,2.94,0,3.19,0,3.49c0,0,0,0,0,0C0,3.8,.24,4.04,.54,4.04H11.61l-1.96,2c-.21,.22-.22,.57,0,.78h0c.21,.22,.55,.22,.77,0h0s2.1-2.16,2.1-2.16c.62-.64,.62-1.69,0-2.35Z" />
+                    </svg>
+
+                </a>
+            </div>
+
+            <div class="position-relative mx-md-n2">
+                <div class="swiper-button-next sbn-2"></div>
+                <div class="swiper-button-prev sbp-2"></div>
+
+                <div class="swiper doctors-slider p-md-2">
+                    <div class="swiper-wrapper">
+                        {% for specialist in specialists %}
+                        <div class="swiper-slide">
+                            {% include "includes/specialist_card.html" %}
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section overflow-hidden bg-light-blue pt-md-8 pt-5">
+        <div class="container position-relative pb-md-8 pb-5 pt-lg-0 pt-5">
+            <div class="section-about-img">
+                <img src="{{ url_for('static', path='/img/about-bg.png') }}" alt="">
+            </div>
+
+            <div class="row align-items-end gx-xxl-7 gx-xl-6 pb-5 pb-md-0">
+                <div class="col-xl-7 mb-5 mb-xl-0">
+                    <article class="article mb-md-6 mb-5">
+                        <h1 class="title-dashed fs-2 pb-4 mb-4">4Д Поликлиника</h1>
+                        <p>Это сеть многопрофильных медицинских центров. В нашем
+                            арсенале более 250 видов медицинских услуг, и это не считая инструментальной
+                            диагностики - эндоскопии, УЗИ, МРТ, КТ, - а также клинических исследований и анализов!
+                            Мы прикладываем максимум усилий для того, чтобы в одном месте, за один визит
+                            наши пациенты могли получить самую разнообразную помощь - как взрослые, так и дети.</p>
+                    </article>
+
+                    <div class="row g-md-5 g-4">
+                        <div class="col-md-6">
+                            <div
+                                class="stat-item bg-white d-flex align-items-center px-sm-4 px-3 py-2 rounded-3 shadow-sm overflow-hidden">
+                                <div class="stat-item__img">
+                                    <img src="{{ url_for('static', path='/img/stat-bg_1.svg') }}" alt="">
+                                </div>
+
+                                <div class="f-2 fs-1 fw-bold text-danger text-nowrap me-2">>90</div>
+                                <div class="fs-8 text-secondary lh-sm">направлений <br>исследований</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div
+                                class="stat-item bg-white d-flex align-items-center px-sm-4 px-3 py-2 rounded-3 shadow-sm overflow-hidden">
+                                <div class="stat-item__img">
+                                    <img src="{{ url_for('static', path='/img/stat-bg_2.svg') }}" alt="">
+                                </div>
+
+                                <div class="f-2 fs-1 fw-bold text-danger text-nowrap me-2">5</div>
+                                <div class="fs-8 text-secondary lh-sm">медицинских <br>центров</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div
+                                class="stat-item bg-white d-flex align-items-center px-sm-4 px-3 py-2 rounded-3 shadow-sm overflow-hidden">
+                                <div class="stat-item__img">
+                                    <img src="{{ url_for('static', path='/img/stat-bg_3.svg') }}" alt="">
+                                </div>
+
+                                <div class="f-2 fs-1 fw-bold text-danger text-nowrap me-2">>1500</div>
+                                <div class="fs-8 text-secondary lh-sm">видов <br>исследований</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div
+                                class="stat-item bg-white d-flex align-items-center px-sm-4 px-3 py-2 rounded-3 shadow-sm overflow-hidden">
+                                <div class="stat-item__img">
+                                    <img src="{{ url_for('static', path='/img/stat-bg_4.svg') }}" alt="">
+                                </div>
+
+                                <div class="f-2 fs-1 fw-bold text-danger text-nowrap me-2">100</div>
+                                <div class="fs-8 text-secondary lh-sm">квалифицированных <br>специалистов</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-5">
+
+                    <!-- ЕСТЬ 3 ТИПА ОРИЕНТАЦИИ ВИДЕО. НУЖНО МЕНЯТЬ КЛАССЫ .ratio-16x9, .ratio-9x16, .ratio-1x1 В ЗАВИСИМОСТИ ОТ ТОГО, ЧТО ГРУЗЯТ В АДМИНКЕ -->
+                    <!-- <div class="ratio ratio-16x9 rounded-4 shadow overflow-hidden mx-auto">
+                        <iframe src="https://www.youtube.com/embed/ykCQHhs7ig0" title="YouTube video player"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section pt-md-6 pt-5 pb-md-3">
+        <div class="container pt-md-6 pt-5">
+            <h2 class="mb-md-4 mb-2">Наши филиалы</h2>
+            {% include 'includes/offices.html' %}
+        </div>
+    </section>
+
+    <section class="section py-md-6 py-5">
+        <div class="container">
+            <h2 class="mb-md-6 mb-5">Почему стоит лечиться у нас?</h2>
+
+            <div class="row g-xl-7 g-lg-6 gy-md-6 gy-5">
+                <div class="col-lg-6">
+                    <div class="d-flex">
+                        <div class="me-xl-5 me-4">
+                            <img src="{{ url_for('static', path='/img/dynamic-img/feature-img-1.svg') }}" alt=""
+                                class="feature-img">
+                        </div>
+
+                        <div>
+                            <div class="f-2 fs-5 fw-extrabold text-secondary mb-2">Классные специалисты</div>
+                            <div class="fs-8 text-secondary">Каждый доктор
+                                4Д Поликлиники – настоящий бриллиант в нашей коллекции. Каждый – настоящий мастер своего
+                                дела. При этом, наши специалисты не прекращают совершенствоваться и регулярно повышают
+                                квалификацию.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="d-flex">
+                        <div class="me-xl-5 me-4">
+                            <img src="{{ url_for('static', path='/img/dynamic-img/feature-img-2.svg') }}" alt=""
+                                class="feature-img">
+                        </div>
+
+                        <div>
+                            <div class="f-2 fs-5 fw-extrabold text-secondary mb-2">Оборудование экспертного класса</div>
+                            <div class="fs-8 text-secondary">Продвинутое
+                                оборудование – то, на чём мы никогда не экономим. Поэтому инструментальная диагностика в
+                                4Д
+                                Поликлинике – это всегда точно и профессионально.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="d-flex">
+                        <div class="me-xl-5 me-4">
+                            <img src="{{ url_for('static', path='/img/dynamic-img/feature-img-3.svg') }}" alt=""
+                                class="feature-img">
+                        </div>
+
+                        <div>
+                            <div class="f-2 fs-5 fw-extrabold text-secondary mb-2">Всё в одном месте</div>
+                            <div class="fs-8 text-secondary">Мы за удобство. У нас вы можете пройти обследования, сдать
+                                анализы и попасть на приём к врачу – за одно посещение. Для того, чтобы быть здоровым не
+                                нужно тратить массу времени и мотаться по всему городу.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="d-flex">
+                        <div class="me-xl-5 me-4">
+                            <img src="{{ url_for('static', path='/img/dynamic-img/feature-img-4.svg') }}" alt=""
+                                class="feature-img">
+                        </div>
+
+                        <div>
+                            <div class="f-2 fs-5 fw-extrabold text-secondary mb-2">Удобный график работы</div>
+                            <div class="fs-8 text-secondary">Наши поликлиники работают с раннего утра
+                                и до вечера, без перерывов и без выходных. Мы заботимся о вашем здоровье и продолжаем
+                                приём
+                                даже в праздники и по воскресеньям.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="d-flex">
+                        <div class="me-xl-5 me-4">
+                            <img src="{{ url_for('static', path='/img/dynamic-img/feature-img-5.svg') }}" alt=""
+                                class="feature-img">
+                        </div>
+
+                        <div>
+                            <div class="f-2 fs-5 fw-extrabold text-secondary mb-2">Мы заботимся о вас</div>
+                            <div class="fs-8 text-secondary">В 4Д Поликлинике царит спокойная и расслабляющая атмосфера
+                                благодаря искреннему желанию персонала предоставлять пациентам тёплый, человечный уход.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="d-flex">
+                        <div class="me-xl-5 me-4">
+                            <img src="{{ url_for('static', path='/img/dynamic-img/feature-img-6.svg') }}" alt=""
+                                class="feature-img">
+                        </div>
+
+                        <div>
+                            <div class="f-2 fs-5 fw-extrabold text-secondary mb-2">10 лет опыта</div>
+                            <div class="fs-8 text-secondary">Мы работаем для своизх пациентов уже 10 лет, с каждым новым
+                                годом накапливаем всё больше опыта, что позволяет нам всё время улучшать качество наших
+                                услуг.</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section overflow-hidden pt-md-6 pb-md-4 py-5">
+        <div class="container">
+            <h2 class="mb-md-5 mb-4">Рейтинги независимых сервисов</h2>
+
+            <div class="position-relative mx-md-n3">
+                <div class="swiper-button-next sbn-3"></div>
+                <div class="swiper-button-prev sbp-3"></div>
+
+                <div class="swiper rates-slider px-md-3 pb-md-4">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="rate-item bg-white rounded-3 shadow-sm d-flex align-items-center p-sm-4 p-3">
+
+                                <div class="rate-item__img">
+                                    <img src="{{ url_for('static', path='/img/yandex.svg') }}" alt="">
+                                </div>
+
+                                <div class="rate-item__number f-2 fw-bold text-danger lh-1 me-3">4.8</div>
+
+                                <div>
+                                    <a href="https://yandex.ru/profile/1154946954?intent=reviews&utm_source=badge&utm_medium=rating&utm_campaign=v1" target="_blank"
+                                        class="stretched-link text-decoration-none link-secondary fw-semibold">Яндекс</a>
+
+                                    <div class="fs-8 text-muted">739 отзывов</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="rate-item bg-white rounded-3 shadow-sm d-flex align-items-center p-sm-4 p-3">
+
+                                <div class="rate-item__img">
+                                    <img src="{{ url_for('static', path='/img/2gis.svg') }}" alt="">
+                                </div>
+
+                                <div class="rate-item__number f-2 fw-bold text-danger lh-1 me-3">4.7</div>
+
+                                <div>
+                                    <a href="https://go.2gis.com/6tc14c" target="_blank"
+                                        class="stretched-link text-decoration-none link-secondary fw-semibold">2ГИС</a>
+
+                                    <div class="fs-8 text-muted">152 отзывов</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="rate-item bg-white rounded-3 shadow-sm d-flex align-items-center p-sm-4 p-3">
+
+                                <div class="rate-item__img">
+                                    <img src="{{ url_for('static', path='/img/sber.svg') }}" alt="">
+                                </div>
+
+                                <div class="rate-item__number f-2 fw-bold text-danger lh-1 me-3">4.9</div>
+
+                                <div>
+                                    <a href="#" target="_blank"
+                                        class="stretched-link text-decoration-none link-secondary fw-semibold">Сбер
+                                        Здоровье</a>
+
+                                    <div class="fs-8 text-muted">59 отзывов</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="rate-item bg-white rounded-3 shadow-sm d-flex align-items-center p-sm-4 p-3">
+
+                                <div class="rate-item__img">
+                                    <img src="{{ url_for('static', path='/img/prodoctorov.svg') }}" alt="">
+                                </div>
+
+                                <div class="rate-item__number f-2 fw-bold text-danger lh-1 me-3">5.0</div>
+
+                                <div>
+                                    <a href="https://prodoctorov.ru/pyatigorsk/lpu/24199-klinika-innovacionnoy-mediciny-4d/#rating" target="_blank"
+                                        class="stretched-link text-decoration-none link-secondary fw-semibold">ПроДокторов</a>
+
+                                    <div class="fs-8 text-muted">251 отзыв</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="rate-item bg-white rounded-3 shadow-sm d-flex align-items-center p-sm-4 p-3">
+
+                                <div class="rate-item__img">
+                                    <img src="{{ url_for('static', path='/img/prodoctorov.svg') }}" alt="">
+                                </div>
+
+                                <div class="rate-item__number f-2 fw-bold text-danger lh-1 me-3">4.1</div>
+
+                                <div>
+                                    <a href="https://doctu.ru/pyatigorsk/clinic/poliklinika-4d-1/reviews" target="_blank"
+                                        class="stretched-link text-decoration-none link-secondary fw-semibold">Докту</a>
+
+                                    <div class="fs-8 text-muted">19 отзывов</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+{% endblock %}

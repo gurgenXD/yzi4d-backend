@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Тайтл</title>
+{% endblock %}
+
+{% block content %}
+   <main role="main" class="flex-shrink-0">
+
+      <div class="container pt-md-5 pt-4">
+
+         <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Главная</a></li>
+            <li class="breadcrumb-item"><a href="contacts.html">Наши филиалы</a></li>
+            <li class="breadcrumb-item active">4Д на Кузнечной</li>
+         </ol>
+
+         <h1 class="mb-md-5 mb-4">4Д на Кузнечной</h1>
+
+         <div class="row gx-xl-6 gx-5">
+            <div class="col-xl-6 col-lg-7">
+               <div class="position-relative">
+                  <div class="swiper branch-slider rounded-4 overflow-hidden shadow-lg mb-2">
+                     <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                           <div class="ratio ratio-16x9 bg-white bg-img"
+                              style="background-image: url('img/dynamic-img/branch-slide-1.jpg');">
+                           </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                           <div class="ratio ratio-16x9 bg-white bg-img"
+                              style="background-image: url('img/dynamic-img/branch-slide-2.jpg');">
+                           </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                           <div class="ratio ratio-16x9 bg-white bg-img"
+                              style="background-image: url('img/dynamic-img/branch-slide-3.jpg');">
+                           </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                           <div class="ratio ratio-16x9 bg-white bg-img"
+                              style="background-image: url('img/dynamic-img/branch-slide-4.jpg');">
+                           </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                           <div class="ratio ratio-16x9 bg-white bg-img"
+                              style="background-image: url('img/dynamic-img/branch-slide-5.jpg');">
+                           </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                           <div class="ratio ratio-16x9 bg-white bg-img"
+                              style="background-image: url('img/dynamic-img/branch-slide-6.jpg');">
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="swiper-pagination text-end"></div>
+               </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-5">
+               <div class="mb-3">
+                  <div class="fs-8 text-muted">Адрес:</div>
+                  <div class="">г. Пятигорск, ул. Кузнечная, 26</div>
+               </div>
+
+               <div class="mb-3">
+                  <div class="fs-8 text-muted">Телефон:</div>
+                  <a href="tel:+79283012171" title="" class="text-decoration-none link-dark">+7 (928)
+                     301-21-71</a>
+               </div>
+
+               <div class="mb-3">
+                  <div class="fs-8 text-muted">Время работы:</div>
+                  <div class="">пн-вс 8:00 - 20:00</div>
+               </div>
+
+               <div class="mb-3">
+                  <div class="fs-8 text-muted">Электронная почта:</div>
+                  <a href="mailto:klinika@yzi4d.ru" title="" class="text-decoration-none link-dark">klinika@yzi4d.ru</a>
+               </div>
+
+               <div class="pt-3">
+                  <div class="mb-1">
+                     <div class="fs-8 text-muted">Главный врач:</div>
+                     <div class="">В.Ю. Рушниченко</div>
+                  </div>
+
+                  <div class="mb-1">
+                     <div class="fs-8 text-muted">Принимает:</div>
+                     <div class="">вт 10:00 - 12:00</div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+         <div class="py-md-6 py-5">
+            <div class="map rounded-4 overflow-hidden shadow-lg" id="Map1"></div>
+         </div>
+
+         <div class="pt-md-6 pb-md-3 pt-5">
+            <div class="row">
+               <div class="col-xxl-7 col-xl-8 col-lg-10 mx-auto">
+                  <article class="article">
+                     <h2 class="text-center mb-md-5 mb-4">О филиале</h2>
+                     <p>Диагностика и лечение широкого спектра гинекологических заболеваний, включая экстренную
+                        патологию,
+                        онкологию, а также подготовка к беременности и роды проводятся в соответствии с мировыми
+                        стандартами, с использованием современных лечебно-диагностической аппаратуры и инструментария.
+                     </p>
+
+                     <ul>
+                        <li>Контроль за течением беременности от начальных до завершающих этапов;</li>
+                        <li>Предоставление необходимой медицинской помощи во время родов и на протяжении послеродового
+                           периода;</li>
+                        <li>Диспансеризация пациенток, страдающих гинекологическими заболеваниями;</li>
+                        <li>Диагностика и устранение осложнений, способных оказать влияние на процесс вынашивания и
+                           рождения ребенка;</li>
+                        <li>Оказание неотложной медицинской помощи в контексте своего профиля;</li>
+                        <li>Проведение экспертизы трудоспособности;</li>
+                     </ul>
+                  </article>
+               </div>
+            </div>
+         </div>
+
+      </div>
+
+      <div class="container py-md-6 py-5">
+         <h2 class="text-center mb-md-5 mb-4">Отделения и центры</h2>
+
+         <div class="row g-lg-5 g-4">
+            <div class="col-lg-4 col-md-6">
+               <div
+                  class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                  style="background-image:url('img/service-bg-icon_1.svg');">
+
+                  <a href="department.html"
+                     class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Центр
+                     кардионефрологии</a>
+
+                  <div class="fs-8">Первый в СКФО Центр кардионефрологии специализируется
+                     на оказании медицинской помощи людям с сочетанной
+                     патологией сердца и почек</div>
+               </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+               <div
+                  class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                  style="background-image:url('img/service-bg-icon_1.svg');">
+
+                  <a href="department.html"
+                     class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Центр
+                     кардионефрологии</a>
+
+                  <div class="fs-8">Первый в СКФО Центр кардионефрологии специализируется
+                     на оказании медицинской помощи людям с сочетанной
+                     патологией сердца и почек</div>
+               </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+               <div
+                  class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                  style="background-image:url('img/service-bg-icon_1.svg');">
+
+                  <a href="department.html"
+                     class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Центр
+                     кардионефрологии</a>
+
+                  <div class="fs-8">Первый в СКФО Центр кардионефрологии специализируется
+                     на оказании медицинской помощи людям с сочетанной
+                     патологией сердца и почек</div>
+               </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+               <div
+                  class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                  style="background-image:url('img/service-bg-icon_1.svg');">
+
+                  <a href="department.html"
+                     class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Центр
+                     кардионефрологии</a>
+
+                  <div class="fs-8">Первый в СКФО Центр кардионефрологии специализируется
+                     на оказании медицинской помощи людям с сочетанной
+                     патологией сердца и почек</div>
+               </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+               <div
+                  class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                  style="background-image:url('img/service-bg-icon_1.svg');">
+
+                  <a href="department.html"
+                     class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Центр
+                     кардионефрологии</a>
+
+                  <div class="fs-8">Первый в СКФО Центр кардионефрологии специализируется
+                     на оказании медицинской помощи людям с сочетанной
+                     патологией сердца и почек</div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+
+      <section class="section py-md-6 py-5">
+         <div class="container pb-md-6 pb-5">
+            <div class="cta bg-light-blue rounded-4 px-sm-5 pt-sm-5 px-4 pt-4 px-xl-0 pt-xl-0">
+               <div class="row align-items-end align-items-xl-stretch gx-0">
+                  <div class="col-xl-4">
+                     <div class="cta__header ps-xl-6 py-xl-6 mb-5 mb-xl-0">
+                        <h2 class="cta__title mb-3">У вас остались вопросы?</h2>
+                        <p class="fs-5 mb-0 text-secondary">Оставьте свой телефон. Мы свяжемся с вами в ближайшее время.
+                        </p>
+                     </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6 cta__left">
+                     <div class="position-relative w-100 h-100">
+                        <div class="cta__img ms-xxl-4 ms-xl-1 me-2">
+                           <picture><source srcset="img/cta-img.webp" type="image/webp"><img src="img/cta-img.png" alt=""></picture>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="col-lg-4 col-md-6">
+                     <div class="pe-xl-6 py-xl-6 pb-4">
+                        <form>
+                           <div class="form-floating mb-4">
+                              <input type="text" class="form-control form-control__no-border input-phone" id="ctaPhone"
+                                 placeholder="Ваш телефон" pattern=".{16}" required>
+                              <label for="ctaPhone">Ваш телефон</label>
+                           </div>
+
+                           <button class="btn btn-danger btn-form w-100" type="submit">Отправить</button>
+
+                           <div class="fs-9 pt-4 text-secondary">Нажимая на кнопку «Отправить», вы даёте своё
+                              согласие
+                              на
+                              <a href="content.html" title="" target="_blank">обработку персональных данных</a>.
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+
+                  <div class="col-4 cta__right">
+                     <div class="position-relative w-100 h-100">
+                        <div class="cta__img ms-xxl-4 ms-xl-1 ms-2">
+                           <picture><source srcset="img/cta-img2.webp" type="image/webp"><img src="img/cta-img2.png" alt=""></picture>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </section>
+   </main>
+
+{% endblock %}

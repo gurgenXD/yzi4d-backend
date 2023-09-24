@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Спецпредложения</title>
+{% endblock %}
+
+{% block content %}
+
+<main role="main" class="flex-shrink-0">
+
+   <div class="container pt-md-5 pt-4">
+
+      <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="index.html">Главная</a></li>
+         <li class="breadcrumb-item active">Спецпредложения</li>
+      </ol>
+
+      <h1 class="mb-md-5 mb-4">Спецпредложения</h1>
+      {% for promotion in promotions %}
+         <div class="sale-item bg-white position-relative rounded-4 overflow-hidden mb-5">
+            <div class="row flex-column flex-md-row gx-0">
+               <div class="col">
+                  <div class="h-100 d-flex align-items-center py-sm-4 py-3 px-sm-4 px-3 p-lg-5">
+                     <div>
+                        <div class="d-inline-block bg-danger text-white rounded f-2 fw-semibold lh-1 py-2 px-3 mb-3">
+                           {{ promotion.sale }}
+                        </div>
+                        <a href="#"
+                           class="stretched-link d-block text-decoration-none link-secondary fs-2 fw-extrabold mb-3">{{ promotion.name }}</a>
+                        <div class="d-inline-block bg-light-blue rounded f-2 fw-semibold lh-1 py-2 px-3 mb-4">
+                           с {{ promotion.date_start.strftime("%d.%m.%y") }} по {{ promotion.date_end.strftime("%d.%m.%y") }}
+                        </div>
+
+                        <ul class="list-unstyled mb-3">
+                           <li class="mb-3">{{ promotion.description }}</li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="col-xl-6 col-lg-5 col-md-4">
+                  <div class="sale-item__img position-relative h-100 bg-img"
+                     style="background-image: url({{ url_for('media', path='/' + promotion.photo) }});">
+                  </div>
+               </div>
+            </div>
+         </div>
+      {% endfor %}
+   </div>
+
+</main>
+
+{% endblock %}

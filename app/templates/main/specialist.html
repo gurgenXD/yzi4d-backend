@@ -1,0 +1,487 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Специалисты</title>
+{% endblock %}
+
+{% block content %}
+
+<main role="main" class="flex-shrink-0">
+
+   <div class="container pt-md-5 pt-4 pb-md-6 pb-5">
+
+      <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="{{ url_for('get_index') }}">Главная</a></li>
+         <li class="breadcrumb-item"><a href="{{ url_for('get_specialists') }}">Cпециалисты</a></li>
+         <li class="breadcrumb-item active">{{ specialist.full_name }}</li>
+      </ol>
+
+      <div class="doc-hero position-relative bg-white rounded-4 overflow-hidden shadow">
+         <div class="row align-items-stretch g-0">
+            <div class="col-xl-3 col-lg-4 col-md-5">
+            {% if specialist.photo %}
+               <div class="doc-hero__img h-100"
+                  style="background-image:url({{ url_for('media', path='/' + specialist.photo) }});">
+               </div>
+            {% else %}
+               <div class="doc-hero__img h-100"
+                  style="background-image:url({{ url_for('static', path='/img/default_specialist_photo.jpg') }});">
+               </div>
+            {% endif %}
+            </div>
+            <div class="col-xl-9 col-lg-8 col-md-7">
+               <div class="h-100 d-flex flex-column justify-content-center p-lg-5 p-sm-4 p-3">
+                  <div>
+                     <h1 class="doc-hero__name fw-extrabold mb-3">
+                        {{ specialist.name }} {% if specialist.patronymic %} {{ specialist.patronymic }} {% endif %}
+                        <span class="doc-hero__surname d-block text-uppercase fw-black">{{ specialist.surname }}</span>
+                     </h1>
+
+                     <div class="row g-lg-3 g-2 mb-lg-5 mb-4">
+                        {% for specialization in specialist.specializations %}
+                        <div class="col-auto">
+                           <div class="bg-light-blue text-secondary rounded-pill fs-8 px-lg-3 px-2 py-1">
+                              {{ specialization.name }}
+                           </div>
+                        </div>
+                        {% endfor %}
+                     </div>
+
+                     {% if specialist.description %}<div class="mb-lg-5 mb-4">{{ specialist.description }}</div> {% endif %}
+
+                     <div class="row g-3 align-items-center">
+                        <div class="col-sm-auto">
+                           <a href="#" class="btn btn-danger w-100">Записаться к врачу</a>
+                        </div>
+
+                        <div class="col-sm-auto">
+                           <a href="#ConsultModal" data-bs-toggle="modal" class="btn btn-primary w-100">Онлайн
+                              консультация</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+
+   <!-- <div class="overflow-hidden pb-md-6 pb-5">
+      <div class="container">
+         <h2 class="fs-3 mb-md-5 mb-4">Специальные предложения</h2>
+
+         <div class="position-relative">
+            <div class="swiper-button-next sbn-4"></div>
+            <div class="swiper-button-prev sbp-4"></div>
+
+            <div class="swiper doc-sales-slider">
+               <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                     <div
+                        class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary overflow-hidden py-3 ps-3 pe-7">
+
+                        <a href="#DocSaleModal" data-bs-toggle="modal"
+                           class="stretched-link d-block text-decoration-none link-danger f-2 fw-extrabold mb-2">Блефаропластика
+                           под
+                           ключ</a>
+
+                        <div class="fs-8 mb-3">Верните красоту своим глазам</div>
+
+                        <div class="f-2 fs-5 fw-extrabold">
+                           <span class="me-1">от</span>
+                           <span class="number">40000</span>
+                           ₽
+                        </div>
+
+                        <div class="sale-badge"></div>
+                     </div>
+                  </div>
+
+                  <div class="swiper-slide">
+                     <div
+                        class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary overflow-hidden py-3 ps-3 pe-7">
+                        <a href="#DocSaleModal" data-bs-toggle="modal"
+                           class="main-service-item__title stretched-link d-block link-danger text-decoration-none f-2 fw-extrabold mb-2">Консультация
+                           в
+                           октябре</a>
+
+                        <div class="f-2 fs-5 fw-extrabold">
+                           Бесплатно
+                        </div>
+
+                        <div class="sale-badge"></div>
+                     </div>
+                  </div>
+
+                  <div class="swiper-slide">
+                     <div
+                        class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary overflow-hidden py-3 ps-3 pe-7">
+                        <a href="#DocSaleModal" data-bs-toggle="modal"
+                           class="main-service-item__title stretched-link d-block link-danger text-decoration-none f-2 fw-extrabold mb-2">Скидка
+                           10% на повторный приём</a>
+
+                        <div class="sale-badge"></div>
+                     </div>
+                  </div>
+
+                  <div class="swiper-slide">
+                     <div
+                        class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary overflow-hidden py-3 ps-3 pe-7">
+                        <a href="#DocSaleModal" data-bs-toggle="modal"
+                           class="main-service-item__title stretched-link d-block link-danger text-decoration-none f-2 fw-extrabold mb-2">Первый
+                           приём</a>
+
+                        <div class="f-2 fs-5 fw-extrabold">
+                           <span class="number">1000</span>
+                           ₽
+                        </div>
+
+                        <div class="sale-badge"></div>
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+         </div>
+      </div>
+   </div> -->
+
+   <div class="pb-md-6 pb-5">
+      <div class="container">
+         <div class="row gx-xl-6 gx-lg-5">
+            <div class="col-lg-auto pt-lg-4">
+               <div class="nav-links-vertical-wrapper mb-3 mb-lg-0">
+                  <div class="nav nav-links-vertical flex-nowrap flex-lg-column" id="DocInfo-tab" role="tablist"
+                     aria-orientation="vertical">
+                     <a href="#" class="nav-link fs-5 active" id="DocInfo-1-tab" data-bs-toggle="pill"
+                        data-bs-target="#DocInfo-1" role="tab" aria-controls="DocInfo-1"
+                        aria-selected="true">Образование</a>
+                     {% if specialist.activity %}
+                        <a href="#" class="nav-link fs-5" id="DocInfo-2-tab" data-bs-toggle="pill"
+                           data-bs-target="#DocInfo-2" role="tab" aria-controls="DocInfo-2"
+                           aria-selected="false">Деятельность</a>
+                     {% endif %}
+                     {% if specialist.certificates %}
+                        <a href="#" class="nav-link fs-5" id="DocInfo-3-tab" data-bs-toggle="pill"
+                           data-bs-target="#DocInfo-3" role="tab" aria-controls="DocInfo-3"
+                           aria-selected="false">Сертификаты</a>
+                     {% endif %}
+                     <!-- <a href="#" class="nav-link fs-5" id="DocInfo-5-tab" data-bs-toggle="pill"
+                        data-bs-target="#DocInfo-5" role="tab" aria-controls="DocInfo-5" aria-selected="false">Фото и
+                        видео</a> -->
+
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-lg">
+               <div class="tab-content bg-white rounded-4 overflow-hidden p-xl-5 p-md-4 p-3" id="DocInfo-tabContent">
+                  <div class="tab-pane fade show active" id="DocInfo-1" role="tabpanel"
+                     aria-labelledby="DocInfo-1-tab" tabindex="0">
+
+                     <h2 class="fs-4 fw-extrabold mb-md-4 mb-3">Образование</h2>
+
+                     <div class="fw-light">
+                        <ul class="list-markered">
+                           {% for education in specialist.education.split('\n') %}
+                           <li>{{ education }}</li>
+                           {% endfor %}
+                        </ul>
+                     </div>
+
+                  </div>
+
+                  {% if specialist.activity %}
+                     <div class="tab-pane fade" id="DocInfo-2" role="tabpanel" aria-labelledby="DocInfo-2-tab"
+                        tabindex="0">
+                        
+                           <h2 class="fs-4 fw-extrabold mb-md-4 mb-3">Деятельность</h2>
+
+                        <div class="fw-light">
+                           <ul class="list-markered">
+                              {% for activity in specialist.activity.split('\n') %}
+                              <li>{{ activity }}</li>
+                              {% endfor %}
+                           </ul>
+                        </div>
+                  
+                     </div>
+                  {% endif %}
+
+                  <div class="tab-pane fade" id="DocInfo-3" role="tabpanel" aria-labelledby="DocInfo-3-tab"
+                     tabindex="0">
+
+                     <h2 class="fs-4 fw-extrabold mb-md-4 mb-3">Сертификаты</h2>
+                     {% for certificate in specialist.certificates %}
+                     <div class="position-relative d-flex align-items-center mb-3">
+                        <div class="license-thumb flex-shrink-0 ratio ratio-1x1 me-md-4 me-3"
+                           style="background-image: url('{{ url_for('media', path='/' + certificate.path) }}');"></div>
+
+                        <a href="{{ url_for('media', path='/' + certificate.path) }}" data-fancybox="certificate-gallery"
+                           class="stretched-link text-decoration-none link-secondary">{{ certificate.name }}</a>
+                     </div>
+                     {% endfor %}
+                  </div>
+
+
+                  <!-- <div class="tab-pane fade" id="DocInfo-5" role="tabpanel" aria-labelledby="DocInfo-4-tab"
+                     tabindex="0">
+
+                     <h2 class="fs-4 fw-extrabold mb-md-4 mb-3">Фото и видео</h2>
+
+                     <div class="row g-md-4 g-3">
+                        <div class="col-xl-4 col-md-6">
+                           <div class="gallery-item position-relative">
+
+                              <div class="bg-img ratio ratio-16x9 position-relative rounded-4"
+                                 style="background-image: url('https://i3.ytimg.com/vi/A-q7qVkJKxo/maxresdefault.jpg');">
+
+                                 <div class="gallery-item__play-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="52" height="64"
+                                       viewBox="0 0 52 63">
+                                       <path style="stroke:none;fill-rule:nonzero;"
+                                          d="M46.563 20.898 21.18 2.535C15.254-1.746 6.922-.48 2.582 5.38a12.95 12.95 0 0 0-2.57 7.742v36.746C0 57.105 5.938 62.988 13.285 63c2.844 0 5.613-.887 7.895-2.547L46.563 42.09c5.921-4.293 7.195-12.504 2.855-18.348a13.125 13.125 0 0 0-2.855-2.82zm0 0" />
+                                    </svg>
+                                 </div>
+                              </div>
+
+                              <a data-fancybox="doc-media-gallery" data-caption="Процесс
+                              лазерного
+                              лечения варикоза (ЭВЛК) / Без боли" href="https://youtu.be/A-q7qVkJKxo"
+                                 class="stretched-link d-inline-block text-decoration-none link-secondary fs-8 pt-2">Процесс
+                                 лазерного
+                                 лечения варикоза (ЭВЛК) / Без боли</a>
+                           </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6">
+                           <div class="gallery-item position-relative">
+
+                              <div class="bg-img ratio ratio-16x9 position-relative rounded-4"
+                                 style="background-image: url('img/dynamic-img/doc-gallery-img-md-1.jpg');">
+                              </div>
+
+                              <a data-fancybox="doc-media-gallery" data-caption="Результат
+                              операции по маммопластике (22 сентября 2022)"
+                                 href="img/dynamic-img/doc-gallery-img-lg-1.jpg"
+                                 class="stretched-link d-inline-block text-decoration-none link-secondary fs-8 pt-2">Результат
+                                 операции по маммопластике (22 сентября 2022)</a>
+                           </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-6">
+                           <div class="gallery-item position-relative">
+
+                              <div class="bg-img ratio ratio-16x9 position-relative rounded-4"
+                                 style="background-image: url('http://i3.ytimg.com/vi/Zoo7aETBecs/hqdefault.jpg');">
+
+                                 <div class="gallery-item__play-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="52" height="64"
+                                       viewBox="0 0 52 63">
+                                       <path style="stroke:none;fill-rule:nonzero;"
+                                          d="M46.563 20.898 21.18 2.535C15.254-1.746 6.922-.48 2.582 5.38a12.95 12.95 0 0 0-2.57 7.742v36.746C0 57.105 5.938 62.988 13.285 63c2.844 0 5.613-.887 7.895-2.547L46.563 42.09c5.921-4.293 7.195-12.504 2.855-18.348a13.125 13.125 0 0 0-2.855-2.82zm0 0" />
+                                    </svg>
+                                 </div>
+                              </div>
+
+                              <a data-fancybox="doc-media-gallery" data-caption="Интервью для канала Россия 24"
+                                 href="https://youtu.be/Zoo7aETBecs"
+                                 class="stretched-link d-inline-block text-decoration-none link-secondary fs-8 pt-2">Интервью
+                                 для канала Россия 24</a>
+                           </div>
+                        </div>
+
+                     </div>
+                  </div> -->
+
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="pb-md-6 pb-5">
+      <div class="container">
+         <div class="bg-white rounded-4 overflow-hidden p-xl-5 p-md-4 p-3">
+            <h2 class="fs-3 mb-md-5 mb-4">Услуги врача</h2>
+
+            <div class="service-item position-relative">
+               <div class="row">
+                  <div class="col-md mb-4 mb-md-0">
+                     <div class="d-inline-block bg-danger text-white fs-9 mb-1 px-1">Скидка 10%</div>
+                     <a href="service.html"
+                        class="stretched-link d-block f-2 fs-5 fw-bold link-secondary text-decoration-none mb-2 pt-md-1">Ультразвуковая
+                        диагностика беременности</a>
+
+                     <p class="fw-light text-muted fs-7 mb-0">Исследование, позволяющее подтвердить беременность и
+                        определить место прикрепления плодного яйца (для исключения внематочной беременности).</p>
+                  </div>
+
+                  <div class="col-auto text-md-end">
+
+                     <div class="text-decoration-line-through text-muted f-2 fs-9 fw-semibold">&nbsp;<span
+                           class="number me-1">3500</span>₽&nbsp;
+                     </div>
+
+                     <div class="f-2 fs-4 lh-1 fw-black text-secondary mb-3">
+                        <span class="number">2290</span>
+                        ₽
+                     </div>
+
+                     <div class="d-flex align-items-center justify-md-content-end">
+
+                        <a href="#" class="btn btn-danger btn-sm me-2">Записаться</a>
+
+                        <a href="#" class="btn btn-outline-secondary btn-sm">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="16">
+                              <path style="stroke:none;fill-rule:nonzero;fill-opacity:1"
+                                 d="M24.027 0h-11.93c-.476 0-.796.32-.796.8v14.4c0 .48.32.8.797.8h11.93c.476 0 .796-.32.796-.8V.8c0-.48-.32-.8-.797-.8zm-8.75 14.398h-2.386v-1.597h2.386zm0-3.199h-2.386V9.602h2.386zm0-3.199h-2.386V6.398h2.386zm3.977 6.398H16.87v-1.597h2.383zm0-3.199H16.87V9.602h2.383zm0-3.199H16.87V6.398h2.383zm3.98 6.398h-2.386v-1.597h2.386zm0-3.199h-2.386V9.602h2.386zm0-3.199h-2.386V6.398h2.386zm0-3.2H12.891V1.603h10.343zm0 0" />
+                              <path style="stroke:none;fill-rule:evenodd;fill-opacity:1"
+                                 d="M3.402 4.8H4.45a.43.43 0 0 1 .43.423v2.41h2.387c.23 0 .421.195.421.426v1.05a.43.43 0 0 1-.421.434H4.879v2.398a.43.43 0 0 1-.43.426H3.402a.428.428 0 0 1-.418-.426V9.543H.598a.433.433 0 0 1-.422-.434V8.06c0-.23.195-.426.422-.426h2.386v-2.41c0-.227.192-.422.418-.422zm0 0" />
+                           </svg>
+                        </a>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+
+            <div class="service-item position-relative">
+               <div class="row">
+                  <div class="col-md mb-4 mb-md-0">
+                     <a href="service.html"
+                        class="stretched-link d-block f-2 fs-5 fw-bold link-secondary text-decoration-none mb-2 pt-md-1">Скрининговое
+                        УЗИ 1-го триместра беременности (11-13 недель 6 дней)</a>
+
+                     <p class="fw-light text-muted fs-7 mb-0">Исследование, необходимое для контроля роста и
+                        развития плода в первом триместре беременности.</p>
+                  </div>
+
+                  <div class="col-auto text-md-end">
+
+                     <div class="f-2 fs-4 lh-1 fw-black text-secondary mb-3">
+                        <span class="number">2290</span>
+                        ₽
+                     </div>
+
+                     <div class="d-flex align-items-center justify-md-content-end">
+
+                        <a href="#" class="btn btn-danger btn-sm me-2">Записаться</a>
+
+                        <a href="#" class="btn btn-outline-secondary btn-sm">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="16">
+                              <path style="stroke:none;fill-rule:nonzero;fill-opacity:1"
+                                 d="M24.027 0h-11.93c-.476 0-.796.32-.796.8v14.4c0 .48.32.8.797.8h11.93c.476 0 .796-.32.796-.8V.8c0-.48-.32-.8-.797-.8zm-8.75 14.398h-2.386v-1.597h2.386zm0-3.199h-2.386V9.602h2.386zm0-3.199h-2.386V6.398h2.386zm3.977 6.398H16.87v-1.597h2.383zm0-3.199H16.87V9.602h2.383zm0-3.199H16.87V6.398h2.383zm3.98 6.398h-2.386v-1.597h2.386zm0-3.199h-2.386V9.602h2.386zm0-3.199h-2.386V6.398h2.386zm0-3.2H12.891V1.603h10.343zm0 0" />
+                              <path style="stroke:none;fill-rule:evenodd;fill-opacity:1"
+                                 d="M3.402 4.8H4.45a.43.43 0 0 1 .43.423v2.41h2.387c.23 0 .421.195.421.426v1.05a.43.43 0 0 1-.421.434H4.879v2.398a.43.43 0 0 1-.43.426H3.402a.428.428 0 0 1-.418-.426V9.543H.598a.433.433 0 0 1-.422-.434V8.06c0-.23.195-.426.422-.426h2.386v-2.41c0-.227.192-.422.418-.422zm0 0" />
+                           </svg>
+                        </a>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+
+            <div class="text-center pt-2">
+               <a href="#" class="btn btn-outline-secondary">Показать ещё</a>
+            </div>
+
+         </div>
+      </div>
+   </div>
+
+   <!-- <div class="overflow-hidden pb-md-6 pb-5">
+      <div class="container">
+         <h2 class="fs-3 mb-md-5 mb-4">Рекомендуем обратить внимание</h2>
+
+         <div class="position-relative">
+            <div class="swiper-button-next sbn-5"></div>
+            <div class="swiper-button-prev sbp-5"></div>
+
+            <div class="swiper doc-recommend-slider">
+               <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                     <div
+                        class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                        style="background-image:url('img/service-bg-icon_1.svg');">
+
+                        <a href="#"
+                           class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">УЗИ
+                           плода 4D</a>
+
+                        <div class="fs-8 mb-3">Позволяет получить полную информацию о развитии плода и течении
+                           беременности</div>
+                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                           <span class="me-1">от</span>
+                           <span class="number">1000</span>
+                           ₽
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="swiper-slide">
+                     <div
+                        class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                        style="background-image:url('img/service-bg-icon_1.svg');">
+
+                        <a href="#"
+                           class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">УЗИ
+                           поджелудочной железы</a>
+
+                        <div class="fs-8 mb-3">Предупреждает панкреатит, панкреонекроз, диабет,
+                           рак</div>
+                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                           <span class="me-1">от</span>
+                           <span class="number">1500</span>
+                           ₽
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="swiper-slide">
+                     <div
+                        class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                        style="background-image:url('img/service-bg-icon_2.svg');">
+
+                        <a href="#"
+                           class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">Гастроэнтеролог</a>
+
+                        <div class="fs-8 mb-3">Диагностика, профилактика и лечение заболеваний
+                           желудочно-кишечного тракта и пищевой аллергии</div>
+                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                           <span class="me-1">от</span>
+                           <span class="number">1500</span>
+                           ₽
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="swiper-slide">
+                     <div
+                        class="main-service-item h-100 d-flex flex-column position-relative bg-light-blue rounded-3 text-secondary p-sm-4 p-3"
+                        style="background-image:url('img/service-bg-icon_3.svg');">
+
+                        <a href="#"
+                           class="stretched-link d-block text-decoration-none link-secondary f-2 fw-extrabold mb-2">МРТ
+                           суставов</a>
+
+                        <div class="fs-8 mb-3">Исследование различных нарушений суставов</div>
+                        <div class="f-2 fs-5 fw-extrabold mt-auto">
+                           <span class="me-1">от</span>
+                           <span class="number">3400</span>
+                           ₽
+                        </div>
+
+                     </div>
+                  </div>
+
+               </div>
+            </div>
+         </div>
+      </div>
+   </div> -->
+
+</main>
+
+{% endblock %}

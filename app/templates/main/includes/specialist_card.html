@@ -1,0 +1,29 @@
+<div class="doctor-card d-flex flex-column h-100 position-relative">
+    <div class="ratio ratio-5x6 overflow-hidden rounded-3">
+       {% if specialist.photo %}
+       <div class="doctor-card__img"
+          style="background-image:url({{ url_for('media', path='/' + specialist.photo) }});"></div>
+       {% else %}
+       <div class="doctor-card__img"
+          style="background-image:url({{ url_for('static', path='/img/default_specialist_photo.jpg') }});">
+       </div>
+       {% endif %}
+    </div>
+
+    <div class="px-2 pt-3">
+       <a href="{{ url_for('get_specialist', id=specialist.id) }}"
+          class="stretched-link d-block text-decoration-none link-secondary fw-medium mb-2">
+          {{ specialist.surname }}
+          <br>{{ specialist.name }}{% if specialist.patronymic %} {{ specialist.patronymic }} {% endif %}
+       </a>
+
+       <div class="fs-8 text-muted mb-1">{{ specialist.specializations|join(" / ", attribute="name") }}</div>
+       <div class="fs-8 text-muted mb-2">Стаж {{ specialist.start_work_date|calculate_ages|humanize_age }}
+       </div>
+       {% if specialist.titles %}
+          {% for title in specialist.titles.split('\n') %}
+          <div class="d-inline-block bg-danger text-white fs-9 px-1">{{ title }}</div>
+          {% endfor %}
+       {% endif %}
+    </div>
+ </div>

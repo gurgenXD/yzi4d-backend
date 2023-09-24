@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru" class="h-100">
+
+<head>
+   {% include "includes/head.html" %}
+
+   {% block title %}
+   {% endblock %}
+</head>
+
+<body class="d-flex flex-column h-100">
+
+   {% include "includes/header.html" %}
+   {% include "includes/offcanvas.html" %}
+
+   <!-- <div class="alert alert-secondary alert-dismissible cookie-alert text-white py-5 fade show" role="alert">
+      <div class="container px-5">
+
+         <p class="mb-4">Этот сайт использует файлы cookies и сервисы сбора технических данных посетителей (данные об
+            IP-адресе,
+            местоположении и др.) для обеспечения работоспособности и улучшения качества обслуживания. Продолжая
+            использовать
+            наш сайт, вы автоматически соглашаетесь с использованием данных технологий.</p>
+
+         <button type="button" class="btn btn-danger me-3" data-bs-dismiss="alert" aria-label="Close">Да, я всё
+            понимаю</button>
+
+         <a href="content.html" class="btn btn-outline-light">Политика конфиденциальности</a>
+
+      </div>
+   </div> -->
+
+   {% block content %}
+
+   {% endblock %}
+
+   {#{% include "includes/callback.html" %}#}
+   <div class="mb-5"></div>
+   {% include "includes/footer.html" %}
+   {#{% include "includes/calc.html" %}#}
+   {% include "includes/scroll-to-top.html" %}
+
+   {% include "includes/scripts.html" %}
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Контакты</title>
+{% endblock %}
+
+{% block content %}
+<main role="main" class="flex-shrink-0">
+
+   <div class="container pt-md-5 pt-4">
+
+      <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="{{ url_for('get_index') }}">Главная</a></li>
+         <li class="breadcrumb-item active">Наши филиалы</li>
+      </ol>
+
+      <h1 class="mb-md-5 mb-4">Наши филиалы</h1>
+      {% include 'includes/offices.html' %}
+
+   </div>
+
+</main>
+{% endblock %}

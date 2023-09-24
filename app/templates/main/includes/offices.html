@@ -1,0 +1,102 @@
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=3b2b3d29-dd30-4d85-b6e8-eb15867d9469"
+    type="text/javascript"></script>
+
+<div class="nav-links-wrap">
+    <div class="nav nav-links flex-nowrap mb-md-5 mb-4" id="adresses-tab" role="tablist">
+       {% for city in cities %}
+       <a href="#" class="nav-link text-nowrap px-0 me-5{% if city.id == cities.0.id %} active{% endif %}"
+          id="adresses-{{ city.id }}-tab" data-bs-toggle="pill" data-bs-target="#adresses-{{ city.id }}" role="tab"
+          aria-controls="adresses-{{ city.id }}"
+          aria-selected="{% if city.id == cities.0.id %}true{% else %}false{% endif %}">{{ city.name }}</a>
+       {% endfor %}
+    </div>
+ </div>
+
+ <div class="tab-content" id="adresses-tabContent">
+
+    {% for city in cities %}
+    <div class="tab-pane fade{% if city.id == cities.0.id %} show active{% endif %}" id="adresses-{{ city.id }}"
+       role="tabpanel" aria-labelledby="adresses-{{ city.id }}-tab" tabindex="0">
+       {% for office in city.offices %}
+       <div class="bg-white shadow-sm rounded-4 overflow-hidden mb-5">
+          <div class="row g-0">
+             <div class="col-lg-4 address-item-caption">
+                <div class="h-100 d-flex flex-column p-md-5 p-sm-4 p-3">
+                   <a href="branch.html" class="f-2 fs-5 fw-bold link-secondary text-decoration-none mb-3">{{
+                      office.description }}</a>
+
+                   <div class="mb-3">
+                      <div class="fs-8 text-muted">Адрес:</div>
+                      <div class="">{{ office.address }}</div>
+                   </div>
+
+                   <div class="mb-3">
+                      <div class="fs-8 text-muted">Телефон:</div>
+                      <a href="tel:+79283012171" title="" class="text-decoration-none link-dark">{{ office.phone
+                         }}</a>
+                   </div>
+
+                   <div class="mb-3">
+                      <div class="fs-8 text-muted">Время работы:</div>
+                      <div class="">{{ office.work_time }}</div>
+                   </div>
+
+                   <div class="mb-3">
+                      <div class="fs-8 text-muted">Электронная почта:</div>
+                      <a href="mailto:klinika@yzi4d.ru" title="" class="text-decoration-none link-dark">{{
+                         office.email }}</a>
+                   </div>
+
+                   <div class="pt-4 mt-auto">
+                      <div class="mb-1">
+                         <div class="fs-8 text-muted">Главный врач:</div>
+                         <div class="">{{ office.main_doctor }}</div>
+                      </div>
+
+                      <div class="mb-1">
+                         <div class="fs-8 text-muted">Принимает:</div>
+                         <div class="">{{ office.main_doctor_work_time }}</div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+
+             <div class="col-lg-8">
+                <div class="map" id="Map{{ office.id }}"></div>
+                <script>
+                   let map{{ office.id }} = document.getElementById("Map{{ office.id }}");
+
+                   if (map{{ office.id }}) {
+                      ymaps.ready(function () {
+                         var myMap = new ymaps.Map(map{{ office.id }}, {
+                         center: [{{ office.coor_x }}, {{ office.coor_y }}],
+                         zoom: 14,
+                         controls: ["zoomControl"]
+                      }),
+
+                   myPlacemark = new ymaps.Placemark(myMap.getCenter(), {
+                   }, {
+                      // Опции.
+                      // Необходимо указать данный тип макета.
+                      iconLayout: 'default#image',
+                      // Своё изображение иконки метки.
+                      iconImageHref: '/static/img/map-marker.svg',
+                      // Размеры метки.
+                      iconImageSize: [40, 57],
+                      // Смещение левого верхнего угла иконки относительно
+                      // её "ножки" (точки привязки).
+                      iconImageOffset: [-20, -57]
+                   });
+
+                   myMap.behaviors.disable('scrollZoom');
+                   myMap.geoObjects.add(myPlacemark);
+                      });
+                   }
+                </script>
+             </div>
+          </div>
+       </div>
+       {% endfor %}
+    </div>
+    {% endfor %}
+ </div>
