@@ -140,17 +140,6 @@ class ServicesAdapter:
                 for _, group_items in groups:
                     specialist_service = max(group_items, key=lambda x: x.price)
 
-                    # FIXME: костыль
-                    if specialist_service.specialist_id in {
-                        "d4f8fdc5-5e46-11eb-a481-107b441820e7",
-                        "efc0012b-9537-11ec-b552-107b441820e7",
-                        "2a153a66-ef48-11ea-b4f5-107b441820e7",
-                        "517b6405-4e0c-11ed-8a42-bcee7b98e67c",
-                        "478d4f47-06e6-11eb-8509-107b441820e7",
-                        "aac8009c-ef6e-11ea-b4f5-107b441820e7",
-                    }:
-                        continue
-
                     specialist_service_model = self._specialist_service(
                         service_id=service_model.id,
                         specialist_id=specialist_service.specialist_id,

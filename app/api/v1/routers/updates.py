@@ -12,7 +12,7 @@ PREFIX = f"/{TAG}"
 router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 
-@router.get("")
+@router.get("", include_in_schema=False)
 async def update_data(request: Request, tasks: BackgroundTasks) -> "RedirectResponse":
     """Обновить данные."""
     updater = CONTAINER.repo_updater_service()
