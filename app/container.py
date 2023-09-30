@@ -44,27 +44,15 @@ class Container(DeclarativeContainer):
         session.get_context, engine=async_engine.provided
     )
 
-    specialists_adapter: Singleton["SpecialistsAdapter"] = Singleton(
-        SpecialistsAdapter, session_ctx.provider
-    )
-    analyzes_adapter: Singleton["AnalyzesAdapter"] = Singleton(
-        AnalyzesAdapter, session_ctx.provider
-    )
-    analysis_types_adapter: Singleton["AnalysisTypeAdapter"] = Singleton(
-        AnalysisTypeAdapter, session_ctx.provider
-    )
-    services_adapter: Singleton["ServicesAdapter"] = Singleton(
-        ServicesAdapter, session_ctx.provider
-    )
-    contacts_adapter: Singleton["ContactsAdapter"] = Singleton(
-        ContactsAdapter, session_ctx.provider
-    )
+    specialists_adapter: Singleton["SpecialistsAdapter"] = Singleton(SpecialistsAdapter, session_ctx.provider)
+    analyzes_adapter: Singleton["AnalyzesAdapter"] = Singleton(AnalyzesAdapter, session_ctx.provider)
+    analysis_types_adapter: Singleton["AnalysisTypeAdapter"] = Singleton(AnalysisTypeAdapter, session_ctx.provider)
+    services_adapter: Singleton["ServicesAdapter"] = Singleton(ServicesAdapter, session_ctx.provider)
+    contacts_adapter: Singleton["ContactsAdapter"] = Singleton(ContactsAdapter, session_ctx.provider)
     news_adapter: Singleton["NewsAdapter"] = Singleton(NewsAdapter, session_ctx.provider)
     license_adapter: Singleton["DocumentAdapter"] = Singleton(DocumentAdapter, session_ctx.provider)
     pages_adapter: Singleton["PagesAdapter"] = Singleton(PagesAdapter, session_ctx.provider)
-    promotions_adapter: Singleton["PromotionsAdapter"] = Singleton(
-        PromotionsAdapter, session_ctx.provider
-    )
+    promotions_adapter: Singleton["PromotionsAdapter"] = Singleton(PromotionsAdapter, session_ctx.provider)
     updater_adapter: Singleton["UpdaterAdapter"] = Singleton(UpdaterAdapter, session_ctx.provider)
     source_adapter: Singleton["SourceAdapter"] = Singleton(
         SourceAdapter, service_settings.provided.updater_host, service_settings.provided.timeout

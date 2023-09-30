@@ -41,9 +41,7 @@ class Office(BaseModel):
     point_y: Mapped[str] = mapped_column(sa.String(10))
     is_active: Mapped[bool]
 
-    city_id: Mapped[int] = mapped_column(
-        sa.BigInteger(), sa.ForeignKey("cities.id", ondelete="CASCADE")
-    )
+    city_id: Mapped[int] = mapped_column(sa.BigInteger(), sa.ForeignKey("cities.id", ondelete="CASCADE"))
 
     city: Mapped["City"] = relationship("City", back_populates="offices")
     departments: Mapped["Department"] = relationship("Department", back_populates="office")
@@ -62,14 +60,10 @@ class Department(BaseModel):
     tags: Mapped[str | None] = mapped_column(sa.String(100))
     short_description: Mapped[str] = mapped_column(sa.String(255))
     description: Mapped[str] = mapped_column(sa.String(255))
-    photo: Mapped[str] = mapped_column(
-        FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "departments")))
-    )
+    photo: Mapped[str] = mapped_column(FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "departments"))))
     is_active: Mapped[bool]
 
-    office_id: Mapped[int] = mapped_column(
-        sa.BigInteger(), sa.ForeignKey("offices.id", ondelete="CASCADE")
-    )
+    office_id: Mapped[int] = mapped_column(sa.BigInteger(), sa.ForeignKey("offices.id", ondelete="CASCADE"))
 
     office: Mapped["Office"] = relationship("Office", back_populates="departments")
 

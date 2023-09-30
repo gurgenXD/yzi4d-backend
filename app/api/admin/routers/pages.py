@@ -13,10 +13,4 @@ class PagesAdmin(ModelView, model=Page):
     can_export = False
 
     column_list = ("id", "title", "url", "is_active")
-    column_labels = {
-        "id": "ID",
-        "url": "URL",
-        "title": "Title",
-        "content": "Content",
-        "is_active": "Is active",
-    }
+    column_labels = {"id": "ID", "url": "URL", "title": "Title", "content": "Content", "is_active": "Is active"}

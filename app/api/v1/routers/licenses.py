@@ -18,6 +18,4 @@ async def get_licenses(request: Request) -> "HTMLResponse":
     adapter = CONTAINER.news_adapter()
     licenses = await adapter.get_all()
 
-    return TEMPLATES.TemplateResponse(  # type: ignore
-        "licenses.html", {"request": request, "licenses": licenses}
-    )
+    return TEMPLATES.TemplateResponse("licenses.html", {"request": request, "licenses": licenses})  # type: ignore

@@ -12,11 +12,7 @@ from app.api.admin.routers.pages import PagesAdmin
 from app.api.admin.routers.promotions import PromotionsAdmin
 
 from app.api.admin.routers.services import ServiceAdmin, ServiceCategoryAdmin, ServiceCatalogAdmin
-from app.api.admin.routers.specialists import (
-    SpecialistAdmin,
-    SpecialistCertificateAdmin,
-    SpecializationAdmin,
-)
+from app.api.admin.routers.specialists import SpecialistAdmin, SpecialistCertificateAdmin, SpecializationAdmin
 from app.api.admin.routers.updates import UpdatesAdmin
 from app.settings.db import DatabaseSettings
 from app.settings.auth import AuthSettings

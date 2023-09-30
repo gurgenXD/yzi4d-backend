@@ -17,12 +17,7 @@ class SpecializationAdmin(ModelView, model=Specialization):
     can_export = False
 
     column_list = ("id", "name", "is_active")
-    column_labels = {
-        "id": "ID",
-        "name": "Specialization",
-        "specialists": "Specialists",
-        "is_active": "Is active",
-    }
+    column_labels = {"id": "ID", "name": "Specialization", "specialists": "Specialists", "is_active": "Is active"}
     column_default_sort = [("name", False)]
 
 

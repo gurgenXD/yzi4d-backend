@@ -70,18 +70,8 @@ class ServiceCatalogAdmin(ModelView, model=Catalog):
     can_delete = False
     can_export = False
 
-    form_widget_args = {
-        "name": {"readonly": True},
-        "is_active": {"readonly": True},
-        "categories": {"readonly": True},
-    }
+    form_widget_args = {"name": {"readonly": True}, "is_active": {"readonly": True}, "categories": {"readonly": True}}
 
     column_list = ("id", "name", "page", "is_active")
-    column_labels = {
-        "id": "ID",
-        "name": "Name",
-        "page": "Page",
-        "is_active": "Is active",
-        "categories": "Categories",
-    }
+    column_labels = {"id": "ID", "name": "Name", "page": "Page", "is_active": "Is active", "categories": "Categories"}
     column_default_sort = [("name", False)]

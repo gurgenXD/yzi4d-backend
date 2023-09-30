@@ -36,7 +36,7 @@ class RepoUpdaterService:
             await self.update_specialists()
 
             self._logger.info("Start updating services with prices...")
-            await self.update_services()
+            await self.update_services_with_prices()
 
             self._logger.info("Start updating catalogs with categories...")
             await self.update_catalogs()
@@ -53,10 +53,10 @@ class RepoUpdaterService:
         specialists = await self._source.get_specialists()
         await self._specialists.create_or_update(specialists)
 
-    async def update_services(self) -> None:
-        """Обновить услуги."""
-        services = await self._source.get_services()
-        await self._services.create_or_update(services)
+    async def update_services_with_prices(self) -> None:
+        """Обновить услуги и цены."""
+        services = await self._source.get_services_with_prices()
+        await self._services.save_services_with_prices(services)
 
     async def update_catalogs(self) -> None:
         """Обновить каталоги."""
@@ -64,5 +64,5 @@ class RepoUpdaterService:
         await self._services.create_or_update_catalogs(catalogs)
 
         for catalog in catalogs:
-            content = await self._source.get_catalog_content(catalog.id)
-            await self._services.create_or_update_categories(catalog.id, content)
+            content = await self._source.get_catalog_content(catalog.guid)
+            await self._services.create_or_update_categories(catalog.guid, content)

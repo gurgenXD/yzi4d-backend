@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field, field_validator
 class SpecializationSchema(BaseModel):
     """Схема специальности."""
 
-    id: str = Field(alias="SpecGuid1C")
+    guid: str = Field(alias="SpecGuid1C")
     name: str = Field(alias="SpecName")
 
     is_active: bool = True
@@ -28,7 +28,7 @@ class TitleSchema(BaseModel):
 class SourceSpecialistSchema(BaseModel):
     """Схема специалистов из источника."""
 
-    id: str = Field(alias="Guid1C")
+    guid: str = Field(alias="Guid1C")
     name: str = Field(alias="Name")
     surname: str = Field(alias="Surname")
     patronymic: str | None = Field(alias="MiddleName")

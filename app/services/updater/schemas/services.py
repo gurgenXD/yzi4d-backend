@@ -7,11 +7,12 @@ EMPTY_GUID = "00000000-0000-0000-0000-000000000000"
 class ServicePriceSchema(BaseModel):
     """Схема цены услуги."""
 
-    office_id: str = Field(alias="DivisionGuid1C")
-    specialist_id: str = Field(alias="SpecGuid1C")
+    office_guid: str = Field(alias="DivisionGuid1C")
+    specialist_guid: str = Field(alias="SpecGuid1C")
     price: int = Field(alias="Price")
     is_active: bool = True
 
+    # FIXME: Удалить костыль
     @field_validator("price", mode="before")
     @classmethod
     def validate_price(cls, v) -> int:
@@ -25,7 +26,7 @@ class ServicePriceSchema(BaseModel):
 class ServiceExtSchema(BaseModel):
     """Расширенная схема услуги."""
 
-    id: str = Field(alias="Guid1C")
+    guid: str = Field(alias="Guid1C")
     name: str = Field(alias="ProductName")
     ready_from: int | None = Field(alias="ReadyFrom")
     ready_to: int | None = Field(alias="ReadyTo")
@@ -38,13 +39,13 @@ class ServiceExtSchema(BaseModel):
 class ServiceSchema(BaseModel):
     """Схема услуги."""
 
-    id: str = Field(alias="Guid1C")
+    guid: str = Field(alias="Guid1C")
 
 
 class CatalogItemSchema(BaseModel):
     """Схема элемента каталога."""
 
-    id: str = Field(alias="Guid1C")
+    guid: str = Field(alias="Guid1C")
     name: str = Field(alias="CatalogName")
     parent_id: str | None = Field(alias="ParentGuid1C")
     services: list[ServiceSchema] = Field(alias="ProductList")
@@ -60,6 +61,6 @@ class CatalogItemSchema(BaseModel):
 class CatalogSchema(BaseModel):
     """Схема каталога."""
 
-    id: str = Field(alias="Guid1C")
+    guid: str = Field(alias="Guid1C")
     name: str = Field(alias="CatalogName")
     is_active: bool = True

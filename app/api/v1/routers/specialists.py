@@ -38,7 +38,7 @@ async def get_specialists(
 
 
 @router.get("/{id}", responses={status.HTTP_404_NOT_FOUND: {"detail": "Specialist not found"}})
-async def get_specialist(id: str) -> SpecialistSchema:
+async def get_specialist(id: int) -> SpecialistSchema:
     """Получить специалиста."""
     adapter = CONTAINER.specialists_adapter()
     return await adapter.get(id=id)

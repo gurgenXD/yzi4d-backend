@@ -25,10 +25,7 @@ class AdminAuth(AuthenticationBackend):
         if self._settings.username != username or self._settings.password != password:
             return False
 
-        token = jwt.encode(
-            {"exp": datetime.now(tz=timezone.utc) + self._settings.lifetime},
-            self._settings.secret_key,
-        )
+        token = jwt.encode({"exp": datetime.now(tz=timezone.utc) + self._settings.lifetime}, self._settings.secret_key)
 
         request.session.update({"token": token})
         return True
@@ -48,9 +45,7 @@ class AdminAuth(AuthenticationBackend):
         except JWTError:
             return False
 
-        if datetime.now(tz=timezone.utc) > datetime.fromtimestamp(
-            claims.get("exp"), tz=timezone.utc
-        ):
+        if datetime.now(tz=timezone.utc) > datetime.fromtimestamp(claims.get("exp"), tz=timezone.utc):
             return False
 
         return True

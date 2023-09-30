@@ -18,6 +18,4 @@ async def get_page(request: Request, slug: str) -> "HTMLResponse":
     adapter = CONTAINER.pages_adapter()
     page = await adapter.get(slug=slug)
 
-    return TEMPLATES.TemplateResponse(  # type: ignore
-        "page.html", {"request": request, "page": page}
-    )
+    return TEMPLATES.TemplateResponse("page.html", {"request": request, "page": page})  # type: ignore

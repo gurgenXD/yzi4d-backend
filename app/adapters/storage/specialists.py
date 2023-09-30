@@ -3,11 +3,12 @@ from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, ClassVar
 
-from sqlalchemy import update, or_, select
+from sqlalchemy import update, or_, select, delete
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import contains_eager
 
-from app.adapters.storage.models import Specialist, Specialization, Certificate
+from app.adapters.storage.models import Specialist, Specialization, Certificate, specializations_specialists_table
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
@@ -29,6 +30,7 @@ class SpecialistsAdapter:
     _specialist: ClassVar = Specialist
     _specialization: ClassVar = Specialization
     _certificate: ClassVar = Certificate
+    _relations: ClassVar = specializations_specialists_table
 
     async def get_paginated(
         self,
@@ -44,15 +46,7 @@ class SpecialistsAdapter:
     ) -> Paginated[SpecialistSchema]:
         """Получить всех активных специалистов."""
         query = (
-            select(self._specialist)
-            .join(self._specialist.specializations, isouter=True)
-            .join(self._specialist.certificates, isouter=True)
-            .options(
-                contains_eager(self._specialist.specializations),
-                contains_eager(self._specialist.certificates),
-            )
-            .where(self._specialist.is_active.is_(True))
-            .order_by(self._specialist.surname)
+            select(self._specialist.id).where(self._specialist.is_active.is_(True)).order_by(self._specialist.surname)
         )
 
         if for_main:
@@ -82,21 +76,29 @@ class SpecialistsAdapter:
         async with self._session_factory() as session:
             paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
 
-            rows = await session.execute(paginated_query)
+            subquery = paginated_query.subquery()
+            join_query = (
+                select(self._specialist)
+                .join(subquery, self._specialist.id == subquery.c.id)
+                .join(self._specialist.specializations, isouter=True)
+                .join(self._specialist.certificates, isouter=True)
+                .options(
+                    contains_eager(self._specialist.specializations), contains_eager(self._specialist.certificates)
+                )
+            )
+
+            rows = await session.execute(join_query)
             specialists = [SpecialistSchema.model_validate(row) for row in rows.unique().scalars()]
 
             return Paginated[SpecialistSchema](data=specialists, paging=paging)
 
-    async def get(self, id: str) -> "SpecialistSchema":
+    async def get(self, id: int) -> "SpecialistSchema":
         """Получить специалиста."""
         query = (
             select(self._specialist)
             .join(self._specialist.specializations, isouter=True)
             .join(self._specialist.certificates, isouter=True)
-            .options(
-                contains_eager(self._specialist.specializations),
-                contains_eager(self._specialist.certificates),
-            )
+            .options(contains_eager(self._specialist.specializations), contains_eager(self._specialist.certificates))
             .where(self._specialist.id == id, self._specialist.is_active.is_(True))
         )
 
@@ -117,18 +119,38 @@ class SpecialistsAdapter:
             await session.execute(update(self._specialist).values(is_active=False))
             await session.execute(update(self._specialization).values(is_active=False))
 
+            await session.execute(delete(self._relations))
+
             for specialist in data:
-                specialist_model = self._specialist(
-                    **specialist.model_dump(exclude={"specializations"})
-                )
+                specialist_id = (
+                    await session.execute(
+                        pg_insert(self._specialist)
+                        .values(specialist.model_dump(exclude={"specializations"}))
+                        .on_conflict_do_update(
+                            index_elements=(self._specialist.guid,),
+                            set_=specialist.model_dump(exclude={"specializations", "guid"}),
+                        )
+                    )
+                ).inserted_primary_key[0]
 
-                specializations: list["Specialization"] = []
                 for specialization in specialist.specializations:
-                    specialization_model = self._specialization(**specialization.model_dump())
-                    await session.merge(specialization_model)
-                    specializations.append(specialization_model)
+                    specialization_id = (
+                        await session.execute(
+                            pg_insert(self._specialization)
+                            .values(specialization.model_dump())
+                            .on_conflict_do_update(
+                                index_elements=(self._specialization.guid,),
+                                set_=specialization.model_dump(exclude={"guid"}),
+                            )
+                        )
+                    ).inserted_primary_key[0]
 
-                specialist_model.specializations[:] = specializations
-                await session.merge(specialist_model)
+                    await session.execute(
+                        pg_insert(self._relations)
+                        .values(specialization_id=specialization_id, specialist_id=specialist_id)
+                        .on_conflict_do_nothing(
+                            index_elements=(self._relations.c["specialization_id"], self._relations.c["specialist_id"])
+                        )
+                    )
+
                 await session.flush()
-                session.expunge_all()

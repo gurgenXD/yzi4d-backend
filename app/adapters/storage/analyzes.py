@@ -8,11 +8,7 @@ from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import joinedload
 
 from app.services.exceptions import NotFoundError
-from app.services.schemas.analyzes import (
-    AnalysisSchema,
-    AnalysisTypeSchema,
-    AnalysisTypeWithAnalyzesSchema,
-)
+from app.services.schemas.analyzes import AnalysisSchema, AnalysisTypeSchema, AnalysisTypeWithAnalyzesSchema
 
 
 if TYPE_CHECKING:
@@ -38,9 +34,7 @@ class AnalyzesAdapter:
 
     async def get(self, id: int) -> "AnalysisSchema":
         """Получить анализ."""
-        query = select(self._analysis).where(
-            self._analysis.id == id, self._analysis.is_active.is_(True)
-        )
+        query = select(self._analysis).where(self._analysis.id == id, self._analysis.is_active.is_(True))
 
         async with self._session_factory() as session:
             row = await session.execute(query)
@@ -57,9 +51,7 @@ class AnalyzesAdapter:
 class AnalysisTypeAdapter:
     """Адаптер для доступа к категориям анализов."""
 
-    def __init__(
-        self, session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
-    ) -> None:
+    def __init__(self, session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]) -> None:
         self._session_factory = session_factory
         self._analysis_type = AnalysisType
 

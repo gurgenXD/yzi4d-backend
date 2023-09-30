@@ -22,27 +22,21 @@ class SourceAdapter:
     async def get_catalogs(self) -> list["CatalogSchema"]:
         """Получить каталоги."""
         async with httpx.AsyncClient() as client:
-            response = await client.get(
-                f"{self._host}/product/GetCatalogList", timeout=self._timeout
-            )
+            response = await client.get(f"{self._host}/product/GetCatalogList", timeout=self._timeout)
             return [CatalogSchema(**item) for item in response.json()]
 
     async def get_catalog_content(self, guid: str) -> list["CatalogItemSchema"]:
         """Получить содержимое каталога."""
         async with httpx.AsyncClient() as client:
             response = await client.get(
-                f"{self._host}/product/GetCatalogContentByID",
-                params={"CatalogID": guid},
-                timeout=self._timeout,
+                f"{self._host}/product/GetCatalogContentByID", params={"CatalogID": guid}, timeout=self._timeout
             )
 
         return [CatalogItemSchema(**item) for item in response.json()]
 
-    async def get_services(self) -> list["ServiceExtSchema"]:
+    async def get_services_with_prices(self) -> list["ServiceExtSchema"]:
         """Получить услуги и цены."""
         async with httpx.AsyncClient() as client:
-            response = await client.get(
-                f"{self._host}/product/GetExtProductList", timeout=self._timeout
-            )
+            response = await client.get(f"{self._host}/product/GetExtProductList", timeout=self._timeout)
 
         return [ServiceExtSchema(**item) for item in response.json()]

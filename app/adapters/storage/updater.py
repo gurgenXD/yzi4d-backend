@@ -43,9 +43,7 @@ class UpdaterAdapter:
         query = (
             update(self._updater)
             .where(self._updater.id == id)
-            .values(
-                end_update=datetime.now(tz=timezone.utc), status=status.value, error_log=message
-            )
+            .values(end_update=datetime.now(tz=timezone.utc), status=status.value, error_log=message)
         )
 
         async with self._session_factory() as session:

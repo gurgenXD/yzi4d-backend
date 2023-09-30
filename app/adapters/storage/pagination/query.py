@@ -17,9 +17,7 @@ async def get_query_with_meta(
 ) -> tuple["Select", "PaginationSchema"]:
     """Получить запрос и мета по пагинации."""
     count_query = select(func.count()).select_from(query.subquery())
-
-    count_result = await session.execute(count_query)
-    items_count = count_result.scalar_one()
+    items_count = (await session.execute(count_query)).scalar_one()
 
     pages_count = math.ceil(items_count / page_size) if items_count else 1
     page = 1 if page < 1 else pages_count if page > pages_count else page

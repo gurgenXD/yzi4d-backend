@@ -18,6 +18,4 @@ async def get_promotions(request: Request) -> "HTMLResponse":
     adapter = CONTAINER.promotions_adapter()
     promotions = await adapter.get_all(for_main=False)
 
-    return TEMPLATES.TemplateResponse(  # type: ignore
-        "promotions.html", {"request": request, "promotions": promotions}
-    )
+    return TEMPLATES.TemplateResponse("promotions.html", {"request": request, "promotions": promotions})  # type: ignore

@@ -18,14 +18,8 @@ if TYPE_CHECKING:
 specializations_specialists_table = sa.Table(
     "specializations_specialists_rel",
     BaseModel.metadata,
-    sa.Column(
-        "specialization_id",
-        sa.ForeignKey("specializations.id", ondelete="CASCADE"),
-        primary_key=True,
-    ),
-    sa.Column(
-        "specialist_id", sa.ForeignKey("specialists.id", ondelete="CASCADE"), primary_key=True
-    ),
+    sa.Column("specialization_id", sa.ForeignKey("specializations.id", ondelete="CASCADE"), primary_key=True),
+    sa.Column("specialist_id", sa.ForeignKey("specialists.id", ondelete="CASCADE"), primary_key=True),
 )
 
 
@@ -34,7 +28,8 @@ class Specialization(BaseModel):
 
     __tablename__ = "specializations"
 
-    id: Mapped[str] = mapped_column(sa.String(36), primary_key=True)
+    id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
+    guid: Mapped[str] = mapped_column(sa.String(36), unique=True)
     name: Mapped[str] = mapped_column(sa.String(50))
     is_active: Mapped[bool]
 
@@ -51,13 +46,12 @@ class Specialist(BaseModel):
 
     __tablename__ = "specialists"
 
-    id: Mapped[str] = mapped_column(sa.String(36), primary_key=True)
+    id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
+    guid: Mapped[str] = mapped_column(sa.String(36), unique=True)
     name: Mapped[str] = mapped_column(sa.String(50))
     surname: Mapped[str] = mapped_column(sa.String(50))
     patronymic: Mapped[str | None] = mapped_column(sa.String(50))
-    photo: Mapped[str | None] = mapped_column(
-        FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "specialists")))
-    )
+    photo: Mapped[str | None] = mapped_column(FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "specialists"))))
     start_work_date: Mapped[date]
     education: Mapped[list[dict[str, Any]] | None] = mapped_column(sa.JSON())
     activity: Mapped[list[dict[str, Any]] | None] = mapped_column(sa.JSON())
@@ -73,9 +67,7 @@ class Specialist(BaseModel):
     specializations: Mapped[list["Specialization"]] = relationship(
         "Specialization", secondary=specializations_specialists_table, back_populates="specialists"
     )
-    certificates: Mapped[list["Certificate"]] = relationship(
-        "Certificate", back_populates="specialist"
-    )
+    certificates: Mapped[list["Certificate"]] = relationship("Certificate", back_populates="specialist")
     services: Mapped[list["Service"]] = relationship(
         "Service", secondary="specialists_services", back_populates="specialists"
     )
@@ -90,15 +82,12 @@ class Certificate(BaseModel):
 
     __tablename__ = "certificates"
 
-    id: Mapped[str] = mapped_column(sa.String(36), primary_key=True)
+    id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
+    guid: Mapped[str] = mapped_column(sa.String(36), unique=True)
     name: Mapped[str] = mapped_column(sa.String(250))
-    file: Mapped[str] = mapped_column(
-        FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "certificates")))
-    )
+    file: Mapped[str] = mapped_column(FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "certificates"))))
 
-    specialist_id: Mapped[str] = mapped_column(
-        sa.String(36), sa.ForeignKey("specialists.id", ondelete="CASCADE")
-    )
+    specialist_id: Mapped[int] = mapped_column(sa.BigInteger(), sa.ForeignKey("specialists.id", ondelete="CASCADE"))
 
     specialist: Mapped["Specialist"] = relationship("Specialist", back_populates="certificates")
 
@@ -114,9 +103,9 @@ class SpecialistService(BaseModel):
     price: Mapped[int]
     is_active: Mapped[bool]
 
-    service_id: Mapped[str] = mapped_column(
-        sa.String(36), sa.ForeignKey("services.id", ondelete="CASCADE"), primary_key=True
+    service_id: Mapped[int] = mapped_column(
+        sa.BigInteger(), sa.ForeignKey("services.id", ondelete="CASCADE"), primary_key=True
     )
-    specialist_id: Mapped[str] = mapped_column(
-        sa.String(36), sa.ForeignKey("specialists.id", ondelete="CASCADE"), primary_key=True
+    specialist_id: Mapped[int] = mapped_column(
+        sa.BigInteger(), sa.ForeignKey("specialists.id", ondelete="CASCADE"), primary_key=True
     )

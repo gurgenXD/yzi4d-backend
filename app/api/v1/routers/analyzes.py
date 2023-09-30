@@ -18,9 +18,7 @@ async def get_analyzes(request: Request) -> "HTMLResponse":
     adapter = CONTAINER.analyzes_adapter()
     analyzes = await adapter.get_all(for_main=False)
 
-    return TEMPLATES.TemplateResponse(  # type: ignore
-        "analyzes.html", {"request": request, "analyzes": analyzes}
-    )
+    return TEMPLATES.TemplateResponse("analyzes.html", {"request": request, "analyzes": analyzes})  # type: ignore
 
 
 @router.get("/{id}", response_class=HTMLResponse)
@@ -29,6 +27,4 @@ async def get_analysis(request: Request, id: int) -> "HTMLResponse":
     adapter = CONTAINER.analyzes_adapter()
     analysis = await adapter.get(id=id)
 
-    return TEMPLATES.TemplateResponse(  # type: ignore
-        "analysis.html", {"request": request, "analysis": analysis}
-    )
+    return TEMPLATES.TemplateResponse("analysis.html", {"request": request, "analysis": analysis})  # type: ignore

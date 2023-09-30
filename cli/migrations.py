@@ -19,9 +19,7 @@ def migrations() -> None:
 def make(message: str) -> None:
     """Создать миграцию."""
     try:
-        subprocess.check_call(
-            f'alembic -c {ALEMBIC_CONFIG_FILE} revision --autogenerate -m "{message}"', shell=True
-        )
+        subprocess.check_call(f'alembic -c {ALEMBIC_CONFIG_FILE} revision --autogenerate -m "{message}"', shell=True)
     except subprocess.CalledProcessError as exc:
         sys.exit(exc.returncode)
 

@@ -26,11 +26,10 @@ class Document(BaseModel):
 
     __tablename__ = "documents"
 
-    id: Mapped[str] = mapped_column(sa.String(36), primary_key=True)
+    id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
+    guid: Mapped[str] = mapped_column(sa.String(36), unique=True)
     name: Mapped[str] = mapped_column(sa.String(50))
-    file: Mapped[str] = mapped_column(
-        FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "documents")))
-    )
+    file: Mapped[str] = mapped_column(FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "documents"))))
     link: Mapped[str | None] = mapped_column(sa.String(255))
     is_active: Mapped[bool]
 
@@ -38,6 +37,4 @@ class Document(BaseModel):
         sa.BigInteger(), sa.ForeignKey("documents_categories.id", ondelete="SET NULL")
     )
 
-    category: Mapped["DocumentCategory"] = relationship(
-        "DocumentCategory", back_populates="documents"
-    )
+    category: Mapped["DocumentCategory"] = relationship("DocumentCategory", back_populates="documents")

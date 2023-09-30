@@ -17,6 +17,4 @@ def add_all(app: "FastAPI") -> None:
 
 async def _not_found_error_handler(_request: "Request", _exception: "Exception") -> "JSONResponse":
     """Обработчик ошибок 404."""
-    return JSONResponse(
-        status_code=status.HTTP_404_NOT_FOUND, content={"message": "Object not found."}
-    )
+    return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content={"message": "Object not found."})

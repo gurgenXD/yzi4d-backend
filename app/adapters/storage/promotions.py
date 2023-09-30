@@ -24,9 +24,7 @@ class PromotionsAdapter:
 
     async def get_all(self, *, for_main: bool) -> list["PromotionSchema"]:
         """Получить все активные акции."""
-        query = select(self._promotion).where(
-            self._promotion.date_end >= datetime.now(tz=timezone.utc).date()
-        )
+        query = select(self._promotion).where(self._promotion.date_end >= datetime.now(tz=timezone.utc).date())
 
         if for_main:
             query = query.where(self._promotion.on_main.is_(True))

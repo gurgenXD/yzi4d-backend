@@ -22,12 +22,7 @@ async def get_services(request: Request, type_id: str, page: int = 1) -> "HTMLRe
 
     return TEMPLATES.TemplateResponse(  # type: ignore
         "services.html",
-        {
-            "request": request,
-            "services": paginated.data,
-            "paging": paginated.paging,
-            "services_types": services_types,
-        },
+        {"request": request, "services": paginated.data, "paging": paginated.paging, "services_types": services_types},
     )
 
 
@@ -37,6 +32,4 @@ async def get_service(request: Request, id: str) -> "HTMLResponse":
     adapter = CONTAINER.services_adapter()
     service = await adapter.get(id=id)
 
-    return TEMPLATES.TemplateResponse(  # type: ignore
-        "service.html", {"request": request, "service": service}
-    )
+    return TEMPLATES.TemplateResponse("service.html", {"request": request, "service": service})  # type: ignore

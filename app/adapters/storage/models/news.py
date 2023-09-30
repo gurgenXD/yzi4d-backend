@@ -21,7 +21,5 @@ class News(BaseModel):
     preview: Mapped[str] = mapped_column(sa.String(150))
     created: Mapped[datetime]
     description: Mapped[str] = mapped_column(sa.String(500))
-    photo: Mapped[str | None] = mapped_column(
-        FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "news")))
-    )
+    photo: Mapped[str | None] = mapped_column(FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "news"))))
     is_active: Mapped[bool]

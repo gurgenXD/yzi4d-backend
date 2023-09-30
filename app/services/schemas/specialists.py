@@ -1,5 +1,4 @@
 from datetime import date
-from typing import Any
 
 from pydantic import BaseModel
 
@@ -7,7 +6,7 @@ from pydantic import BaseModel
 class SpecializationSchema(BaseModel):
     """Схема специализации."""
 
-    id: str
+    id: int
     name: str
 
     class Config:
@@ -28,7 +27,7 @@ class SpecialistEducationSchema(BaseModel):
     """Схема обучения специалиста."""
 
     name: str
-    year: int
+    year: str
 
     class Config:
         from_attributes = True
@@ -46,7 +45,7 @@ class SpecialistTitleSchema(BaseModel):
 class SpecialistSchema(BaseModel):
     """Схема специалиста."""
 
-    id: str
+    id: int
     name: str
     surname: str
     patronymic: str | None
