@@ -4,15 +4,14 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, ClassVar
 
 from sqlalchemy import update, or_, select
-from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.exc import NoResultFound
-from sqlalchemy.orm import contains_eager, joinedload
+from sqlalchemy.orm import contains_eager
 
-from app.adapters.storage.models import Specialist, Specialization
+from app.adapters.storage.models import Specialist, Specialization, Certificate
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
-from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
+from app.services.schemas.specialists import SpecialistSchema
 
 
 if TYPE_CHECKING:
@@ -29,6 +28,7 @@ class SpecialistsAdapter:
 
     _specialist: ClassVar = Specialist
     _specialization: ClassVar = Specialization
+    _certificate: ClassVar = Certificate
 
     async def get_paginated(
         self,
@@ -91,9 +91,11 @@ class SpecialistsAdapter:
         """Получить специалиста."""
         query = (
             select(self._specialist)
+            .join(self._specialist.specializations, isouter=True)
+            .join(self._specialist.certificates, isouter=True)
             .options(
-                joinedload(self._specialist.specializations),
-                joinedload(self._specialist.certificates),
+                contains_eager(self._specialist.specializations),
+                contains_eager(self._specialist.certificates),
             )
             .where(self._specialist.id == id, self._specialist.is_active.is_(True))
         )
@@ -130,20 +132,3 @@ class SpecialistsAdapter:
                 await session.merge(specialist_model)
                 await session.flush()
                 session.expunge_all()
-
-
-@dataclass
-class SpecializationAdapter:
-    """Адаптер для доступа к специальностям."""
-
-    _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
-
-    _specialization: ClassVar = Specialization
-
-    async def get_all(self) -> list["SpecializationSchema"]:
-        """Получить все специальности."""
-        query = select(self._specialization)
-
-        async with self._session_factory() as session:
-            rows = await session.execute(query)
-            return [SpecializationSchema.model_validate(row) for row in rows.unique().scalars()]

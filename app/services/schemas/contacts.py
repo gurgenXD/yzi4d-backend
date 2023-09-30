@@ -12,8 +12,8 @@ class OfficeSchema(BaseModel):
     email: str
     main_doctor: str
     main_doctor_work_time: str
-    coor_x: str
-    coor_y: str
+    point_x: float
+    point_y: float
 
     class Config:
         from_attributes = True

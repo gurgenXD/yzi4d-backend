@@ -16,5 +16,6 @@ from app.adapters.storage.models.specialists import (
     Specialization,
     specializations_specialists_table,
     SpecialistService,
+    Certificate,
 )
 from app.adapters.storage.models.updates import Update

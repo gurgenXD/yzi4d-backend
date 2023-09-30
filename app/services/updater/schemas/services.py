@@ -38,7 +38,7 @@ class ServiceExtSchema(BaseModel):
 class ServiceSchema(BaseModel):
     """Схема услуги."""
 
-    guid: str = Field(alias="Guid1C")
+    id: str = Field(alias="Guid1C")
 
 
 class CatalogItemSchema(BaseModel):

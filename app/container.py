@@ -13,8 +13,8 @@ from app.adapters.storage.documents import DocumentAdapter
 from app.adapters.storage.news import NewsAdapter
 from app.adapters.storage.pages import PagesAdapter
 from app.adapters.storage.promotions import PromotionsAdapter
-from app.adapters.storage.services import ServicesAdapter, ServiceTypeAdapter
-from app.adapters.storage.specialists import SpecialistsAdapter, SpecializationAdapter
+from app.adapters.storage.services import ServicesAdapter
+from app.adapters.storage.specialists import SpecialistsAdapter
 from app.adapters.storage.updater import UpdaterAdapter
 from app.services.updater.repo import RepoUpdaterService
 from app.settings.db import DatabaseSettings
@@ -47,9 +47,6 @@ class Container(DeclarativeContainer):
     specialists_adapter: Singleton["SpecialistsAdapter"] = Singleton(
         SpecialistsAdapter, session_ctx.provider
     )
-    specializations_adapter: Singleton["SpecializationAdapter"] = Singleton(
-        SpecializationAdapter, session_ctx.provider
-    )
     analyzes_adapter: Singleton["AnalyzesAdapter"] = Singleton(
         AnalyzesAdapter, session_ctx.provider
     )
@@ -58,9 +55,6 @@ class Container(DeclarativeContainer):
     )
     services_adapter: Singleton["ServicesAdapter"] = Singleton(
         ServicesAdapter, session_ctx.provider
-    )
-    services_types_adapter: Singleton["ServiceTypeAdapter"] = Singleton(
-        ServiceTypeAdapter, session_ctx.provider
     )
     contacts_adapter: Singleton["ContactsAdapter"] = Singleton(
         ContactsAdapter, session_ctx.provider

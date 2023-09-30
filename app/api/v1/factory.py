@@ -4,7 +4,7 @@ from app.api.v1 import handlers
 from app.api.v1.routers import (
     analyzes,
     news,
-    offices,
+    contacts,
     pages,
     promotions,
     services,
@@ -23,7 +23,7 @@ def create_app() -> "FastAPI":
     # Подключение под-приложений.
     app.include_router(specialists.router)
     app.include_router(analyzes.router)
-    app.include_router(offices.router)
+    app.include_router(contacts.router)
     app.include_router(news.router)
     app.include_router(pages.router)
     app.include_router(promotions.router)

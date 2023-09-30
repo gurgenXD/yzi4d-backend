@@ -73,8 +73,8 @@ class Specialist(BaseModel):
     specializations: Mapped[list["Specialization"]] = relationship(
         "Specialization", secondary=specializations_specialists_table, back_populates="specialists"
     )
-    certificates: Mapped[list["SpecialistCertificate"]] = relationship(
-        "SpecialistCertificate", back_populates="specialist"
+    certificates: Mapped[list["Certificate"]] = relationship(
+        "Certificate", back_populates="specialist"
     )
     services: Mapped[list["Service"]] = relationship(
         "Service", secondary="specialists_services", back_populates="specialists"
@@ -85,10 +85,10 @@ class Specialist(BaseModel):
         return f"{self.surname} {self.name}" + patronymic
 
 
-class SpecialistCertificate(BaseModel):
+class Certificate(BaseModel):
     """Сертификаты специалиста."""
 
-    __tablename__ = "specialists_certificates"
+    __tablename__ = "certificates"
 
     id: Mapped[str] = mapped_column(sa.String(36), primary_key=True)
     name: Mapped[str] = mapped_column(sa.String(250))

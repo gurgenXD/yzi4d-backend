@@ -64,5 +64,5 @@ class RepoUpdaterService:
         await self._services.create_or_update_catalogs(catalogs)
 
         for catalog in catalogs:
-            content = await self._source.get_catalog_content(catalog.guid)
-            await self._services.create_or_update_categories(content)
+            content = await self._source.get_catalog_content(catalog.id)
+            await self._services.create_or_update_categories(catalog.id, content)

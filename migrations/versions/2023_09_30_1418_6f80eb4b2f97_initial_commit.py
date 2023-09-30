@@ -174,7 +174,7 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
-        "specialists_certificates",
+        "certificates",
         sa.Column("id", sa.String(length=36), nullable=False),
         sa.Column("name", sa.String(length=250), nullable=False),
         sa.Column("file", sa.String(length=255), nullable=False),
@@ -230,7 +230,7 @@ def downgrade() -> None:
     op.drop_table("categories_services_rel")
     op.drop_table("specializations_specialists_rel")
     op.drop_table("specialists_services")
-    op.drop_table("specialists_certificates")
+    op.drop_table("certificates")
     op.drop_table("offices")
     op.drop_table("documents")
     op.drop_table("categories")

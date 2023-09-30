@@ -4,12 +4,10 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, ClassVar
 
 from sqlalchemy import select
-from sqlalchemy.exc import NoResultFound
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import contains_eager
 
-from app.adapters.storage.models import City
-from app.services.exceptions import NotFoundError
-from app.services.schemas.offices import CitySchema
+from app.adapters.storage.models import City, Office
+from app.services.schemas.contacts import CitySchema
 
 
 if TYPE_CHECKING:
@@ -23,26 +21,17 @@ class ContactsAdapter:
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
     _city: ClassVar = City
+    _office: ClassVar = Office
 
     async def get_cities(self) -> list["CitySchema"]:
-        """Получить все города."""
-        query = select(self._city).options(joinedload(self._city.offices))
+        """Получить все города с контактами."""
+        query = (
+            select(self._city)
+            .join(self._office)
+            .options(contains_eager(self._city.offices))
+            .where(self._city.is_active.is_(True), self._office.is_active.is_(True))
+        )
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [CitySchema.mode(row) for row in rows.unique().scalars()]
-
-    async def get(self, id: int) -> "CitySchema":
-        """Получить филиал."""
-        query = select(self._city).where(self._city == id)
-
-        async with self._session_factory() as session:
-            row = await session.execute(query)
-
-            try:
-                office = CitySchema.model_validate(row.one()[0])
-            except NoResultFound as exc:
-                message = f"Филиал с {id=} не найден."
-                raise NotFoundError(message) from exc
-
-        return office
+            return [CitySchema.model_validate(row) for row in rows.unique().scalars()]

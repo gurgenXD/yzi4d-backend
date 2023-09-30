@@ -87,7 +87,7 @@ class Catalog(BaseModel):
 
     id: Mapped[str] = mapped_column(sa.String(36), primary_key=True)
     name: Mapped[str] = mapped_column(sa.String(255))
-    page: Mapped[str] = mapped_column(sa.String(16))
+    page: Mapped[str] = mapped_column(sa.String(16), nullable=True)
     is_active: Mapped[bool]
 
     categories: Mapped[list["Category"]] = relationship("Category", back_populates="catalog")

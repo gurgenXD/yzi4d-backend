@@ -1,10 +1,6 @@
 from sqladmin import ModelView
 
-from app.adapters.storage.models.specialists import (
-    Specialist,
-    SpecialistCertificate,
-    Specialization,
-)
+from app.adapters.storage.models.specialists import Specialist, Certificate, Specialization
 
 
 class SpecializationAdmin(ModelView, model=Specialization):
@@ -30,7 +26,7 @@ class SpecializationAdmin(ModelView, model=Specialization):
     column_default_sort = [("name", False)]
 
 
-class SpecialistCertificateAdmin(ModelView, model=SpecialistCertificate):
+class SpecialistCertificateAdmin(ModelView, model=Certificate):
     """Сертификаты специалистов в админ панели."""
 
     name = "Certificate"
