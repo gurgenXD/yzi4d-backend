@@ -34,7 +34,7 @@ class AnalyzesAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [AnalysisSchema.from_orm(row) for row in rows.scalars()]
+            return [AnalysisSchema.model_validate(row) for row in rows.scalars()]
 
     async def get(self, id: int) -> "AnalysisSchema":
         """Получить анализ."""
@@ -46,7 +46,7 @@ class AnalyzesAdapter:
             row = await session.execute(query)
 
             try:
-                analysis = AnalysisSchema.from_orm(row.one()[0])
+                analysis = AnalysisSchema.model_validate(row.one()[0])
             except NoResultFound as exc:
                 message = f"Анализ с {id=} не найден."
                 raise NotFoundError(message) from exc
@@ -69,7 +69,7 @@ class AnalysisTypeAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [AnalysisTypeSchema.from_orm(row) for row in rows.unique().scalars()]
+            return [AnalysisTypeSchema.model_validate(row) for row in rows.unique().scalars()]
 
     async def get(self, id: int) -> "AnalysisTypeWithAnalyzesSchema":
         """Получить категорию анализа."""
@@ -83,7 +83,7 @@ class AnalysisTypeAdapter:
             row = await session.execute(query)
 
             try:
-                analysis_type = AnalysisTypeWithAnalyzesSchema.from_orm(row.unique().one()[0])
+                analysis_type = AnalysisTypeWithAnalyzesSchema.model_validate(row.unique().one()[0])
             except NoResultFound as exc:
                 message = f"Категория анализов с {id=} не найдена."
                 raise NotFoundError(message) from exc

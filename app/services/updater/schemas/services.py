@@ -27,10 +27,10 @@ class ServiceExtSchema(BaseModel):
 
     id: str = Field(alias="Guid1C")
     name: str = Field(alias="ProductName")
-    # ready_from: int | None = Field(alias="ReadyFrom")
-    # ready_to: int | None = Field(alias="ReadyTo")
-    # description: str | None = Field(alias="Description")
-    # preparation: str | None = Field(alias="Preparation")
+    ready_from: int | None = Field(alias="ReadyFrom")
+    ready_to: int | None = Field(alias="ReadyTo")
+    description: str | None = Field(alias="Description")
+    preparation: str | None = Field(alias="Preparation")
     prices: list[ServicePriceSchema] = Field(alias="ProductPrice")
     is_active: bool = True
 

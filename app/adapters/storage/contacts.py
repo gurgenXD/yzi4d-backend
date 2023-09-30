@@ -30,7 +30,7 @@ class ContactsAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [CitySchema.from_orm(row) for row in rows.unique().scalars()]
+            return [CitySchema.mode(row) for row in rows.unique().scalars()]
 
     async def get(self, id: int) -> "CitySchema":
         """Получить филиал."""
@@ -40,7 +40,7 @@ class ContactsAdapter:
             row = await session.execute(query)
 
             try:
-                office = CitySchema.from_orm(row.one()[0])
+                office = CitySchema.model_validate(row.one()[0])
             except NoResultFound as exc:
                 message = f"Филиал с {id=} не найден."
                 raise NotFoundError(message) from exc

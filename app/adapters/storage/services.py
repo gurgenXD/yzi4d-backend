@@ -48,7 +48,7 @@ class ServicesAdapter:
             row = await session.execute(query)
 
             try:
-                service = ServiceWithTypeSchema.from_orm(row.one()[0])
+                service = ServiceWithTypeSchema.model_validate(row.one()[0])
             except NoResultFound as exc:
                 message = f"Услуга с {id=} не найден."
                 raise NotFoundError(message) from exc
@@ -71,12 +71,13 @@ class ServicesAdapter:
 
             for category in data:
                 category_model = self._category(**category.model_dump(exclude={"services"}))
-                category_model.services.clear()
 
+                services: list["Service"] = []
                 for service in category.services:
                     service_model = self._service(**service.model_dump())
-                    category_model.services.append(service_model)
+                    services.append(service_model)
 
+                category_model.services[:] = services
                 await session.merge(service_model)
                 await session.flush()
                 session.expunge_all()
@@ -124,7 +125,7 @@ class ServiceTypeAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [ServiceTypeSchema.from_orm(row) for row in rows.unique().scalars()]
+            return [ServiceTypeSchema.model_validate(row) for row in rows.unique().scalars()]
 
     async def get_paginated(self, id: str, page: int, page_size: int) -> Paginated[ServiceSchema]:
         """Получить услуги по категории."""
@@ -136,7 +137,7 @@ class ServiceTypeAdapter:
             paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
 
             rows = await session.execute(paginated_query)
-            services = [ServiceSchema.from_orm(row) for row in rows.unique().scalars()]
+            services = [ServiceSchema.model_validate(row) for row in rows.unique().scalars()]
 
             if not services:
                 message = f"Категория услуги с {id=} не найдена."

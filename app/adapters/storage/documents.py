@@ -27,4 +27,4 @@ class DocumentAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [DocumentSchema.from_orm(row) for row in rows.scalars()]
+            return [DocumentSchema.model_validate(row) for row in rows.scalars()]

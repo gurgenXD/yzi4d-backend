@@ -3,7 +3,8 @@ from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, ClassVar
 
-from sqlalchemy import update, or_, select, insert
+from sqlalchemy import update, or_, select
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import contains_eager, joinedload
 
@@ -82,7 +83,7 @@ class SpecialistsAdapter:
             paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
 
             rows = await session.execute(paginated_query)
-            specialists = [SpecialistSchema.from_orm(row) for row in rows.unique().scalars()]
+            specialists = [SpecialistSchema.model_validate(row) for row in rows.unique().scalars()]
 
             return Paginated[SpecialistSchema](data=specialists, paging=paging)
 
@@ -101,7 +102,7 @@ class SpecialistsAdapter:
             row = await session.execute(query)
 
             try:
-                specialist = SpecialistSchema.from_orm(row.unique().one()[0])
+                specialist = SpecialistSchema.model_validate(row.unique().one()[0])
             except NoResultFound as exc:
                 message = f"Специалист с {id=} не найден."
                 raise NotFoundError(message) from exc
@@ -118,13 +119,14 @@ class SpecialistsAdapter:
                 specialist_model = self._specialist(
                     **specialist.model_dump(exclude={"specializations"})
                 )
-                specialist_model.specializations.clear()
 
+                specializations: list["Specialization"] = []
                 for specialization in specialist.specializations:
                     specialization_model = self._specialization(**specialization.model_dump())
                     await session.merge(specialization_model)
-                    specialist_model.specializations.append(specialization_model)
+                    specializations.append(specialization_model)
 
+                specialist_model.specializations[:] = specializations
                 await session.merge(specialist_model)
                 await session.flush()
                 session.expunge_all()
@@ -144,4 +146,4 @@ class SpecializationAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [SpecializationSchema.from_orm(row) for row in rows.unique().scalars()]
+            return [SpecializationSchema.model_validate(row) for row in rows.unique().scalars()]

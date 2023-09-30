@@ -1,8 +1,8 @@
 """Initial commit.
 
-Revision ID: c4111d1f52b3
+Revision ID: 6f80eb4b2f97
 Revises: 
-Create Date: 2023-09-24 21:53:24.272254
+Create Date: 2023-09-30 14:18:36.544837
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = "c4111d1f52b3"
+revision = "6f80eb4b2f97"
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -58,7 +58,7 @@ def upgrade() -> None:
         sa.Column("preview", sa.String(length=150), nullable=False),
         sa.Column("created", sa.TIMESTAMP(timezone=True), nullable=False),
         sa.Column("description", sa.String(length=500), nullable=False),
-        sa.Column("photo", sa.String(length=250), nullable=True),
+        sa.Column("photo", sa.String(length=255), nullable=True),
         sa.Column("is_active", sa.Boolean(), nullable=False),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -78,7 +78,7 @@ def upgrade() -> None:
         sa.Column("name", sa.String(length=100), nullable=False),
         sa.Column("sale", sa.String(length=100), nullable=False),
         sa.Column("description", sa.Text(), nullable=True),
-        sa.Column("photo", sa.String(length=250), nullable=False),
+        sa.Column("photo", sa.String(length=255), nullable=False),
         sa.Column("date_start", sa.Date(), nullable=False),
         sa.Column("date_end", sa.Date(), nullable=False),
         sa.Column("on_main", sa.Boolean(), nullable=False),
@@ -102,7 +102,7 @@ def upgrade() -> None:
         sa.Column("name", sa.String(length=50), nullable=False),
         sa.Column("surname", sa.String(length=50), nullable=False),
         sa.Column("patronymic", sa.String(length=50), nullable=True),
-        sa.Column("photo", sa.String(length=250), nullable=True),
+        sa.Column("photo", sa.String(length=255), nullable=True),
         sa.Column("start_work_date", sa.Date(), nullable=False),
         sa.Column("education", sa.JSON(), nullable=True),
         sa.Column("activity", sa.JSON(), nullable=True),
@@ -137,7 +137,7 @@ def upgrade() -> None:
         "categories",
         sa.Column("id", sa.String(length=36), nullable=False),
         sa.Column("name", sa.String(length=255), nullable=False),
-        sa.Column("icon", sa.String(length=250), nullable=True),
+        sa.Column("icon", sa.String(length=255), nullable=True),
         sa.Column("is_active", sa.Boolean(), nullable=False),
         sa.Column("parent_id", sa.String(length=36), nullable=True),
         sa.Column("catalog_id", sa.String(length=36), nullable=False),
@@ -149,7 +149,7 @@ def upgrade() -> None:
         "documents",
         sa.Column("id", sa.String(length=36), nullable=False),
         sa.Column("name", sa.String(length=50), nullable=False),
-        sa.Column("file", sa.String(length=250), nullable=False),
+        sa.Column("file", sa.String(length=255), nullable=False),
         sa.Column("link", sa.String(length=255), nullable=True),
         sa.Column("is_active", sa.Boolean(), nullable=False),
         sa.Column("category_id", sa.BigInteger(), nullable=True),
@@ -177,10 +177,20 @@ def upgrade() -> None:
         "specialists_certificates",
         sa.Column("id", sa.String(length=36), nullable=False),
         sa.Column("name", sa.String(length=250), nullable=False),
-        sa.Column("file", sa.String(length=250), nullable=False),
+        sa.Column("file", sa.String(length=255), nullable=False),
         sa.Column("specialist_id", sa.String(length=36), nullable=False),
         sa.ForeignKeyConstraint(["specialist_id"], ["specialists.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
+    )
+    op.create_table(
+        "specialists_services",
+        sa.Column("price", sa.Integer(), nullable=False),
+        sa.Column("is_active", sa.Boolean(), nullable=False),
+        sa.Column("service_id", sa.String(length=36), nullable=False),
+        sa.Column("specialist_id", sa.String(length=36), nullable=False),
+        sa.ForeignKeyConstraint(["service_id"], ["services.id"], ondelete="CASCADE"),
+        sa.ForeignKeyConstraint(["specialist_id"], ["specialists.id"], ondelete="CASCADE"),
+        sa.PrimaryKeyConstraint("service_id", "specialist_id"),
     )
     op.create_table(
         "specializations_specialists_rel",
@@ -205,28 +215,21 @@ def upgrade() -> None:
         sa.Column("tags", sa.String(length=100), nullable=True),
         sa.Column("short_description", sa.String(length=255), nullable=False),
         sa.Column("description", sa.String(length=255), nullable=False),
-        sa.Column("photo", sa.String(length=250), nullable=False),
+        sa.Column("photo", sa.String(length=255), nullable=False),
         sa.Column("is_active", sa.Boolean(), nullable=False),
         sa.Column("office_id", sa.BigInteger(), nullable=False),
         sa.ForeignKeyConstraint(["office_id"], ["offices.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
-    )
-    op.create_foreign_key(
-        None, "specialists_services", "services", ["service_id"], ["id"], ondelete="CASCADE"
-    )
-    op.create_foreign_key(
-        None, "specialists_services", "specialists", ["specialist_id"], ["id"], ondelete="CASCADE"
     )
     # ### end Alembic commands ###
 
 
 def downgrade() -> None:
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_constraint(None, "specialists_services", type_="foreignkey")
-    op.drop_constraint(None, "specialists_services", type_="foreignkey")
     op.drop_table("departments")
     op.drop_table("categories_services_rel")
     op.drop_table("specializations_specialists_rel")
+    op.drop_table("specialists_services")
     op.drop_table("specialists_certificates")
     op.drop_table("offices")
     op.drop_table("documents")

@@ -33,4 +33,4 @@ class PromotionsAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [PromotionSchema.from_orm(row) for row in rows.scalars()]
+            return [PromotionSchema.model_validate(row) for row in rows.scalars()]

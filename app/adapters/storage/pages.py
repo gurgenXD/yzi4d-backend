@@ -31,7 +31,7 @@ class PagesAdapter:
             row = await session.execute(query)
 
             try:
-                pages = PageSchema.from_orm(row.one()[0])
+                pages = PageSchema.model_validate(row.one()[0])
             except NoResultFound as exc:
                 message = "Страница не найдена."
                 raise NotFoundError(message) from exc

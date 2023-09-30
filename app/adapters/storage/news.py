@@ -29,7 +29,7 @@ class NewsAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [NewsSchema.from_orm(row) for row in rows.scalars()]
+            return [NewsSchema.model_validate(row) for row in rows.scalars()]
 
     async def get(self, id: int) -> "NewsSchema":
         """Получить новость."""
@@ -39,7 +39,7 @@ class NewsAdapter:
             row = await session.execute(query)
 
             try:
-                news = NewsSchema.from_orm(row.one()[0])
+                news = NewsSchema.model_validate(row.one()[0])
             except NoResultFound as exc:
                 message = f"Новость с {id=} не найдена."
                 raise NotFoundError(message) from exc
