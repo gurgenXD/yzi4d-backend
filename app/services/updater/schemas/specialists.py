@@ -51,3 +51,15 @@ class SourceSpecialistSchema(BaseModel):
     def validate_is_active(cls, v):
         """Активный специалист."""
         return not v
+
+
+class SpecialistImageSchema(BaseModel):
+    """Схема фотографии специалиста."""
+
+    data: str | None = Field(alias="ImageFoto")
+
+    @field_validator("data", mode="before")
+    @classmethod
+    def empty_str_to_none(cls, v) -> str | None:
+        """Перевести пустую строку в None."""
+        return None if v == "" else v

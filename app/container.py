@@ -59,12 +59,7 @@ class Container(DeclarativeContainer):
     )
 
     repo_updater_service: Singleton["RepoUpdaterService"] = Singleton(
-        RepoUpdaterService,
-        source_adapter.provided,
-        specialists_adapter.provided,
-        updater_adapter.provided,
-        services_adapter.provided,
-        logger.provided,
+        RepoUpdaterService, source_adapter.provided, updater_adapter.provided, logger.provided
     )
 
 

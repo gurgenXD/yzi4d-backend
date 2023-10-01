@@ -36,7 +36,7 @@ class UpdatesAdmin(ModelView, model=Update):
     column_formatters = {"status": format_status}
     column_formatters_detail = {"status": format_status}
 
-    column_list = ("id", "start_update", "end_update", "duration", "status")
+    column_list = ("id", "start_update", "end_update", "duration", "data_type", "status")
     column_labels = {
         "id": "ID",
         "status": "Status",
@@ -44,6 +44,7 @@ class UpdatesAdmin(ModelView, model=Update):
         "end_update": "End",
         "duration": "Duration",
         "error_log": "Errors",
+        "data_type": "Data type",
     }
     column_default_sort = [("start_update", True)]
     column_type_formatters = {

@@ -3,12 +3,11 @@ from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, ClassVar
 
-from sqlalchemy import update, or_, select, delete
-from sqlalchemy.dialects.postgresql import insert as pg_insert
+from sqlalchemy import or_, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import contains_eager
 
-from app.adapters.storage.models import Specialist, Specialization, Certificate, specializations_specialists_table
+from app.adapters.storage.models import Specialist, Specialization
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
@@ -17,8 +16,6 @@ from app.services.schemas.specialists import SpecialistSchema
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
-
-    from app.adapters.source import SourceSpecialistSchema
 
 
 @dataclass
@@ -29,8 +26,6 @@ class SpecialistsAdapter:
 
     _specialist: ClassVar = Specialist
     _specialization: ClassVar = Specialization
-    _certificate: ClassVar = Certificate
-    _relations: ClassVar = specializations_specialists_table
 
     async def get_paginated(
         self,
@@ -112,45 +107,3 @@ class SpecialistsAdapter:
                 raise NotFoundError(message) from exc
 
         return specialist
-
-    async def create_or_update(self, data: list["SourceSpecialistSchema"]) -> None:
-        """Создание или обновление специалистов и специальностей."""
-        async with self._session_factory() as session:
-            await session.execute(update(self._specialist).values(is_active=False))
-            await session.execute(update(self._specialization).values(is_active=False))
-
-            await session.execute(delete(self._relations))
-
-            for specialist in data:
-                specialist_id = (
-                    await session.execute(
-                        pg_insert(self._specialist)
-                        .values(specialist.model_dump(exclude={"specializations"}))
-                        .on_conflict_do_update(
-                            index_elements=(self._specialist.guid,),
-                            set_=specialist.model_dump(exclude={"specializations", "guid"}),
-                        )
-                    )
-                ).inserted_primary_key[0]
-
-                for specialization in specialist.specializations:
-                    specialization_id = (
-                        await session.execute(
-                            pg_insert(self._specialization)
-                            .values(specialization.model_dump())
-                            .on_conflict_do_update(
-                                index_elements=(self._specialization.guid,),
-                                set_=specialization.model_dump(exclude={"guid"}),
-                            )
-                        )
-                    ).inserted_primary_key[0]
-
-                    await session.execute(
-                        pg_insert(self._relations)
-                        .values(specialization_id=specialization_id, specialist_id=specialist_id)
-                        .on_conflict_do_nothing(
-                            index_elements=(self._relations.c["specialization_id"], self._relations.c["specialist_id"])
-                        )
-                    )
-
-                await session.flush()

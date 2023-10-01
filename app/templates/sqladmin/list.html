@@ -7,7 +7,10 @@
       <div class="ms-auto">
         {% if model_view.update_button %}
             <div class="ms-3 d-inline-block">
-                <a href="/api/v1/updates" class="btn btn-success">Update data</a>
+                <a href="/api/v1/updates/data" class="btn btn-success">Update data</a>
+            </div>
+            <div class="ms-3 d-inline-block">
+                <a href="/api/v1/updates/images" class="btn btn-info">Update images</a>
             </div>
         {% endif %}
         {% if model_view.can_export %}

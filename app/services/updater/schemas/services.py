@@ -12,16 +12,6 @@ class ServicePriceSchema(BaseModel):
     price: int = Field(alias="Price")
     is_active: bool = True
 
-    # FIXME: Удалить костыль
-    @field_validator("price", mode="before")
-    @classmethod
-    def validate_price(cls, v) -> int:
-        """Валидировать цену."""
-        try:
-            return int(v)
-        except ValueError:
-            return 0
-
 
 class ServiceExtSchema(BaseModel):
     """Расширенная схема услуги."""
@@ -47,11 +37,11 @@ class CatalogItemSchema(BaseModel):
 
     guid: str = Field(alias="Guid1C")
     name: str = Field(alias="CatalogName")
-    parent_id: str | None = Field(alias="ParentGuid1C")
+    parent_guid: str | None = Field(alias="ParentGuid1C")
     services: list[ServiceSchema] = Field(alias="ProductList")
     is_active: bool = True
 
-    @field_validator("parent_id", mode="before")
+    @field_validator("parent_guid", mode="before")
     @classmethod
     def empty_str_to_none(cls, v) -> str | None:
         """Перевести пустую строку в None."""

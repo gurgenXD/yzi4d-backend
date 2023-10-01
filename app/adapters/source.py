@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import httpx
 
 from app.services.updater.schemas.services import CatalogSchema, CatalogItemSchema, ServiceExtSchema
-from app.services.updater.schemas.specialists import SourceSpecialistSchema
+from app.services.updater.schemas.specialists import SourceSpecialistSchema, SpecialistImageSchema
 
 
 @dataclass
@@ -40,3 +40,11 @@ class SourceAdapter:
             response = await client.get(f"{self._host}/product/GetExtProductList", timeout=self._timeout)
 
         return [ServiceExtSchema(**item) for item in response.json()]
+
+    async def get_image(self, guid: str) -> "SpecialistImageSchema":
+        """Получить фотографию."""
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                f"{self._host}/doctor/GetFotoDoctorById", params={"DoctorID": guid}, timeout=self._timeout
+            )
+            return SpecialistImageSchema(**response.json()[0])
