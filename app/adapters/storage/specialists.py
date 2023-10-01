@@ -11,7 +11,8 @@ from app.adapters.storage.models import Specialist, Specialization
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
-from app.services.schemas.specialists import SpecialistSchema
+from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
+from utils.template_filters.humanize import calculate_ages, humanize_age
 
 
 if TYPE_CHECKING:
@@ -30,6 +31,7 @@ class SpecialistsAdapter:
     async def get_paginated(
         self,
         *,
+        base_url: str,
         for_main: bool,
         can_online: bool = False,
         can_adult: bool = False,
@@ -66,7 +68,9 @@ class SpecialistsAdapter:
             )
 
         if specialization_id:
-            query = query.where(self._specialization.id == specialization_id)
+            query = query.join(self._specialist.specializations, isouter=True).where(
+                self._specialization.id == specialization_id
+            )
 
         async with self._session_factory() as session:
             paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
@@ -83,7 +87,12 @@ class SpecialistsAdapter:
             )
 
             rows = await session.execute(join_query)
-            specialists = [SpecialistSchema.model_validate(row) for row in rows.unique().scalars()]
+
+            specialists: list["SpecialistSchema"] = []
+            for row in rows.unique().scalars():
+                specialist = SpecialistSchema.model_validate(row)
+                specialist.photo = f"{base_url}media/specialists/{row.photo.name}" if row.photo else None
+                specialists.append(specialist)
 
             return Paginated[SpecialistSchema](data=specialists, paging=paging)
 
@@ -107,3 +116,12 @@ class SpecialistsAdapter:
                 raise NotFoundError(message) from exc
 
         return specialist
+
+    async def get_specializations(self) -> list["SpecializationSchema"]:
+        """Получить специальности."""
+        query = select(self._specialization).where(self._specialization.is_active.is_(True))
+
+        async with self._session_factory() as session:
+            rows = await session.execute(query)
+            specializations = [SpecializationSchema.model_validate(row) for row in rows.unique().scalars()]
+            return specializations

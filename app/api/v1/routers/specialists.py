@@ -1,8 +1,8 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Request
 
 from app.adapters.storage.pagination.schemas import Paginated
 from app.container import CONTAINER
-from app.services.schemas.specialists import SpecialistSchema
+from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
 
 
 TAG = "specialists"
@@ -13,8 +13,16 @@ PAGE_SIZE = 12
 router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 
+@router.get("/specializations")
+async def get_specializations() -> list[SpecializationSchema]:
+    """Получить специалистов."""
+    adapter = CONTAINER.specialists_adapter()
+    return await adapter.get_specializations()
+
+
 @router.get("")
 async def get_specialists(
+    request: Request,
     can_online: bool = False,
     can_adult: bool = False,
     can_child: bool = False,
@@ -26,6 +34,7 @@ async def get_specialists(
     adapter = CONTAINER.specialists_adapter()
 
     return await adapter.get_paginated(
+        base_url=request.base_url,
         for_main=False,
         can_online=can_online,
         can_adult=can_adult,

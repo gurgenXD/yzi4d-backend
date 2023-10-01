@@ -1,6 +1,7 @@
 from datetime import date
 
-from pydantic import BaseModel
+from pydantic import BaseModel, computed_field
+from utils.template_filters.humanize import calculate_ages, humanize_age
 
 
 class SpecializationSchema(BaseModel):
@@ -66,6 +67,12 @@ class SpecialistSchema(BaseModel):
         """Полное имя."""
         patronymic = f" {self.patronymic}" if self.patronymic else ""
         return f"{self.surname} {self.name}" + patronymic
+
+    @computed_field
+    @property
+    def experience(self) -> str:
+        """Стаж."""
+        return humanize_age(calculate_ages(self.start_work_date))
 
     class Config:
         from_attributes = True
