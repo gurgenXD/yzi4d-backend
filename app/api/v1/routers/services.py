@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
-from app.api.templates import TEMPLATES
+from app.adapters.storage.pagination.schemas import Paginated
 from app.container import CONTAINER
-
+from app.services.updater.types import CatalogPageType
+from app.services.schemas.services import CategorySchema, ServiceSchema
 
 TAG = "services"
 PREFIX = f"/{TAG}"
@@ -12,24 +13,23 @@ PAGE_SIZE = 10
 router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 
-@router.get("/category/{type_id}", response_class=HTMLResponse)
-async def get_services(request: Request, type_id: str, page: int = 1) -> "HTMLResponse":
+@router.get("/categories")
+async def get_categories(catalog_page: CatalogPageType) -> list[CategorySchema]:
+    """Получить категории услуг."""
+    services_adapter = CONTAINER.services_adapter()
+
+    return await services_adapter.get_categories(catalog_page)
+
+
+@router.get("/categories/{category_id}")
+async def get_services(category_id: int, page: int = 1) -> Paginated[ServiceSchema]:
     """Получить услуги."""
-    services_types_adapter = CONTAINER.services_types_adapter()
-
-    paginated = await services_types_adapter.get_paginated(type_id, page, PAGE_SIZE)
-    services_types = await services_types_adapter.get_all()
-
-    return TEMPLATES.TemplateResponse(  # type: ignore
-        "services.html",
-        {"request": request, "services": paginated.data, "paging": paginated.paging, "services_types": services_types},
-    )
+    services_adapter = CONTAINER.services_adapter()
+    return await services_adapter.get_paginated(category_id, page, PAGE_SIZE)
 
 
-@router.get("/{id}", response_class=HTMLResponse)
-async def get_service(request: Request, id: str) -> "HTMLResponse":
+@router.get("/{id}")
+async def get_service(id: str) -> "HTMLResponse":
     """Получить услугу."""
     adapter = CONTAINER.services_adapter()
-    service = await adapter.get(id=id)
-
-    return TEMPLATES.TemplateResponse("service.html", {"request": request, "service": service})  # type: ignore
+    return await adapter.get(id=id)

@@ -68,9 +68,6 @@ class Specialist(BaseModel):
         "Specialization", secondary=specializations_specialists_table, back_populates="specialists"
     )
     certificates: Mapped[list["Certificate"]] = relationship("Certificate", back_populates="specialist")
-    services: Mapped[list["Service"]] = relationship(
-        "Service", secondary="specialists_services", back_populates="specialists"
-    )
 
     def __str__(self) -> str:
         patronymic = f" {self.patronymic}" if self.patronymic else ""
@@ -109,3 +106,5 @@ class SpecialistService(BaseModel):
     specialist_id: Mapped[int] = mapped_column(
         sa.BigInteger(), sa.ForeignKey("specialists.id", ondelete="CASCADE"), primary_key=True
     )
+
+    service: Mapped["Service"] = relationship("Service", back_populates="specialists_services")

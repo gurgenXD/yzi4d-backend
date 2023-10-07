@@ -19,6 +19,7 @@ class ServiceAdmin(ModelView, model=Service):
     column_list = ("id", "name", "is_active")
     column_labels = {
         "id": "ID",
+        "guid": "GUID",
         "name": "Name",
         "short_description": "Short description",
         "description": "Description",
@@ -44,10 +45,12 @@ class ServiceCategoryAdmin(ModelView, model=Category):
     can_delete = False
     can_export = False
 
-    column_list = ("id", "name", "is_active")
+    column_list = ("id", "name", "parent", "catalog", "is_active")
     column_details_exclude_list = ("parent_id", "catalog_id")
     column_labels = {
         "id": "ID",
+        "guid": "GUID",
+        "icon": "Icon",
         "name": "Name",
         "is_active": "Is active",
         "children": "Children",
@@ -73,5 +76,12 @@ class ServiceCatalogAdmin(ModelView, model=Catalog):
     form_widget_args = {"name": {"readonly": True}, "is_active": {"readonly": True}, "categories": {"readonly": True}}
 
     column_list = ("id", "name", "page", "is_active")
-    column_labels = {"id": "ID", "name": "Name", "page": "Page", "is_active": "Is active", "categories": "Categories"}
+    column_labels = {
+        "id": "ID",
+        "guid": "GUID",
+        "name": "Name",
+        "page": "Page",
+        "is_active": "Is active",
+        "categories": "Categories",
+    }
     column_default_sort = [("name", False)]

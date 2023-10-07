@@ -10,7 +10,7 @@ from fastapi_storages import FileSystemStorage
 from utils.constants import MEDIA_DIR
 
 if TYPE_CHECKING:
-    from app.adapters.storage.models.specialists import Specialist
+    from app.adapters.storage.models.specialists import Specialist, SpecialistService
 
 
 categories_services_table = sa.Table(
@@ -39,8 +39,8 @@ class Service(BaseModel):
     categories: Mapped[list["Category"]] = relationship(
         "Category", secondary=categories_services_table, back_populates="services"
     )
-    specialists: Mapped[list["Specialist"]] = relationship(
-        "Specialist", secondary="specialists_services", back_populates="services"
+    specialists_services: Mapped[list["SpecialistService"]] = relationship(
+        "SpecialistService", back_populates="service"
     )
 
     def __str__(self) -> str:

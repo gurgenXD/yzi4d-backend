@@ -14,3 +14,11 @@ class UpdaterDataType(Enum):
 
     MAIN = "main"
     IMAGES = "images"
+
+
+class CatalogPageType(Enum):
+    """Тип страницы каталогов."""
+
+    SERVICES = "services"
+    ANALYZES = "analyzes"
+    MAIN = "main"
