@@ -3,6 +3,7 @@ from fastapi import APIRouter, status, Request
 from app.adapters.storage.pagination.schemas import Paginated
 from app.container import CONTAINER
 from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
+from app.services.schemas.services import ServiceSchema
 
 
 TAG = "specialists"
@@ -47,7 +48,14 @@ async def get_specialists(
 
 
 @router.get("/{id}", responses={status.HTTP_404_NOT_FOUND: {"detail": "Specialist not found"}})
-async def get_specialist(id: int) -> SpecialistSchema:
+async def get_specialist(request: Request, id: int) -> SpecialistSchema:
     """Получить специалиста."""
     adapter = CONTAINER.specialists_adapter()
-    return await adapter.get(id=id)
+    return await adapter.get(base_url=request.base_url, id=id)
+
+
+@router.get("/{id}/services", responses={status.HTTP_404_NOT_FOUND: {"detail": "Specialist not found"}})
+async def get_specialist_services(id: int, page: int = 1) -> Paginated[ServiceSchema]:
+    """Получить услуги специалиста."""
+    adapter = CONTAINER.specialists_adapter()
+    return await adapter.get_services(id=id, page=page, page_size=PAGE_SIZE)

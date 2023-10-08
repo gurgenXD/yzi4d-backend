@@ -7,11 +7,12 @@ from sqlalchemy import or_, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import contains_eager
 
-from app.adapters.storage.models import Specialist, Specialization
+from app.adapters.storage.models import Specialist, Specialization, Service, SpecialistService
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
 from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
+from app.services.schemas.services import ServiceSchema
 from utils.template_filters.humanize import calculate_ages, humanize_age
 
 
@@ -27,6 +28,8 @@ class SpecialistsAdapter:
 
     _specialist: ClassVar = Specialist
     _specialization: ClassVar = Specialization
+    _service: ClassVar = Service
+    _specialist_service: ClassVar = SpecialistService
 
     async def get_paginated(
         self,
@@ -96,7 +99,7 @@ class SpecialistsAdapter:
 
             return Paginated[SpecialistSchema](data=specialists, paging=paging)
 
-    async def get(self, id: int) -> "SpecialistSchema":
+    async def get(self, base_url: str, id: int) -> "SpecialistSchema":
         """Получить специалиста."""
         query = (
             select(self._specialist)
@@ -110,7 +113,9 @@ class SpecialistsAdapter:
             row = await session.execute(query)
 
             try:
-                specialist = SpecialistSchema.model_validate(row.unique().one()[0])
+                row_data = row.unique().one()[0]
+                specialist = SpecialistSchema.model_validate(row_data)
+                specialist.photo = f"{base_url}media/specialists/{row_data.photo.name}" if row_data.photo else None
             except NoResultFound as exc:
                 message = f"Специалист с {id=} не найден."
                 raise NotFoundError(message) from exc
@@ -125,3 +130,25 @@ class SpecialistsAdapter:
             rows = await session.execute(query)
             specializations = [SpecializationSchema.model_validate(row) for row in rows.unique().scalars()]
             return specializations
+
+    async def get_services(self, id: int, page: int, page_size: int) -> Paginated[ServiceSchema]:
+        """Получить услуги специалиста."""
+        query = (
+            select(
+                self._service.id, self._service.name, self._service.short_description, self._specialist_service.price
+            )
+            .join(self._specialist_service)
+            .where(
+                self._specialist_service.specialist_id == id,
+                self._service.is_active.is_(True),
+                self._specialist_service.is_active.is_(True),
+            )
+        )
+
+        async with self._session_factory() as session:
+            paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
+
+            rows = await session.execute(paginated_query)
+            services = [ServiceSchema.model_validate(row) for row in rows.unique().all()]
+
+            return Paginated[ServiceSchema](data=services, paging=paging)

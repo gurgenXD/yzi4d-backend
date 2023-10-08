@@ -76,3 +76,13 @@ class SpecialistSchema(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class SpecialistServiceSchema(BaseModel):
+    """Схема услуги специалиста."""
+
+    name: str
+    path: str
+
+    class Config:
+        from_attributes = True
