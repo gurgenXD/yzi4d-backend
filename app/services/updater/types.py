@@ -16,7 +16,7 @@ class UpdaterDataType(Enum):
     IMAGES = "images"
 
 
-class CatalogPageType(Enum):
+class CatalogType(Enum):
     """Тип страницы каталогов."""
 
     SERVICES = "services"

@@ -6,6 +6,8 @@ class ServiceSchema(BaseModel):
 
     id: int
     name: str
+    category_id: int
+    category_name: str
     short_description: str | None
     price: int
     old_price: int | None = None
@@ -14,21 +16,11 @@ class ServiceSchema(BaseModel):
         from_attributes = True
 
 
-class ServiceTypeSchema(BaseModel):
-    """Схема категории услуг."""
+class ServiceExtendedSchema(ServiceSchema):
+    """Схема расширенной услуги."""
 
-    id: str
-    name: str
-    on_main: bool
-
-    class Config:
-        from_attributes = True
-
-
-class ServiceWithTypeSchema(ServiceSchema):
-    """Схема связи категории услуг с услугой."""
-
-    service_type: ServiceTypeSchema
+    description: str | None
+    preparation: str | None
 
     class Config:
         from_attributes = True

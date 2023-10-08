@@ -4,6 +4,7 @@ from app.adapters.storage.pagination.schemas import Paginated
 from app.container import CONTAINER
 from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
 from app.services.schemas.services import ServiceSchema
+from app.services.updater.types import CatalogType
 
 
 TAG = "specialists"
@@ -47,15 +48,15 @@ async def get_specialists(
     )
 
 
-@router.get("/{id}", responses={status.HTTP_404_NOT_FOUND: {"detail": "Specialist not found"}})
-async def get_specialist(request: Request, id: int) -> SpecialistSchema:
+@router.get("/{item_id}", responses={status.HTTP_404_NOT_FOUND: {"detail": "Specialist not found"}})
+async def get_specialist(request: Request, item_id: int) -> SpecialistSchema:
     """Получить специалиста."""
     adapter = CONTAINER.specialists_adapter()
-    return await adapter.get(base_url=request.base_url, id=id)
+    return await adapter.get(base_url=request.base_url, item_id=item_id)
 
 
-@router.get("/{id}/services", responses={status.HTTP_404_NOT_FOUND: {"detail": "Specialist not found"}})
-async def get_specialist_services(id: int, page: int = 1) -> Paginated[ServiceSchema]:
+@router.get("/{item_id}/{catalog_page}", responses={status.HTTP_404_NOT_FOUND: {"detail": "Specialist not found"}})
+async def get_specialist_services(item_id: int, catalog_page: CatalogType, page: int = 1) -> Paginated[ServiceSchema]:
     """Получить услуги специалиста."""
     adapter = CONTAINER.specialists_adapter()
-    return await adapter.get_services(id=id, page=page, page_size=PAGE_SIZE)
+    return await adapter.get_services(item_id=item_id, catalog_page=catalog_page, page=page, page_size=PAGE_SIZE)

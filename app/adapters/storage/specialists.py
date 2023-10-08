@@ -1,19 +1,19 @@
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING
 
 from sqlalchemy import or_, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import contains_eager
 
-from app.adapters.storage.models import Specialist, Specialization, Service, SpecialistService
+from app.adapters.storage.models import Specialist, Specialization, Service, SpecialistService, Category, Catalog
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
 from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
 from app.services.schemas.services import ServiceSchema
-from utils.template_filters.humanize import calculate_ages, humanize_age
+from app.services.updater.types import CatalogType
 
 
 if TYPE_CHECKING:
@@ -25,11 +25,6 @@ class SpecialistsAdapter:
     """Адаптер для доступа к данным специалистов."""
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
-
-    _specialist: ClassVar = Specialist
-    _specialization: ClassVar = Specialization
-    _service: ClassVar = Service
-    _specialist_service: ClassVar = SpecialistService
 
     async def get_paginated(
         self,
@@ -45,48 +40,39 @@ class SpecialistsAdapter:
         page_size: int = 1,
     ) -> Paginated[SpecialistSchema]:
         """Получить всех активных специалистов."""
-        query = (
-            select(self._specialist.id).where(self._specialist.is_active.is_(True)).order_by(self._specialist.surname)
-        )
+        query = select(Specialist.id).order_by(Specialist.surname)
 
         if for_main:
-            query = query.where(self._specialist.on_main.is_(True))
+            query = query.where(Specialist.on_main.is_(True))
 
         if can_online:
-            query = query.where(self._specialist.can_online.is_(True))
+            query = query.where(Specialist.can_online.is_(True))
 
         if can_adult:
-            query = query.where(self._specialist.can_adult.is_(True))
+            query = query.where(Specialist.can_adult.is_(True))
 
         if can_child:
-            query = query.where(self._specialist.can_child.is_(True))
+            query = query.where(Specialist.can_child.is_(True))
 
         if search_query:
             search_query = search_query.strip()
             query = query.where(
-                or_(
-                    self._specialist.surname.ilike(f"%{search_query}%"),
-                    self._specialist.name.ilike(f"%{search_query}%"),
-                )
+                or_(Specialist.surname.ilike(f"%{search_query}%"), Specialist.name.ilike(f"%{search_query}%"))
             )
 
         if specialization_id:
-            query = query.join(self._specialist.specializations, isouter=True).where(
-                self._specialization.id == specialization_id
-            )
+            query = query.join(Specialist.specializations, isouter=True).where(Specialization.id == specialization_id)
 
         async with self._session_factory() as session:
             paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
 
             subquery = paginated_query.subquery()
             join_query = (
-                select(self._specialist)
-                .join(subquery, self._specialist.id == subquery.c.id)
-                .join(self._specialist.specializations, isouter=True)
-                .join(self._specialist.certificates, isouter=True)
-                .options(
-                    contains_eager(self._specialist.specializations), contains_eager(self._specialist.certificates)
-                )
+                select(Specialist)
+                .join(subquery, Specialist.id == subquery.c.id)
+                .join(Specialist.specializations, isouter=True)
+                .join(Specialist.certificates, isouter=True)
+                .options(contains_eager(Specialist.specializations), contains_eager(Specialist.certificates))
             )
 
             rows = await session.execute(join_query)
@@ -99,14 +85,14 @@ class SpecialistsAdapter:
 
             return Paginated[SpecialistSchema](data=specialists, paging=paging)
 
-    async def get(self, base_url: str, id: int) -> "SpecialistSchema":
+    async def get(self, base_url: str, item_id: int) -> "SpecialistSchema":
         """Получить специалиста."""
         query = (
-            select(self._specialist)
-            .join(self._specialist.specializations, isouter=True)
-            .join(self._specialist.certificates, isouter=True)
-            .options(contains_eager(self._specialist.specializations), contains_eager(self._specialist.certificates))
-            .where(self._specialist.id == id, self._specialist.is_active.is_(True))
+            select(Specialist)
+            .join(Specialist.specializations, isouter=True)
+            .join(Specialist.certificates, isouter=True)
+            .options(contains_eager(Specialist.specializations), contains_eager(Specialist.certificates))
+            .where(Specialist.id == item_id)
         )
 
         async with self._session_factory() as session:
@@ -117,32 +103,38 @@ class SpecialistsAdapter:
                 specialist = SpecialistSchema.model_validate(row_data)
                 specialist.photo = f"{base_url}media/specialists/{row_data.photo.name}" if row_data.photo else None
             except NoResultFound as exc:
-                message = f"Специалист с {id=} не найден."
+                message = f"Специалист с {item_id=} не найден."
                 raise NotFoundError(message) from exc
 
         return specialist
 
     async def get_specializations(self) -> list["SpecializationSchema"]:
         """Получить специальности."""
-        query = select(self._specialization).where(self._specialization.is_active.is_(True))
+        query = select(Specialization)
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
             specializations = [SpecializationSchema.model_validate(row) for row in rows.unique().scalars()]
             return specializations
 
-    async def get_services(self, id: int, page: int, page_size: int) -> Paginated[ServiceSchema]:
+    async def get_services(
+        self, item_id: int, catalog_page: CatalogType, page: int, page_size: int
+    ) -> Paginated[ServiceSchema]:
         """Получить услуги специалиста."""
         query = (
             select(
-                self._service.id, self._service.name, self._service.short_description, self._specialist_service.price
+                Service.id,
+                Service.name,
+                Service.short_description,
+                SpecialistService.price,
+                Category.id.label("category_id"),
+                Category.name.label("category_name"),
             )
-            .join(self._specialist_service)
-            .where(
-                self._specialist_service.specialist_id == id,
-                self._service.is_active.is_(True),
-                self._specialist_service.is_active.is_(True),
-            )
+            .select_from(Service)
+            .join(SpecialistService)
+            .join(Service.categories)
+            .join(Catalog)
+            .where(SpecialistService.specialist_id == item_id, Catalog.page == catalog_page.value)
         )
 
         async with self._session_factory() as session:
