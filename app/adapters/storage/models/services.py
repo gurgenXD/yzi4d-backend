@@ -10,7 +10,7 @@ from fastapi_storages import FileSystemStorage
 from utils.constants import MEDIA_DIR
 
 if TYPE_CHECKING:
-    from app.adapters.storage.models.specialists import Specialist, SpecialistService
+    from app.adapters.storage.models.specialists import SpecialistService
 
 
 categories_services_table = sa.Table(

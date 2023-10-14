@@ -10,6 +10,8 @@ class ServiceAdmin(ModelView, model=Service):
     name_plural = "Services"
     category = "Services"
     icon = "fa-solid fa-syringe"
+    page_size = 20
+    page_size_options = [20, 50, 100]
 
     can_edit = False
     can_create = False
@@ -30,6 +32,7 @@ class ServiceAdmin(ModelView, model=Service):
         "categories": "Categories",
     }
     column_default_sort = [("name", False)]
+    column_searchable_list = ["name", "guid"]
 
 
 class ServiceCategoryAdmin(ModelView, model=Category):

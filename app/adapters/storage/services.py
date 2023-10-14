@@ -30,7 +30,12 @@ class ServicesAdapter:
         query = (
             select(Category.id, Category.name)
             .join(Catalog)
-            .where(Catalog.page == catalog_type.value, Category.parent_id.is_(None))
+            .where(
+                Catalog.page == catalog_type.value,
+                Category.parent_id.is_(None),
+                Category.is_active.is_(True),
+                Catalog.is_active.is_(True),
+            )
         )
 
         async with self._session_factory() as session:
@@ -43,7 +48,7 @@ class ServicesAdapter:
         """Получить услугу."""
         max_subquery = (
             select(func.max(SpecialistService.price))
-            .where(SpecialistService.service_id == Service.id)
+            .where(SpecialistService.service_id == Service.id, SpecialistService.is_active.is_(True))
             .as_scalar()
             .label("price")
         )
@@ -62,7 +67,14 @@ class ServicesAdapter:
             .select_from(Service)
             .join(Service.categories)
             .join(Catalog)
-            .where(Service.id == item_id, Category.id == category_id, Catalog.page == catalog_type.value)
+            .where(
+                Service.id == item_id,
+                Category.id == category_id,
+                Catalog.page == catalog_type.value,
+                Service.is_active.is_(True),
+                Catalog.is_active.is_(True),
+                Category.is_active.is_(True),
+            )
         )
 
         async with self._session_factory() as session:
@@ -71,7 +83,7 @@ class ServicesAdapter:
             try:
                 service = ServiceExtendedSchema.model_validate(row.one())
             except NoResultFound as exc:
-                message = f"Услуга с {service_id=} не найден."
+                message = f"Услуга с {item_id=} не найден."
                 raise NotFoundError(message) from exc
 
         return service
@@ -99,7 +111,13 @@ class ServicesAdapter:
             .select_from(Service)
             .join(Service.categories)
             .join(Catalog)
-            .where(Category.id == category_id, Catalog.page == catalog_type.value)
+            .where(
+                Category.id == category_id,
+                Catalog.page == catalog_type.value,
+                Service.is_active.is_(True),
+                Catalog.is_active.is_(True),
+                Category.is_active.is_(True),
+            )
         )
 
         async with self._session_factory() as session:

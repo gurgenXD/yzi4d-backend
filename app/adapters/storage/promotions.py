@@ -2,7 +2,7 @@ from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING
 
 from sqlalchemy import select
 
@@ -20,14 +20,12 @@ class PromotionsAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    _promotion: ClassVar = Promotion
-
     async def get_all(self, *, for_main: bool) -> list["PromotionSchema"]:
         """Получить все активные акции."""
-        query = select(self._promotion).where(self._promotion.date_end >= datetime.now(tz=timezone.utc).date())
+        query = select(Promotion).where(Promotion.date_end >= datetime.now(tz=timezone.utc).date())
 
         if for_main:
-            query = query.where(self._promotion.on_main.is_(True))
+            query = query.where(Promotion.on_main.is_(True))
 
         async with self._session_factory() as session:
             rows = await session.execute(query)

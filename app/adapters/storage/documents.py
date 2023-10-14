@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING
 
 from sqlalchemy import select
 
@@ -19,11 +19,9 @@ class DocumentAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    _document: ClassVar = Document
-
     async def get_all(self) -> list["DocumentSchema"]:
         """Получить все активные лицензии."""
-        query = select(self._document).where(self._document.is_active.is_(True))
+        query = select(Document).where(Document.is_active.is_(True))
 
         async with self._session_factory() as session:
             rows = await session.execute(query)

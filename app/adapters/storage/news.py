@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING
 
 from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
@@ -21,11 +21,9 @@ class NewsAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    _news: ClassVar = News
-
     async def get_all(self) -> list["NewsSchema"]:
         """Получить все активные новости."""
-        query = select(self._news).where(self._news.is_active.is_(True))
+        query = select(News).where(News.is_active.is_(True))
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
@@ -33,7 +31,7 @@ class NewsAdapter:
 
     async def get(self, id: int) -> "NewsSchema":
         """Получить новость."""
-        query = select(self._news).where(self._news.id == id, self._news.is_active.is_(True))
+        query = select(News).where(News.id == id, News.is_active.is_(True))
 
         async with self._session_factory() as session:
             row = await session.execute(query)

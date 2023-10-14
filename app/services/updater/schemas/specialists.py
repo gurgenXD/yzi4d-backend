@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, computed_field
 
 
 class SpecializationSchema(BaseModel):
@@ -39,18 +39,18 @@ class SourceSpecialistSchema(BaseModel):
     start_work_date: datetime = Field(alias="GetStartedDate")
     description: str = Field(alias="Description")
     short_description: str = Field(alias="ShortDescription")
-    is_active: bool = Field(alias="Hide")
+    is_hidden: bool = Field(alias="Hide")
 
     education: list[EducationSchema] = Field(alias="EduList")
     titles: list[TitleSchema] = Field(alias="AcademicDegreeList")
 
     specializations: list[SpecializationSchema] = Field(alias="SpecList")
 
-    @field_validator("is_active")
-    @classmethod
-    def validate_is_active(cls, v):
-        """Активный специалист."""
-        return not v
+    @computed_field
+    @property
+    def is_active(self) -> bool:
+        """Активность специалиста."""
+        return not self.is_hidden
 
 
 class SpecialistImageSchema(BaseModel):

@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, ClassVar
+from typing import TYPE_CHECKING
 
 from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
@@ -21,11 +21,9 @@ class PagesAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    _page: ClassVar = Page
-
     async def get(self, slug: str) -> "PageSchema":
         """Получить статичную страницу."""
-        query = select(self._page).where(self._page.slug == slug, self._page.is_active.is_(True))
+        query = select(Page).where(Page.slug == slug, Page.is_active.is_(True))
 
         async with self._session_factory() as session:
             row = await session.execute(query)

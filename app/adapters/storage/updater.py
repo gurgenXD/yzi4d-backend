@@ -153,9 +153,10 @@ class UpdaterAdapter:
                 service_id = (
                     await session.execute(
                         pg_insert(self._service)
-                        .values(service.model_dump(exclude={"prices"}))
+                        .values(service.model_dump(exclude={"prices", "is_hidden"}))
                         .on_conflict_do_update(
-                            index_elements=(self._service.guid,), set_=service.model_dump(exclude={"prices", "guid"})
+                            index_elements=(self._service.guid,),
+                            set_=service.model_dump(exclude={"prices", "guid", "is_hidden"}),
                         )
                     )
                 ).inserted_primary_key[0]
@@ -205,10 +206,10 @@ class UpdaterAdapter:
                 specialist_id = (
                     await session.execute(
                         pg_insert(self._specialist)
-                        .values(specialist.model_dump(exclude={"specializations"}))
+                        .values(specialist.model_dump(exclude={"specializations", "is_hidden"}))
                         .on_conflict_do_update(
                             index_elements=(self._specialist.guid,),
-                            set_=specialist.model_dump(exclude={"specializations", "guid"}),
+                            set_=specialist.model_dump(exclude={"specializations", "guid", "is_hidden"}),
                         )
                     )
                 ).inserted_primary_key[0]

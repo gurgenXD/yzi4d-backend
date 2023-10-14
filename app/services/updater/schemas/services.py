@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, computed_field
 
 
 EMPTY_GUID = "00000000-0000-0000-0000-000000000000"
@@ -23,7 +23,13 @@ class ServiceExtSchema(BaseModel):
     description: str | None = Field(alias="Description")
     preparation: str | None = Field(alias="Preparation")
     prices: list[ServicePriceSchema] = Field(alias="ProductPrice")
-    is_active: bool = True
+    is_hidden: bool = Field(alias="Hide")
+
+    @computed_field
+    @property
+    def is_active(self) -> bool:
+        """Активность специалиста."""
+        return not self.is_hidden
 
 
 class ServiceSchema(BaseModel):

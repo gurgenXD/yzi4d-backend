@@ -61,7 +61,9 @@ class SpecialistsAdapter:
             )
 
         if specialization_id:
-            query = query.join(Specialist.specializations, isouter=True).where(Specialization.id == specialization_id)
+            query = query.join(Specialist.specializations, isouter=True).where(
+                Specialization.id == specialization_id, Specialization.is_active.is_(True)
+            )
 
         async with self._session_factory() as session:
             paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
@@ -73,6 +75,7 @@ class SpecialistsAdapter:
                 .join(Specialist.specializations, isouter=True)
                 .join(Specialist.certificates, isouter=True)
                 .options(contains_eager(Specialist.specializations), contains_eager(Specialist.certificates))
+                .where(Specialist.is_active.is_(True))
             )
 
             rows = await session.execute(join_query)
@@ -92,7 +95,7 @@ class SpecialistsAdapter:
             .join(Specialist.specializations, isouter=True)
             .join(Specialist.certificates, isouter=True)
             .options(contains_eager(Specialist.specializations), contains_eager(Specialist.certificates))
-            .where(Specialist.id == item_id)
+            .where(Specialist.id == item_id, Specialist.is_active.is_(True), Specialization.is_active.is_(True))
         )
 
         async with self._session_factory() as session:
@@ -110,7 +113,7 @@ class SpecialistsAdapter:
 
     async def get_specializations(self) -> list["SpecializationSchema"]:
         """Получить специальности."""
-        query = select(Specialization)
+        query = select(Specialization).where(Specialization.is_active.is_(True))
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
@@ -134,7 +137,14 @@ class SpecialistsAdapter:
             .join(SpecialistService)
             .join(Service.categories)
             .join(Catalog)
-            .where(SpecialistService.specialist_id == item_id, Catalog.page == catalog_page.value)
+            .where(
+                SpecialistService.specialist_id == item_id,
+                Catalog.page == catalog_page.value,
+                Service.is_active.is_(True),
+                SpecialistService.is_active.is_(True),
+                Category.is_active.is_(True),
+                Catalog.is_active.is_(True),
+            )
         )
 
         async with self._session_factory() as session:
