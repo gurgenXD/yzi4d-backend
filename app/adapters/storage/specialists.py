@@ -129,6 +129,8 @@ class SpecialistsAdapter:
                 Service.id,
                 Service.name,
                 Service.short_description,
+                Service.preparation,
+                Service.description,
                 SpecialistService.price,
                 Category.id.label("category_id"),
                 Category.name.label("category_name"),
