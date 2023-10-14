@@ -25,6 +25,7 @@ async def get_specializations() -> list[SpecializationSchema]:
 @router.get("")
 async def get_specialists(
     request: Request,
+    for_main: bool = False,
     can_online: bool = False,
     can_adult: bool = False,
     can_child: bool = False,
@@ -37,7 +38,7 @@ async def get_specialists(
 
     return await adapter.get_paginated(
         base_url=request.base_url,
-        for_main=False,
+        for_main=for_main,
         can_online=can_online,
         can_adult=can_adult,
         can_child=can_child,

@@ -11,6 +11,9 @@ class SpecializationSchema(BaseModel):
 
     is_active: bool = True
 
+    class Config:
+        frozen = True
+
 
 class EducationSchema(BaseModel):
     """Схема образования специалиста."""
@@ -44,7 +47,7 @@ class SourceSpecialistSchema(BaseModel):
     education: list[EducationSchema] = Field(alias="EduList")
     titles: list[TitleSchema] = Field(alias="AcademicDegreeList")
 
-    specializations: list[SpecializationSchema] = Field(alias="SpecList")
+    specializations: set[SpecializationSchema] = Field(alias="SpecList")
 
     @computed_field
     @property

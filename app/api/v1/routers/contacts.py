@@ -16,3 +16,10 @@ async def get_contacts() -> list[CitySchema]:
     """Получить контакты."""
     adapter = CONTAINER.contacts_adapter()
     return await adapter.get_cities()
+
+
+@router.get("/offices")
+async def get_offices() -> list[str]:
+    """Получить филиалы."""
+    adapter = CONTAINER.contacts_adapter()
+    return await adapter.get_offices()

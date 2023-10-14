@@ -1,24 +1,24 @@
 from pydantic import BaseModel
 
 
-class ServiceSchema(BaseModel):
+class StrictServiceSchema(BaseModel):
     """Схема услуги."""
 
     id: int
     name: str
-    category_id: int
-    category_name: str
     short_description: str | None
     price: int
-    old_price: int | None = None
 
     class Config:
         from_attributes = True
 
 
-class ServiceExtendedSchema(ServiceSchema):
-    """Схема расширенной услуги."""
+class ServiceSchema(StrictServiceSchema):
+    """Схема услуги."""
 
+    category_id: int
+    category_name: str
+    old_price: int | None = None
     description: str | None
     preparation: str | None
 
@@ -31,6 +31,8 @@ class CategorySchema(BaseModel):
 
     id: int
     name: str
+
+    services: list[StrictServiceSchema] | None = None
 
     class Config:
         from_attributes = True

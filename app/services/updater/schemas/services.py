@@ -37,6 +37,9 @@ class ServiceSchema(BaseModel):
 
     guid: str = Field(alias="Guid1C")
 
+    class Config:
+        frozen = True
+
 
 class CatalogItemSchema(BaseModel):
     """Схема элемента каталога."""
@@ -44,7 +47,7 @@ class CatalogItemSchema(BaseModel):
     guid: str = Field(alias="Guid1C")
     name: str = Field(alias="CatalogName")
     parent_guid: str | None = Field(alias="ParentGuid1C")
-    services: list[ServiceSchema] = Field(alias="ProductList")
+    services: set[ServiceSchema] = Field(alias="ProductList")
     is_active: bool = True
 
     @field_validator("parent_guid", mode="before")

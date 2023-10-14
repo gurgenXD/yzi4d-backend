@@ -32,3 +32,13 @@ class ContactsAdapter:
         async with self._session_factory() as session:
             rows = await session.execute(query)
             return [CitySchema.model_validate(row) for row in rows.unique().scalars()]
+
+    async def get_offices(self) -> list[str]:
+        """Получить филиалы."""
+        query = (
+            select(City.name, Office.address).join(Office).where(City.is_active.is_(True), Office.is_active.is_(True))
+        )
+
+        async with self._session_factory() as session:
+            rows = await session.execute(query)
+            return [f"г. {city}, {address}" for city, address in rows.all()]
