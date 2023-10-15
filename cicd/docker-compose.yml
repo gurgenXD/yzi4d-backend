@@ -50,6 +50,8 @@ services:
     ports:
       - "3000:3000"
     command: npm run start
+    depends_on:
+      - app
 
 #  prometheus:
 #    image: prom/prometheus:latest
