@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.api import admin, v1
-from utils.constants import MEDIA_DIR, STATIC_DIR
+from utils.constants import MEDIA_DIR
 
 
 def create_app() -> "FastAPI":
@@ -11,10 +11,6 @@ def create_app() -> "FastAPI":
 
     # Подключение админ-панели.
     admin.create_app(app)
-
-    # Подключение статики.
-    static_files = StaticFiles(directory=STATIC_DIR)
-    app.mount("/static", static_files, name="static")
 
     # Подключение медиа.
     media_files = StaticFiles(directory=MEDIA_DIR)

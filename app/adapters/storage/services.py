@@ -57,10 +57,7 @@ class ServicesAdapter:
                 CategorySchema(
                     id=key[0],
                     name=key[1],
-                    services=[
-                        StrictServiceSchema.model_validate(service)
-                        for service in services
-                    ],
+                    services=[StrictServiceSchema.model_validate(service) for service in services],
                 )
                 for key, services in groupby(rows, lambda row: (row.category_id, row.category_name))
             ]
