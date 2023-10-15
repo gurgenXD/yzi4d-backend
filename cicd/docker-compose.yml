@@ -44,7 +44,7 @@ services:
   frontend:
     build:
       context: ./yzi4d-frontend
-      dockerfile: ./cicd/frontend/Dockerfile
+      dockerfile: ./cicd/Dockerfile
     container_name: frontend
     restart: always
     ports:
