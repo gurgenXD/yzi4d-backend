@@ -16,7 +16,7 @@ services:
   app:
     build:
       context: ../
-      dockerfile: ./infrastructure/app/Dockerfile
+      dockerfile: ./cicd/app/Dockerfile
     container_name: app
     restart: always
     expose:
@@ -31,7 +31,7 @@ services:
   nginx:
     build:
       context: ../
-      dockerfile: ./infrastructure/nginx/Dockerfile
+      dockerfile: ./cicd/nginx/Dockerfile
     container_name: nginx
     restart: always
     volumes:

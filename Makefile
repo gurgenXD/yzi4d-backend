@@ -28,4 +28,4 @@ format: ## Отформатировать все файлы.
 	$(POETRY_RUN) ruff check . --fix
 
 docker-up: ## Запустить инфраструктуру для локальной разрабоки.
-	docker-compose -f ./cicd/docker-compose.local.yml up -d
+	docker compose -f ./cicd/docker-compose.yml up -d --build
