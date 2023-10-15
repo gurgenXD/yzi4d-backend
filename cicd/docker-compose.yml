@@ -38,8 +38,6 @@ services:
       - ./media:/opt/mnt/media
     ports:
       - "80:80"
-    depends_on:
-      - app
 
 #  prometheus:
 #    image: prom/prometheus:latest
