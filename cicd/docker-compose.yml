@@ -7,7 +7,7 @@ services:
     container_name: db
     restart: always
     env_file:
-      - ../.env
+      - ./yzi4d-backend/.env
     ports:
       - "5432:5432"
     volumes:
@@ -15,7 +15,7 @@ services:
 
   app:
     build:
-      context: ../
+      context: ./yzi4d-backend
       dockerfile: ./cicd/app/Dockerfile
     container_name: app
     restart: always
@@ -30,7 +30,7 @@ services:
 
   nginx:
     build:
-      context: ../
+      context: ./yzi4d-backend
       dockerfile: ./cicd/nginx/Dockerfile
     container_name: nginx
     restart: always
@@ -38,6 +38,18 @@ services:
       - ./media:/opt/mnt/media
     ports:
       - "80:80"
+    depends_on:
+      - frontend
+
+  frontend:
+    build:
+      context: ./yzi4d-frontend
+      dockerfile: ./cicd/frontend/Dockerfile
+    container_name: frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    command: npm run start
 
 #  prometheus:
 #    image: prom/prometheus:latest
