@@ -40,7 +40,7 @@ class SpecialistsAdapter:
         page_size: int = 1,
     ) -> Paginated[SpecialistSchema]:
         """Получить всех активных специалистов."""
-        query = select(Specialist.id).order_by(Specialist.surname)
+        query = select(Specialist.id).where(Specialist.is_active.is_(True)).order_by(Specialist.surname)
 
         if for_main:
             query = query.where(Specialist.on_main.is_(True))
@@ -75,7 +75,6 @@ class SpecialistsAdapter:
                 .join(Specialist.specializations, isouter=True)
                 .join(Specialist.certificates, isouter=True)
                 .options(contains_eager(Specialist.specializations), contains_eager(Specialist.certificates))
-                .where(Specialist.is_active.is_(True))
             )
 
             rows = await session.execute(join_query)

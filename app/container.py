@@ -6,7 +6,6 @@ from dependency_injector.providers import Callable, Object, Singleton
 from loguru import logger
 
 from app.adapters.source import SourceAdapter
-from app.adapters.storage.analyzes import AnalysisTypeAdapter, AnalyzesAdapter
 from app.adapters.storage.contacts import ContactsAdapter
 from app.adapters.storage.db import engine, session
 from app.adapters.storage.documents import DocumentAdapter
@@ -45,8 +44,6 @@ class Container(DeclarativeContainer):
     )
 
     specialists_adapter: Singleton["SpecialistsAdapter"] = Singleton(SpecialistsAdapter, session_ctx.provider)
-    analyzes_adapter: Singleton["AnalyzesAdapter"] = Singleton(AnalyzesAdapter, session_ctx.provider)
-    analysis_types_adapter: Singleton["AnalysisTypeAdapter"] = Singleton(AnalysisTypeAdapter, session_ctx.provider)
     services_adapter: Singleton["ServicesAdapter"] = Singleton(ServicesAdapter, session_ctx.provider)
     contacts_adapter: Singleton["ContactsAdapter"] = Singleton(ContactsAdapter, session_ctx.provider)
     news_adapter: Singleton["NewsAdapter"] = Singleton(NewsAdapter, session_ctx.provider)
