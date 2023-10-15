@@ -19,8 +19,8 @@ services:
       dockerfile: ./cicd/app/Dockerfile
     container_name: app
     restart: always
-    expose:
-      - 8080
+    ports:
+      - "8080:8080"
     volumes:
       - ./media:/opt/mnt/media
     command: >
