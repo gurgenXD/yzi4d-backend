@@ -24,3 +24,5 @@ class ServerSettings(BaseSettings):
     host: str
     # Port приложения.
     port: int
+    # Trusted IPs.
+    forwarded_allow_ips: list[str] = ["*"]

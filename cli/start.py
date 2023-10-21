@@ -12,4 +12,4 @@ def start() -> None:
 @start.command()
 def api() -> None:
     """Сервис API."""
-    uvicorn.run(**ServerSettings().dict())
+    uvicorn.run(**ServerSettings().model_dump())

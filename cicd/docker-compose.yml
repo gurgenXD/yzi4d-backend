@@ -3,21 +3,17 @@ version: "3"
 services:
 
   db:
-    environment:
-      - TZ=EU/Moscow
     image: postgres:16-alpine
     container_name: db
     restart: always
     env_file:
       - ./yzi4d-backend/.env
     ports:
-      - "5432"
+      - "5432:5432"
     volumes:
       - ./db/data:/var/lib/postgresql/data
 
   app:
-    environment:
-      - TZ=EU/Moscow
     build:
       context: ./yzi4d-backend
       dockerfile: ./cicd/app/Dockerfile
@@ -35,16 +31,14 @@ services:
       - traefik.enable=true
       - traefik.docker.network=proxy
       # HTTPS
-      - traefik.http.routers.yziswag.rule=Host(`swagger.yzi4d.ru`)
-      - traefik.http.routers.yziswag.entrypoints=websecure
-      - traefik.http.routers.yziswag.service=yziswag@docker
-      - traefik.http.routers.yziswag.tls=true
-      - traefik.http.routers.yziswag.tls.certresolver=le
-      - traefik.http.services.yziswag.loadbalancer.server.port=8080
+      - traefik.http.routers.swagger.rule=Host(`swagger.yzi4d.ru`)
+      - traefik.http.routers.swagger.entrypoints=websecure
+      - traefik.http.routers.swagger.service=swagger@docker
+      - traefik.http.routers.swagger.tls=true
+      - traefik.http.routers.swagger.tls.certresolver=le
+      - traefik.http.services.swagger.loadbalancer.server.port=8080
 
   nginx:
-    environment:
-      - TZ=EU/Moscow
     build:
       context: ./yzi4d-backend
       dockerfile: ./cicd/nginx/Dockerfile
@@ -61,16 +55,14 @@ services:
       - traefik.enable=true
       - traefik.docker.network=proxy
       # HTTPS
-      - traefik.http.routers.yzi.rule=Host(`yzi4d.ru`)
-      - traefik.http.routers.yzi.entrypoints=websecure
-      - traefik.http.routers.yzi.service=yzi@docker
-      - traefik.http.routers.yzi.tls=true
-      - traefik.http.routers.yzi.tls.certresolver=le
-      - traefik.http.services.yzi.loadbalancer.server.port=80
+      - traefik.http.routers.nginx.rule=Host(`yzi4d.ru`)
+      - traefik.http.routers.nginx.entrypoints=websecure
+      - traefik.http.routers.nginx.service=nginx@docker
+      - traefik.http.routers.nginx.tls=true
+      - traefik.http.routers.nginx.tls.certresolver=le
+      - traefik.http.services.nginx.loadbalancer.server.port=80
 
   frontend:
-    environment:
-      - TZ=EU/Moscow
     build:
       context: ./yzi4d-frontend
       dockerfile: ./cicd/Dockerfile
@@ -86,8 +78,6 @@ services:
     image: traefik:latest
     container_name: traefik
     restart: always
-    environment:
-      - TZ=EU/Moscow
     command:
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
