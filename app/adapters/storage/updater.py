@@ -221,5 +221,5 @@ class UpdaterAdapter:
     async def save_image(self, guid: str, image: "SpecialistImageSchema") -> None:
         """Сохранить фотографию."""
         async with self._session_factory() as session:
-            file = UploadFile(BytesIO(base64.b64decode(image.data)), filename=f"{guid}.jpg")
+            file = UploadFile(BytesIO(base64.b64decode(image.data)), filename=f"{guid}.jpg") if image.data else None
             await session.execute(update(Specialist).where(Specialist.guid == guid).values(photo=file))

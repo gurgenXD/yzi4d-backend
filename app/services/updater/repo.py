@@ -71,6 +71,4 @@ class RepoUpdaterService:
         """Обновить фотографии."""
         for guid in await self._updater.get_specialists_guids():
             image = await self._source.get_image(guid)
-
-            if image.data:
-                await self._updater.save_image(guid, image)
+            await self._updater.save_image(guid, image)
