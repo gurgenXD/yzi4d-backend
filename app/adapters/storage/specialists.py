@@ -75,6 +75,7 @@ class SpecialistsAdapter:
                 .join(Specialist.specializations, isouter=True)
                 .join(Specialist.certificates, isouter=True)
                 .options(contains_eager(Specialist.specializations), contains_eager(Specialist.certificates))
+                .order_by(Specialist.surname)
             )
 
             rows = await session.execute(join_query)
@@ -112,7 +113,7 @@ class SpecialistsAdapter:
 
     async def get_specializations(self) -> list["SpecializationSchema"]:
         """Получить специальности."""
-        query = select(Specialization).where(Specialization.is_active.is_(True))
+        query = select(Specialization).where(Specialization.is_active.is_(True)).order_by(Specialization.name)
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
