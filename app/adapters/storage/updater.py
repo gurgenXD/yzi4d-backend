@@ -8,6 +8,7 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 import base64
 from io import BytesIO
 from fastapi import UploadFile
+from PIL import Image
 
 from sqlalchemy import update, select, insert, delete
 
@@ -30,6 +31,9 @@ if TYPE_CHECKING:
 
     from app.services.updater.schemas.services import CatalogSchema, CatalogItemSchema, ServiceExtSchema
     from app.services.updater.schemas.specialists import SourceSpecialistSchema, SpecialistImageSchema
+
+
+IMAGE_WIDTH = 525
 
 
 @dataclass
@@ -220,6 +224,25 @@ class UpdaterAdapter:
 
     async def save_image(self, guid: str, image: "SpecialistImageSchema") -> None:
         """Сохранить фотографию."""
+        file = (
+            UploadFile(self._resize_image(BytesIO(base64.b64decode(image.data))), filename=f"{guid}.jpg")
+            if image.data
+            else None
+        )
+
         async with self._session_factory() as session:
-            file = UploadFile(BytesIO(base64.b64decode(image.data)), filename=f"{guid}.jpg") if image.data else None
             await session.execute(update(Specialist).where(Specialist.guid == guid).values(photo=file))
+
+    @staticmethod
+    def _resize_image(data: "BytesIO") -> "BytesIO":
+        """Изменить размер картинки."""
+        img = Image.open(data)
+        img = img.convert('RGB')
+        hsize = int((float(img.size[1]) * float(IMAGE_WIDTH / float(img.size[0]))))
+
+        img = img.resize((IMAGE_WIDTH, hsize), Image.Resampling.LANCZOS)
+
+        output = BytesIO()
+        img.save(output, format="JPEG")
+
+        return BytesIO(output.getvalue())

@@ -26,6 +26,7 @@ httpx = "0.25.0"
 fastapi-storages = "0.2.0"
 python-jose = "3.3.0"
 tzdata = "2023.3"
+pillow = "10.1.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "23.9.1"

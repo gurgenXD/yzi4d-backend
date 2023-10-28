@@ -9,7 +9,8 @@ from app.services.updater.types import CatalogType
 
 TAG = "specialists"
 PREFIX = f"/{TAG}"
-PAGE_SIZE = 12
+SPECIALISTS_PAGE_SIZE = 12
+SPECIALIST_SERVICES_PAGE_SIZE = 5
 
 
 router = APIRouter(prefix=PREFIX, tags=[TAG])
@@ -45,7 +46,7 @@ async def get_specialists(
         search_query=search_query,
         specialization_id=specialization_id,
         page=page,
-        page_size=PAGE_SIZE,
+        page_size=SPECIALISTS_PAGE_SIZE,
     )
 
 
@@ -60,4 +61,6 @@ async def get_specialist(request: Request, item_id: int) -> SpecialistSchema:
 async def get_specialist_services(item_id: int, catalog_page: CatalogType, page: int = 1) -> Paginated[ServiceSchema]:
     """Получить услуги специалиста."""
     adapter = CONTAINER.specialists_adapter()
-    return await adapter.get_services(item_id=item_id, catalog_page=catalog_page, page=page, page_size=PAGE_SIZE)
+    return await adapter.get_services(
+        item_id=item_id, catalog_page=catalog_page, page=page, page_size=SPECIALIST_SERVICES_PAGE_SIZE
+    )
