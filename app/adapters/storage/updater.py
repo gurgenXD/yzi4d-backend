@@ -190,7 +190,7 @@ class UpdaterAdapter:
                         .values(specialist.model_dump(exclude={"specializations", "is_hidden"}))
                         .on_conflict_do_update(
                             index_elements=(Specialist.guid,),
-                            set_=specialist.model_dump(exclude={"specializations", "guid", "is_hidden", "on_main"}),
+                            set_=specialist.model_dump(exclude={"specializations", "guid", "is_hidden"}),
                         )
                     )
                 ).inserted_primary_key[0]
@@ -237,7 +237,7 @@ class UpdaterAdapter:
     def _resize_image(data: "BytesIO") -> "BytesIO":
         """Изменить размер картинки."""
         img = Image.open(data)
-        img = img.convert('RGB')
+        img = img.convert("RGB")
         hsize = int((float(img.size[1]) * float(IMAGE_WIDTH / float(img.size[0]))))
 
         img = img.resize((IMAGE_WIDTH, hsize), Image.Resampling.LANCZOS)

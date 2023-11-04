@@ -38,7 +38,7 @@ class SourceSpecialistSchema(BaseModel):
     can_adult: bool = Field(alias="ReceptionAdult")
     can_child: bool = Field(alias="ReceptionChild")
     can_online: bool = False
-    on_main: bool = False
+    on_main: bool = Field(alias="ShowOnMain")
     start_work_date: datetime = Field(alias="GetStartedDate")
     description: str = Field(alias="Description")
     short_description: str = Field(alias="ShortDescription")
