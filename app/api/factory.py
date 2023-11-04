@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import admin, v1
 from utils.constants import MEDIA_DIR
@@ -8,6 +9,10 @@ from utils.constants import MEDIA_DIR
 def create_app() -> "FastAPI":
     """Создать приложение FastAPI."""
     app = FastAPI(title="Yzi4D", docs_url="/", redoc_url=None)
+
+    app.add_middleware(
+        CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"]
+    )
 
     # Подключение админ-панели.
     admin.create_app(app)
