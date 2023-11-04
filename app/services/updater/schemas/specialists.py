@@ -8,8 +8,7 @@ class SpecializationSchema(BaseModel):
 
     guid: str = Field(alias="SpecGuid1C")
     name: str = Field(alias="SpecName")
-
-    is_active: bool = True
+    is_active: bool = Field(alias="IsActive")
 
     class Config:
         frozen = True
