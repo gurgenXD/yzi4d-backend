@@ -204,9 +204,10 @@ class UpdaterAdapter:
                     specialization_id = (
                         await session.execute(
                             pg_insert(Specialization)
-                            .values(specialization.model_dump())
+                            .values(specialization.model_dump(exclude={"is_hidden"}))
                             .on_conflict_do_update(
-                                index_elements=(Specialization.guid,), set_=specialization.model_dump(exclude={"guid"})
+                                index_elements=(Specialization.guid,),
+                                set_=specialization.model_dump(exclude={"guid", "is_hidden"}),
                             )
                         )
                     ).inserted_primary_key[0]

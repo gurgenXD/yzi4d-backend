@@ -72,6 +72,7 @@ class ServiceCatalogAdmin(ModelView, model=Catalog):
     category = "Services"
     icon = "fa-solid fa-list"
 
+    can_edit = False
     can_create = False
     can_delete = False
     can_export = False

@@ -10,9 +10,6 @@ class PromotionsAdmin(ModelView, model=Promotion):
     name_plural = "Promotions"
     icon = "fa-solid fa-percent"
 
-    can_edit = False
-    can_create = False
-    can_delete = False
     can_export = False
 
     column_list = ("id", "name", "on_main", "date_end")

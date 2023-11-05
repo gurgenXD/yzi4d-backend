@@ -95,8 +95,8 @@ class SpecialistsAdapter:
         )
 
         async with self._session_factory() as session:
-            rows = await session.execute(query)
-            rand_specialists = random.sample(rows.unique().scalars().all(), limit)
+            rows = (await session.execute(query)).unique().scalars().all()
+            rand_specialists = random.sample(rows, limit) if len(rows) > limit else rows
 
             specialists: list["SpecialistSchema"] = []
             for row in rand_specialists:

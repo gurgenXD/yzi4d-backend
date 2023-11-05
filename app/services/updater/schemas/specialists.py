@@ -8,7 +8,13 @@ class SpecializationSchema(BaseModel):
 
     guid: str = Field(alias="SpecGuid1C")
     name: str = Field(alias="SpecName")
-    is_active: bool = Field(alias="IsActive")
+    is_hidden: bool = Field(alias="Hide")
+
+    @computed_field
+    @property
+    def is_active(self) -> bool:
+        """Активность специалиста."""
+        return not self.is_hidden
 
     class Config:
         frozen = True
