@@ -32,7 +32,7 @@ async def get_services(catalog_type: CatalogType, category_id: int, page: int = 
 
 
 @router.get("/{catalog_type}/categories/{category_id}/items/{item_id}")
-async def get_service(catalog_type: CatalogType, category_id: int, item_id: int) -> ServiceSchema:
+async def get_service(catalog_type: CatalogType, _category_id: int, item_id: int) -> ServiceSchema:
     """Получить услугу."""
     adapter = CONTAINER.services_adapter()
     category_id = await adapter.convert_category_id(item_id, catalog_type)

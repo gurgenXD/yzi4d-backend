@@ -26,7 +26,6 @@ async def get_specializations() -> list[SpecializationSchema]:
 @router.get("")
 async def get_specialists(
     request: Request,
-    for_main: bool = False,
     can_online: bool = False,
     can_adult: bool = False,
     can_child: bool = False,
@@ -39,7 +38,6 @@ async def get_specialists(
 
     return await adapter.get_paginated(
         base_url=request.base_url,
-        for_main=for_main,
         can_online=can_online,
         can_adult=can_adult,
         can_child=can_child,
@@ -48,6 +46,13 @@ async def get_specialists(
         page=page,
         page_size=SPECIALISTS_PAGE_SIZE,
     )
+
+
+@router.get("/shuffled")
+async def get_shuffled_specialists(request: Request) -> list[SpecialistSchema]:
+    """Получить специалистов на главную."""
+    adapter = CONTAINER.specialists_adapter()
+    return await adapter.get_shuffled(base_url=request.base_url, limit=SPECIALISTS_PAGE_SIZE)
 
 
 @router.get("/{item_id}", responses={status.HTTP_404_NOT_FOUND: {"detail": "Specialist not found"}})

@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import or_, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import contains_eager
+import random
 
 from app.adapters.storage.models import Specialist, Specialization, Service, SpecialistService, Category, Catalog
 from app.adapters.storage.pagination.query import get_query_with_meta
@@ -30,7 +31,6 @@ class SpecialistsAdapter:
         self,
         *,
         base_url: str,
-        for_main: bool,
         can_online: bool = False,
         can_adult: bool = False,
         can_child: bool = False,
@@ -41,9 +41,6 @@ class SpecialistsAdapter:
     ) -> Paginated[SpecialistSchema]:
         """Получить всех активных специалистов."""
         query = select(Specialist.id).where(Specialist.is_active.is_(True)).order_by(Specialist.surname)
-
-        if for_main:
-            query = query.where(Specialist.on_main.is_(True))
 
         if can_online:
             query = query.where(Specialist.can_online.is_(True))
@@ -87,6 +84,27 @@ class SpecialistsAdapter:
                 specialists.append(specialist)
 
             return Paginated[SpecialistSchema](data=specialists, paging=paging)
+
+    async def get_shuffled(self, *, base_url: str, limit: int) -> list["SpecialistSchema"]:
+        """Получить всех активных специалистов."""
+        query = (
+            select(Specialist)
+            .where(Specialist.is_active.is_(True), Specialist.on_main.is_(True), Specialist.photo.is_not(None))
+            .join(Specialist.specializations, isouter=True)
+            .options(contains_eager(Specialist.specializations))
+        )
+
+        async with self._session_factory() as session:
+            rows = await session.execute(query)
+            rand_specialists = random.sample(rows.unique().scalars().all(), limit)
+
+            specialists: list["SpecialistSchema"] = []
+            for row in rand_specialists:
+                specialist = SpecialistSchema(**row.__dict__)
+                specialist.photo = f"{base_url}media/specialists/{row.photo.name}"
+                specialists.append(specialist)
+
+            return specialists
 
     async def get(self, base_url: str, item_id: int) -> "SpecialistSchema":
         """Получить специалиста."""

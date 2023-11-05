@@ -34,6 +34,11 @@ if TYPE_CHECKING:
 
 
 IMAGE_WIDTH = 525
+CATALOG_MAP = {
+    "16d8d12d-cee7-11ed-9ef0-3085a9a9a68d": "analyzes",
+    "8d0be9eb-cedf-11ed-9ef0-3085a9a9a68d": "main",
+    "bf1bb5b0-ea88-11ed-aeb5-bcee7b98e67c": "services",
+}
 
 
 @dataclass
@@ -77,7 +82,7 @@ class UpdaterAdapter:
             for catalog in data:
                 await session.execute(
                     pg_insert(Catalog)
-                    .values(catalog.model_dump())
+                    .values(**catalog.model_dump(), page=CATALOG_MAP.get(catalog.guid))
                     .on_conflict_do_update(index_elements=(Catalog.guid,), set_=catalog.model_dump(exclude={"guid"}))
                 )
 

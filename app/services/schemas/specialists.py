@@ -60,7 +60,7 @@ class SpecialistSchema(BaseModel):
     can_child: bool
     can_online: bool
     specializations: list[SpecializationSchema]
-    certificates: list[SpecialistCertificateSchema] | None = None
+    certificates: list[SpecialistCertificateSchema] = []
 
     @property
     def full_name(self) -> str:
