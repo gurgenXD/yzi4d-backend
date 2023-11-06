@@ -17,6 +17,7 @@ class PromotionsAdmin(ModelView, model=Promotion):
         "id": "ID",
         "name": "Name",
         "sale": "Sale",
+        "sale_period": "Sale Period",
         "description": "Description",
         "date_start": "Date start",
         "date_end": "Date end",
