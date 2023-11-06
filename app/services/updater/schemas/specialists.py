@@ -13,7 +13,7 @@ class SpecializationSchema(BaseModel):
     @computed_field
     @property
     def is_active(self) -> bool:
-        """Активность специалиста."""
+        """Активность специальности."""
         return not self.is_hidden
 
     class Config:
