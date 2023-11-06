@@ -1,4 +1,4 @@
-"""Initial commit.
+"""Refactor promotions.
 
 Revision ID: 2297a981bce1
 Revises: 474c05a45c22

@@ -13,16 +13,9 @@ class DocumentAdmin(ModelView, model=Document):
 
     can_export = False
 
-    column_list = ("id", "name", "file", "link", "is_active")
+    column_list = ("id", "name", "link", "is_active")
     column_details_exclude_list = ("category_id",)
-    column_labels = {
-        "id": "ID",
-        "name": "Name",
-        "file": "File",
-        "link": "Link",
-        "is_active": "Is active",
-        "category": "Category",
-    }
+    column_labels = {"id": "ID", "name": "Name", "link": "Link", "is_active": "Is active", "category": "Category"}
 
 
 class DocumentCategoryAdmin(ModelView, model=DocumentCategory):
@@ -35,5 +28,5 @@ class DocumentCategoryAdmin(ModelView, model=DocumentCategory):
 
     can_export = False
 
-    column_list = ("id", "position", "is_active")
-    column_labels = {"id": "ID", "position": "Position", "is_active": "Is active"}
+    column_list = ("id", "name", "position", "is_active")
+    column_labels = {"id": "ID", "name": "Name", "position": "Position", "is_active": "Is active"}

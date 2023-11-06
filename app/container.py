@@ -47,7 +47,7 @@ class Container(DeclarativeContainer):
     services_adapter: Singleton["ServicesAdapter"] = Singleton(ServicesAdapter, session_ctx.provider)
     contacts_adapter: Singleton["ContactsAdapter"] = Singleton(ContactsAdapter, session_ctx.provider)
     news_adapter: Singleton["NewsAdapter"] = Singleton(NewsAdapter, session_ctx.provider)
-    license_adapter: Singleton["DocumentAdapter"] = Singleton(DocumentAdapter, session_ctx.provider)
+    documents_adapter: Singleton["DocumentAdapter"] = Singleton(DocumentAdapter, session_ctx.provider)
     pages_adapter: Singleton["PagesAdapter"] = Singleton(PagesAdapter, session_ctx.provider)
     promotions_adapter: Singleton["PromotionsAdapter"] = Singleton(PromotionsAdapter, session_ctx.provider)
     updater_adapter: Singleton["UpdaterAdapter"] = Singleton(UpdaterAdapter, session_ctx.provider)
