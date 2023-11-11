@@ -55,6 +55,7 @@ class SpecialistSchema(BaseModel):
     education: list[SpecialistEducationSchema]
     activity: str | None
     description: str | None
+    short_description: str | None
     titles: list[SpecialistTitleSchema]
     can_adult: bool
     can_child: bool
