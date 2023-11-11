@@ -83,7 +83,10 @@ class UpdaterAdapter:
                 await session.execute(
                     pg_insert(Catalog)
                     .values(**catalog.model_dump(), page=CATALOG_MAP.get(catalog.guid))
-                    .on_conflict_do_update(index_elements=(Catalog.guid,), set_=catalog.model_dump(exclude={"guid"}))
+                    .on_conflict_do_update(
+                        index_elements=(Catalog.guid,),
+                        set_={**catalog.model_dump(exclude={"guid"}), "page": CATALOG_MAP.get(catalog.guid)},
+                    )
                 )
 
     async def save_categories(self, catalog_guid: str, data: list["CatalogItemSchema"]) -> None:

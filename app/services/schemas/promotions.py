@@ -8,6 +8,7 @@ class PromotionSchema(BaseModel):
 
     name: str
     sale: str
+    sale_period: str
     description: str | None
     photo: str
     date_start: date

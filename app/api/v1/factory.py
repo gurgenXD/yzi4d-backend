@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.api.v1 import handlers
-from app.api.v1.routers import news, contacts, services, specialists, updates
+from app.api.v1.routers import news, contacts, services, specialists, updates, promotions, documents
 
 
 def create_app() -> "FastAPI":
@@ -17,5 +17,7 @@ def create_app() -> "FastAPI":
     app.include_router(news.router)
     app.include_router(services.router)
     app.include_router(updates.router)
+    app.include_router(promotions.router)
+    app.include_router(documents.router)
 
     return app

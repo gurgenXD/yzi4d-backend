@@ -17,9 +17,9 @@ class Promotion(BaseModel):
     __tablename__ = "promotions"
 
     id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
-    guid: Mapped[str] = mapped_column(sa.String(36), unique=True)
     name: Mapped[str] = mapped_column(sa.String(100))
     sale: Mapped[str] = mapped_column(sa.String(100))
+    sale_period: Mapped[str] = mapped_column(sa.String(100))
     description: Mapped[str | None] = mapped_column(sa.Text())
     photo: Mapped[str] = mapped_column(FileType(storage=FileSystemStorage(path=str(MEDIA_DIR / "promotions"))))
     date_start: Mapped[date]

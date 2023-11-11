@@ -99,12 +99,18 @@ class ServicesAdapter:
             return row.scalar()
 
     async def get_paginated(
-        self, category_id: int, catalog_type: CatalogType, page: int, page_size: int
+        self, category_id: int | None, catalog_type: CatalogType, page: int, page_size: int
     ) -> Paginated[ServiceSchema]:
         """Получить услуги по категории."""
-        query = self._service_query(catalog_type, category_id)
-
         async with self._session_factory() as session:
+            if category_id == -1:
+                if not (categories := await self.get_categories(catalog_type)):
+                    message = f"Категория услуги с {category_id=} не найдена."
+                    raise NotFoundError(message)
+
+                category_id = categories[0].id
+
+            query = self._service_query(catalog_type, category_id)
             paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
 
             rows = await session.execute(paginated_query)
