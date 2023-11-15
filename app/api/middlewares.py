@@ -9,10 +9,10 @@ if TYPE_CHECKING:
 class DelayMiddleware:
     """Задержки перед запросами для тестирования."""
 
-    def __init__(self, app: "ASGIApp", delay: int) -> None:
+    def __init__(self, app: "ASGIApp", delay: float) -> None:
         self._app = app
         self._delay = delay
 
     async def __call__(self, scope: "Scope", receive: "Receive", send: "Send"):
-        await asyncio.sleep(random.randint(0, self._delay))
+        await asyncio.sleep(random.uniform(0.0, self._delay))
         await self._app(scope, receive, send)
