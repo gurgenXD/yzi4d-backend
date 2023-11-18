@@ -27,24 +27,22 @@ class ServicesAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    async def get_categories(self, catalog_type: CatalogType) -> list["CategorySchema"]:
-        """Получить категории услуг."""
-        query = (
-            select(Category.id, Category.name)
-            .join(Catalog)
-            .where(
-                Catalog.page == catalog_type.value,
-                Category.parent_id.is_(None),
-                Category.is_active.is_(True),
-                Catalog.is_active.is_(True),
-            )
-        )
+    async def get_categories(
+        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None
+    ) -> list[CategorySchema]:
+        """Получить категории."""
+        query = self._service_query(catalog_type).with_only_columns(Category.id, Category.name).order_by(Category.id)
+
+        if category_id:
+            query = query.where(Category.id == category_id)
+
+        if search_query:
+            search_query = search_query.strip()
+            query = query.where(Service.name.ilike(f"%{search_query}%"))
 
         async with self._session_factory() as session:
-            rows = await session.execute(query)
-            categories = [CategorySchema.model_validate(row) for row in rows.all()]
-
-        return categories
+            rows = (await session.execute(query)).unique().all()
+            return [CategorySchema.model_validate(row) for row in rows]
 
     async def get_categories_with_services(self, catalog_type: CatalogType) -> list["CategorySchema"]:
         """Получить категории услуг с услугами."""
@@ -99,26 +97,23 @@ class ServicesAdapter:
             return row.scalar()
 
     async def get_paginated(
-        self, category_id: int | None, catalog_type: CatalogType, page: int, page_size: int
+        self, catalog_type: CatalogType, category_id: int, search_query: str | None, page: int, page_size: int
     ) -> Paginated[ServiceSchema]:
         """Получить услуги по категории."""
         async with self._session_factory() as session:
-            if category_id == -1:
-                if not (categories := await self.get_categories(catalog_type)):
-                    message = f"Категория услуги с {category_id=} не найдена."
-                    raise NotFoundError(message)
-
+            if category_id == -1 and (categories := await self.get_categories(catalog_type, category_id, search_query)):
                 category_id = categories[0].id
 
             query = self._service_query(catalog_type, category_id)
+
+            if search_query:
+                search_query = search_query.strip()
+                query = query.where(Service.name.ilike(f"%{search_query}%"))
+
             paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
 
             rows = await session.execute(paginated_query)
             services = [ServiceSchema.model_validate(row) for row in rows.all()]
-
-            if not services:
-                message = f"Категория услуги с {category_id=} не найдена."
-                raise NotFoundError(message)
 
         return Paginated[ServiceSchema](data=services, paging=paging)
 

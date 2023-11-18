@@ -13,7 +13,9 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 
 @router.get("/{catalog_type}/categories")
-async def get_categories(catalog_type: CatalogType) -> list[CategorySchema]:
+async def get_categories(
+    catalog_type: CatalogType, category_id: int | None = None, search_query: str | None = None
+) -> list[CategorySchema]:
     """Получить категории услуг."""
     services_adapter = CONTAINER.services_adapter()
 
@@ -21,14 +23,16 @@ async def get_categories(catalog_type: CatalogType) -> list[CategorySchema]:
         case CatalogType.MAIN:
             return await services_adapter.get_categories_with_services(CatalogType.MAIN)
         case _:
-            return await services_adapter.get_categories(catalog_type)
+            return await services_adapter.get_categories(catalog_type, category_id, search_query)
 
 
-@router.get("/{catalog_type}/categories/{category_id}")
-async def get_services(catalog_type: CatalogType, category_id: int = -1, page: int = 1) -> Paginated[ServiceSchema]:
+@router.get("/{catalog_type}/categories/{category_id}/items")
+async def get_services(
+    catalog_type: CatalogType, category_id: int = -1, search_query: str | None = None, page: int = 1
+) -> Paginated[ServiceSchema]:
     """Получить услуги."""
     services_adapter = CONTAINER.services_adapter()
-    return await services_adapter.get_paginated(category_id, catalog_type, page, PAGE_SIZE)
+    return await services_adapter.get_paginated(catalog_type, category_id, search_query, page, PAGE_SIZE)
 
 
 @router.get("/{catalog_type}/categories/{category_id}/items/{item_id}")
