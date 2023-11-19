@@ -13,7 +13,7 @@ def create_app() -> "FastAPI":
     app.add_middleware(
         CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"]
     )
-    app.add_middleware(middlewares.DelayMiddleware, delay=10.0)
+    app.add_middleware(middlewares.DelayMiddleware, delay=3.0)
 
     # Подключение админ-панели.
     admin.create_app(app)
