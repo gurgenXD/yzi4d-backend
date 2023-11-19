@@ -28,6 +28,7 @@ from app.services.updater.types import UpdaterStatusType, UpdaterDataType
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
+    from logging import Logger
 
     from app.services.updater.schemas.services import CatalogSchema, CatalogItemSchema, ServiceExtSchema
     from app.services.updater.schemas.specialists import SourceSpecialistSchema, SpecialistImageSchema
@@ -46,6 +47,7 @@ class UpdaterAdapter:
     """Адаптер для доступа к данным обновления."""
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
+    _logger: "Logger"
 
     async def start(self, data_type: UpdaterDataType) -> int:
         """Создать запись о начале обновления."""
@@ -127,13 +129,16 @@ class UpdaterAdapter:
                 )
 
                 for service in category.services:
-                    service_id = (
+                    if service_id := (
                         await session.execute(select(Service.id).where(Service.guid == service.guid))
-                    ).scalar_one()
-
-                    await session.execute(
-                        insert(categories_services_table).values(service_category_id=category_id, service_id=service_id)
-                    )
+                    ).scalar_one_or_none():
+                        await session.execute(
+                            insert(categories_services_table).values(
+                                service_category_id=category_id, service_id=service_id
+                            )
+                        )
+                    else:
+                        self._logger.warning(f"Service '{service.guid}' doesn't exists. Category: {category_id}")
 
                 await session.flush()
 

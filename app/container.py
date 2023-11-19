@@ -50,7 +50,7 @@ class Container(DeclarativeContainer):
     documents_adapter: Singleton["DocumentAdapter"] = Singleton(DocumentAdapter, session_ctx.provider)
     pages_adapter: Singleton["PagesAdapter"] = Singleton(PagesAdapter, session_ctx.provider)
     promotions_adapter: Singleton["PromotionsAdapter"] = Singleton(PromotionsAdapter, session_ctx.provider)
-    updater_adapter: Singleton["UpdaterAdapter"] = Singleton(UpdaterAdapter, session_ctx.provider)
+    updater_adapter: Singleton["UpdaterAdapter"] = Singleton(UpdaterAdapter, session_ctx.provider, logger.provided)
     source_adapter: Singleton["SourceAdapter"] = Singleton(
         SourceAdapter, service_settings.provided.updater_host, service_settings.provided.timeout
     )
