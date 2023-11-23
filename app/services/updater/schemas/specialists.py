@@ -42,7 +42,7 @@ class SourceSpecialistSchema(BaseModel):
     patronymic: str | None = Field(alias="MiddleName")
     can_adult: bool = Field(alias="ReceptionAdult")
     can_child: bool = Field(alias="ReceptionChild")
-    can_online: bool = False
+    can_online: bool = Field(alias="ReceptionOnline")
     on_main: bool = Field(alias="ShowOnMain")
     start_work_date: datetime = Field(alias="GetStartedDate")
     description: str = Field(alias="Description")
