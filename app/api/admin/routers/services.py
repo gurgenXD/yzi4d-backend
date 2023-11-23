@@ -62,9 +62,10 @@ class ServiceCategoryAdmin(ModelView, model=Category):
         "children": "Children",
         "parent": "Parent",
         "catalog": "Catalog",
+        "catalog.name": "Catalog name"
     }
     column_default_sort = [("name", False)]
-    column_searchable_list = ("name", "id", "guid")
+    column_searchable_list = ("name", "id", "guid", "catalog.name")
 
 
 class ServiceCatalogAdmin(ModelView, model=Catalog):
