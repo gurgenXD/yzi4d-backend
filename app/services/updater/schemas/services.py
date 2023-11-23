@@ -21,6 +21,7 @@ class ServiceExtSchema(BaseModel):
     ready_from: int | None = Field(alias="ReadyFrom")
     ready_to: int | None = Field(alias="ReadyTo")
     description: str | None = Field(alias="Description")
+    short_description: str | None = Field(alias="ShortDescription")
     preparation: str | None = Field(alias="Preparation")
     prices: list[ServicePriceSchema] = Field(alias="ProductPrice")
     is_hidden: bool = Field(alias="Hide")
