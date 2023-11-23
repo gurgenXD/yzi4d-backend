@@ -14,7 +14,7 @@ class OfficeAdmin(ModelView, model=Office):
     can_export = False
 
     column_list = ("id", "city", "address", "is_active")
-    column_details_exclude_list = ("city_id",)
+    column_details_exclude_list = ("city_id", "departments")
 
     column_labels = {
         "id": "ID",
@@ -29,7 +29,6 @@ class OfficeAdmin(ModelView, model=Office):
         "point_y": "Point Y",
         "is_active": "Is active",
         "city": "City",
-        "departments": "Departments",
     }
 
 
@@ -44,7 +43,8 @@ class CityAdmin(ModelView, model=City):
     can_export = False
 
     column_list = ("id", "name", "is_active")
-    column_labels = {"id": "ID", "name": "Name", "offices": "Offices", "is_active": "Is active"}
+    column_details_exclude_list = ("offices",)
+    column_labels = {"id": "ID", "name": "Name", "is_active": "Is active"}
 
 
 class DepartmentAdmin(ModelView, model=Department):
@@ -55,7 +55,9 @@ class DepartmentAdmin(ModelView, model=Department):
     icon = "fa-solid fa-building"
     category = "Contacts"
 
-    column_list = ("id", "name", "is_active")
+    can_export = False
+
+    column_list = ("id", "name", "office", "is_active")
     column_details_exclude_list = ("office_id",)
     column_labels = {
         "id": "ID",
@@ -67,5 +69,3 @@ class DepartmentAdmin(ModelView, model=Department):
         "is_active": "Is active",
         "office": "Office",
     }
-
-    form_ajax_refs = {"office": {"fields": ("address",), "order_by": "address"}}

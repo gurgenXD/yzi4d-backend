@@ -10,6 +10,8 @@ class CallbackAdmin(ModelView, model=Callback):
     name_plural = "Callbacks"
     icon = "fa-solid fa-phone"
 
+    can_export = False
+
     column_list = ("id", "name", "phone", "answered")
     column_labels = {
         "id": "ID",

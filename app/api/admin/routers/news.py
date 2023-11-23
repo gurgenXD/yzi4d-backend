@@ -10,6 +10,8 @@ class NewsAdmin(ModelView, model=News):
     name_plural = "News"
     icon = "fa-solid fa-newspaper"
 
+    can_export = False
+
     column_list = ("id", "title", "preview", "created")
     column_labels = {
         "id": "ID",

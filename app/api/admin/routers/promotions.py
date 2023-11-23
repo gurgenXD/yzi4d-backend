@@ -12,7 +12,9 @@ class PromotionsAdmin(ModelView, model=Promotion):
 
     can_export = False
 
-    column_list = ("id", "name", "on_main", "date_end")
+    column_list = ("id", "name", "on_main", "date_start", "date_end")
+    column_sortable_list = ("id", "on_main", "date_start", "date_end")
+    column_searchable_list = ("id", "name")
     column_labels = {
         "id": "ID",
         "name": "Name",

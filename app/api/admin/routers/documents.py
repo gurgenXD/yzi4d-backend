@@ -29,4 +29,5 @@ class DocumentCategoryAdmin(ModelView, model=DocumentCategory):
     can_export = False
 
     column_list = ("id", "name", "position", "is_active")
+    column_details_exclude_list = ("documents",)
     column_labels = {"id": "ID", "name": "Name", "position": "Position", "is_active": "Is active"}

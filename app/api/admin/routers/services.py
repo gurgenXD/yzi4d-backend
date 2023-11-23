@@ -19,6 +19,8 @@ class ServiceAdmin(ModelView, model=Service):
     can_export = False
 
     column_list = ("id", "name", "is_active")
+    column_sortable_list = ("name", "id")
+    column_details_exclude_list = ("specialists_services",)
     column_labels = {
         "id": "ID",
         "guid": "GUID",
@@ -32,7 +34,7 @@ class ServiceAdmin(ModelView, model=Service):
         "categories": "Categories",
     }
     column_default_sort = [("name", False)]
-    column_searchable_list = ["name", "guid"]
+    column_searchable_list = ("name", "id", "guid")
 
 
 class ServiceCategoryAdmin(ModelView, model=Category):
@@ -49,7 +51,8 @@ class ServiceCategoryAdmin(ModelView, model=Category):
     can_export = False
 
     column_list = ("id", "name", "parent", "catalog", "is_active")
-    column_details_exclude_list = ("parent_id", "catalog_id")
+    column_sortable_list = ("name", "id")
+    column_details_exclude_list = ("parent_id", "catalog_id", "services")
     column_labels = {
         "id": "ID",
         "guid": "GUID",
@@ -59,9 +62,9 @@ class ServiceCategoryAdmin(ModelView, model=Category):
         "children": "Children",
         "parent": "Parent",
         "catalog": "Catalog",
-        "services": "Services",
     }
     column_default_sort = [("name", False)]
+    column_searchable_list = ("name", "id", "guid")
 
 
 class ServiceCatalogAdmin(ModelView, model=Catalog):
@@ -80,12 +83,6 @@ class ServiceCatalogAdmin(ModelView, model=Catalog):
     form_widget_args = {"name": {"readonly": True}, "is_active": {"readonly": True}, "categories": {"readonly": True}}
 
     column_list = ("id", "name", "page", "is_active")
-    column_labels = {
-        "id": "ID",
-        "guid": "GUID",
-        "name": "Name",
-        "page": "Page",
-        "is_active": "Is active",
-        "categories": "Categories",
-    }
+    column_details_exclude_list = ("categories",)
+    column_labels = {"id": "ID", "guid": "GUID", "name": "Name", "page": "Page", "is_active": "Is active"}
     column_default_sort = [("name", False)]

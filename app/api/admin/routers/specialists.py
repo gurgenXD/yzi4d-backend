@@ -17,7 +17,9 @@ class SpecializationAdmin(ModelView, model=Specialization):
     can_export = False
 
     column_list = ("id", "name", "is_active")
-    column_labels = {"id": "ID", "name": "Specialization", "specialists": "Specialists", "is_active": "Is active"}
+    column_sortable_list = ("name", "id")
+    column_details_exclude_list = ("specialists",)
+    column_labels = {"id": "ID", "guid": "GUID", "name": "Name", "is_active": "Is active"}
     column_default_sort = [("name", False)]
 
 
@@ -36,7 +38,7 @@ class SpecialistCertificateAdmin(ModelView, model=Certificate):
 
     column_list = ("id", "name", "file")
     column_details_exclude_list = ("specialist_id",)
-    column_labels = {"id": "ID", "specialist": "Specialist", "name": "Name", "file": "File"}
+    column_labels = {"id": "ID", "guid": "GUID", "specialist": "Specialist", "name": "Name", "file": "File"}
 
 
 class SpecialistAdmin(ModelView, model=Specialist):
@@ -52,15 +54,18 @@ class SpecialistAdmin(ModelView, model=Specialist):
     can_delete = False
     can_export = False
 
-    column_list = ("surname", "name", "patronymic", "id", "on_main", "is_active")
+    column_list = ("id", "surname", "name", "patronymic", "on_main", "is_active")
+    column_sortable_list = ("surname", "id", "on_main", "is_active")
     column_default_sort = [("surname", False)]
-    column_searchable_list = ["surname", "name", "patronymic", "id"]
+    column_searchable_list = ("surname", "name", "patronymic", "id", "guid")
     column_labels = {
         "id": "ID",
+        "guid": "GUID",
         "surname": "Surname",
         "name": "Name",
         "patronymic": "Patronymic",
         "description": "Description",
+        "short_description": "Short description",
         "education": "Education",
         "activity": "Activity",
         "titles": "Titles",
