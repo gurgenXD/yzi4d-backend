@@ -26,17 +26,17 @@ async def get_categories(
             return await services_adapter.get_categories(catalog_type, category_id, search_query)
 
 
-@router.get("/{catalog_type}/categories/{category_id}/items")
+@router.get("/{catalog_type}/services")
 async def get_services(
-    catalog_type: CatalogType, category_id: int = -1, search_query: str | None = None, page: int = 1
+    catalog_type: CatalogType, category_id: int | None = None, search_query: str | None = None, page: int = 1
 ) -> Paginated[ServiceSchema]:
     """Получить услуги."""
     services_adapter = CONTAINER.services_adapter()
     return await services_adapter.get_paginated(catalog_type, category_id, search_query, page, PAGE_SIZE)
 
 
-@router.get("/{catalog_type}/categories/{category_id}/items/{item_id}")
-async def get_service(catalog_type: CatalogType, category_id: int, item_id: int) -> ServiceSchema:
+@router.get("/{catalog_type}/services/{item_id}")
+async def get_service(catalog_type: CatalogType, item_id: int) -> ServiceSchema:
     """Получить услугу."""
     services_adapter = CONTAINER.services_adapter()
     category_id = await services_adapter.convert_category_id(item_id, catalog_type)

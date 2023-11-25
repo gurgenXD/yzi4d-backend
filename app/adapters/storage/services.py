@@ -31,7 +31,7 @@ class ServicesAdapter:
         self, catalog_type: CatalogType, category_id: int | None, search_query: str | None
     ) -> list[CategorySchema]:
         """Получить категории."""
-        query = self._service_query(catalog_type).with_only_columns(Category.id, Category.name).order_by(Category.id)
+        query = self._service_query(catalog_type).with_only_columns(Category.id, Category.name).order_by(Category.name)
 
         if category_id:
             query = query.where(Category.id == category_id)
@@ -46,7 +46,7 @@ class ServicesAdapter:
 
     async def get_categories_with_services(self, catalog_type: CatalogType) -> list["CategorySchema"]:
         """Получить категории услуг с услугами."""
-        query = self._service_query(catalog_type).order_by(Category.id)
+        query = self._service_query(catalog_type).order_by(Category.name)
 
         async with self._session_factory() as session:
             rows = (await session.execute(query)).unique().all()
@@ -97,14 +97,14 @@ class ServicesAdapter:
             return row.scalar()
 
     async def get_paginated(
-        self, catalog_type: CatalogType, category_id: int, search_query: str | None, page: int, page_size: int
+        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None, page: int, page_size: int
     ) -> Paginated[ServiceSchema]:
         """Получить услуги по категории."""
         async with self._session_factory() as session:
-            if category_id == -1 and (categories := await self.get_categories(catalog_type, category_id, search_query)):
+            if category_id == -1 and (categories := await self.get_categories(catalog_type, None, search_query)):
                 category_id = categories[0].id
 
-            query = self._service_query(catalog_type, category_id)
+            query = self._service_query(catalog_type, category_id).order_by(Service.name)
 
             if search_query:
                 search_query = search_query.strip()
