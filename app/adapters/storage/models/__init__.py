@@ -4,6 +4,7 @@ from app.adapters.storage.models.news import News
 from app.adapters.storage.models.contacts import City, Office, Department
 from app.adapters.storage.models.pages import Page
 from app.adapters.storage.models.promotions import Promotion
+from app.adapters.storage.models.consultations import Consultation
 
 from app.adapters.storage.models.services import Service, Catalog, Category, categories_services_table
 from app.adapters.storage.models.specialists import (

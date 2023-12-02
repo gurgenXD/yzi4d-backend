@@ -10,6 +10,7 @@ from app.api.admin.routers.news import NewsAdmin
 from app.api.admin.routers.contacts import CityAdmin, OfficeAdmin, DepartmentAdmin
 from app.api.admin.routers.pages import PagesAdmin
 from app.api.admin.routers.promotions import PromotionsAdmin
+from app.api.admin.routers.consultations import ConsultationAdmin
 
 from app.api.admin.routers.services import ServiceAdmin, ServiceCategoryAdmin, ServiceCatalogAdmin
 from app.api.admin.routers.specialists import SpecialistAdmin, SpecialistCertificateAdmin, SpecializationAdmin
@@ -56,4 +57,5 @@ def create_app(app: "FastAPI") -> None:
     admin.add_view(NewsAdmin)
     admin.add_view(PagesAdmin)
     admin.add_view(CallbackAdmin)
+    admin.add_view(ConsultationAdmin)
     admin.add_view(UpdatesAdmin)
