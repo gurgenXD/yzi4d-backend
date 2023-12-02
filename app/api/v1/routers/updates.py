@@ -1,8 +1,8 @@
 from fastapi import APIRouter, BackgroundTasks, Request
 from fastapi.responses import RedirectResponse
-from app.services.updater.types import UpdaterDataType
 
 from app.container import CONTAINER
+from app.services.updater.types import UpdaterDataType
 
 
 TAG = "updates"

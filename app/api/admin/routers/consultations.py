@@ -1,17 +1,20 @@
+from zoneinfo import ZoneInfo
+
+import wtforms
 from sqladmin import ModelView
 from sqlalchemy import Column
-import wtforms
-from zoneinfo import ZoneInfo
 
 from app.adapters.storage.models.consultations import Consultation
 from app.services.types.consultations import ConsultationStatus
 
 
 def format_status(value: Consultation, _field: Column) -> str:
+    """Форматирование статуса."""
     return ConsultationStatus(value.status).show_val
 
 
 def format_created(value: Consultation, _field: Column) -> str:
+    """Форматирование даты."""
     return value.created.astimezone(tz=ZoneInfo("Europe/Moscow")).strftime("%d.%m.%Y %H:%M")
 
 

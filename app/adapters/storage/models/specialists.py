@@ -1,15 +1,14 @@
 from datetime import date
-from typing import Any, TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy as sa
+from fastapi_storages import FileSystemStorage
+from fastapi_storages.integrations.sqlalchemy import FileType
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.adapters.storage.db.base_model import BaseModel
-from fastapi_storages.integrations.sqlalchemy import FileType
-
-
-from fastapi_storages import FileSystemStorage
 from utils.constants import MEDIA_DIR
+
 
 if TYPE_CHECKING:
     from app.adapters.storage.models.services import Service

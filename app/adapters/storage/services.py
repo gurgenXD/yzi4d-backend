@@ -1,24 +1,24 @@
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
 from itertools import groupby
+from typing import TYPE_CHECKING
 
 from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.sql.expression import func
 
-from app.adapters.storage.models import Service, Category, Catalog, SpecialistService, categories_services_table
+from app.adapters.storage.models import Catalog, Category, Service, SpecialistService, categories_services_table
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
-from app.services.schemas.services import ServiceSchema, CategorySchema, StrictServiceSchema
+from app.services.schemas.services import CategorySchema, ServiceSchema, StrictServiceSchema
 from app.services.updater.types import CatalogType
 
 
 if TYPE_CHECKING:
-    from sqlalchemy.ext.asyncio import AsyncSession
     from sqlalchemy import Select
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @dataclass
@@ -51,7 +51,7 @@ class ServicesAdapter:
         async with self._session_factory() as session:
             rows = (await session.execute(query)).unique().all()
 
-            categories = [
+            return [
                 CategorySchema(
                     id=key[0],
                     name=key[1],
@@ -60,7 +60,6 @@ class ServicesAdapter:
                 for key, services in groupby(rows, lambda row: (row.category_id, row.category_name))
             ]
 
-        return categories
 
     async def get(self, item_id: int, category_id: int, catalog_type: CatalogType) -> "ServiceSchema":
         """Получить услугу."""

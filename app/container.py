@@ -16,10 +16,10 @@ from app.adapters.storage.services import ServicesAdapter
 from app.adapters.storage.specialists import SpecialistsAdapter
 from app.adapters.storage.updater import UpdaterAdapter
 from app.services.updater.repo import RepoUpdaterService
-from app.settings.db import DatabaseSettings
-from app.settings.service import ServiceSettings
 from app.settings.auth import AuthSettings
+from app.settings.db import DatabaseSettings
 from app.settings.server import ServerSettings
+from app.settings.service import ServiceSettings
 
 
 if TYPE_CHECKING:

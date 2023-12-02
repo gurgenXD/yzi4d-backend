@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from app.adapters.storage.models.services import Service, Category, Catalog
+from app.adapters.storage.models.services import Catalog, Category, Service
 
 
 class ServiceAdmin(ModelView, model=Service):

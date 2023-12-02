@@ -1,36 +1,37 @@
+import base64
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import TYPE_CHECKING
-from itertools import groupby
-from sqlalchemy.dialects.postgresql import insert as pg_insert
-import base64
 from io import BytesIO
+from itertools import groupby
+from typing import TYPE_CHECKING
+
 from fastapi import UploadFile
 from PIL import Image
-
-from sqlalchemy import update, select, insert, delete
+from sqlalchemy import delete, insert, select, update
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from app.adapters.storage.models import (
-    Service,
     Catalog,
     Category,
-    SpecialistService,
-    categories_services_table,
+    Service,
     Specialist,
-    Update,
+    SpecialistService,
     Specialization,
+    Update,
+    categories_services_table,
     specializations_specialists_table,
 )
-from app.services.updater.types import UpdaterStatusType, UpdaterDataType
+from app.services.updater.types import UpdaterDataType, UpdaterStatusType
 
 
 if TYPE_CHECKING:
-    from sqlalchemy.ext.asyncio import AsyncSession
     from logging import Logger
 
-    from app.services.updater.schemas.services import CatalogSchema, CatalogItemSchema, ServiceExtSchema
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    from app.services.updater.schemas.services import CatalogItemSchema, CatalogSchema, ServiceExtSchema
     from app.services.updater.schemas.specialists import SourceSpecialistSchema, SpecialistImageSchema
 
 
@@ -252,7 +253,7 @@ class UpdaterAdapter:
         """Изменить размер картинки."""
         img = Image.open(data)
         img = img.convert("RGB")
-        hsize = int((float(img.size[1]) * float(IMAGE_WIDTH / float(img.size[0]))))
+        hsize = int(float(img.size[1]) * float(IMAGE_WIDTH / float(img.size[0])))
 
         img = img.resize((IMAGE_WIDTH, hsize), Image.Resampling.LANCZOS)
 

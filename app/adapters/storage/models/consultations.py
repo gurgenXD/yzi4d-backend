@@ -19,5 +19,5 @@ class Consultation(BaseModel):
     status: Mapped[str] = mapped_column(sa.String(20))
     comments: Mapped[str] = mapped_column(sa.Text())
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Онлайн консультация №: {self.id}"

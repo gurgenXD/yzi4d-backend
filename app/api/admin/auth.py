@@ -1,8 +1,10 @@
-from fastapi.requests import Request
-from sqladmin.authentication import AuthenticationBackend
-from jose import jwt, JWTError
-from typing import TYPE_CHECKING
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
+
+from fastapi.requests import Request
+from jose import JWTError, jwt
+from sqladmin.authentication import AuthenticationBackend
+
 
 if TYPE_CHECKING:
     from app.settings.auth import AuthSettings

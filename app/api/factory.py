@@ -1,10 +1,10 @@
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
-from app.api import admin, v1, middlewares
-from utils.constants import MEDIA_DIR
+from app.api import admin, middlewares, v1
 from app.settings.api import ApiSettings
+from utils.constants import MEDIA_DIR
 
 
 def create_app() -> "FastAPI":

@@ -1,7 +1,8 @@
 import traceback
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
-from app.services.updater.types import UpdaterStatusType, UpdaterDataType
+
+from app.services.updater.types import UpdaterDataType, UpdaterStatusType
 
 
 if TYPE_CHECKING:

@@ -2,8 +2,9 @@ from fastapi import APIRouter
 
 from app.adapters.storage.pagination.schemas import Paginated
 from app.container import CONTAINER
-from app.services.updater.types import CatalogType
 from app.services.schemas.services import CategorySchema, ServiceSchema
+from app.services.updater.types import CatalogType
+
 
 TAG = "catalog"
 PREFIX = f"/{TAG}"

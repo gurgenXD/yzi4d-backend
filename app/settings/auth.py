@@ -1,7 +1,8 @@
+from datetime import timedelta
+
 from pydantic_settings import SettingsConfigDict
 
 from utils.settings.base import BaseSettings
-from datetime import timedelta
 
 
 class AuthSettings(BaseSettings):

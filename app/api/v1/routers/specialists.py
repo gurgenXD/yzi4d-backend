@@ -1,9 +1,9 @@
-from fastapi import APIRouter, status, Request
+from fastapi import APIRouter, Request, status
 
 from app.adapters.storage.pagination.schemas import Paginated
 from app.container import CONTAINER
-from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
 from app.services.schemas.services import ServiceSchema
+from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
 from app.services.updater.types import CatalogType
 
 

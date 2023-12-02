@@ -23,6 +23,7 @@ class Update(BaseModel):
         """Длительность обновления."""
         if self.end_update:
             return self.end_update - self.start_update
+        return None
 
     def __str__(self) -> str:
         return self.status

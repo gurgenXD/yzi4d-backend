@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import select
 from sqlalchemy.orm import contains_eager
 
-from app.adapters.storage.models import DocumentCategory, Document
+from app.adapters.storage.models import Document, DocumentCategory
 from app.services.schemas.documents import DocumentCategorySchema
 
 

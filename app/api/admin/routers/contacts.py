@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from app.adapters.storage.models.contacts import City, Office, Department
+from app.adapters.storage.models.contacts import City, Department, Office
 
 
 class OfficeAdmin(ModelView, model=Office):

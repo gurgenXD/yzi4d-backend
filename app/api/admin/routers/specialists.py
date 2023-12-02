@@ -1,6 +1,6 @@
 from sqladmin import ModelView
 
-from app.adapters.storage.models.specialists import Specialist, Certificate, Specialization
+from app.adapters.storage.models.specialists import Certificate, Specialist, Specialization
 
 
 class SpecializationAdmin(ModelView, model=Specialization):

@@ -1,22 +1,21 @@
 from typing import TYPE_CHECKING
 
 from sqladmin import Admin
-from app.api.admin.auth import AdminAuth
 
 from app.adapters.storage.db import engine
+from app.api.admin.auth import AdminAuth
 from app.api.admin.routers.callbacks import CallbackAdmin
+from app.api.admin.routers.consultations import ConsultationAdmin
+from app.api.admin.routers.contacts import CityAdmin, DepartmentAdmin, OfficeAdmin
 from app.api.admin.routers.documents import DocumentAdmin, DocumentCategoryAdmin
 from app.api.admin.routers.news import NewsAdmin
-from app.api.admin.routers.contacts import CityAdmin, OfficeAdmin, DepartmentAdmin
 from app.api.admin.routers.pages import PagesAdmin
 from app.api.admin.routers.promotions import PromotionsAdmin
-from app.api.admin.routers.consultations import ConsultationAdmin
-
-from app.api.admin.routers.services import ServiceAdmin, ServiceCategoryAdmin, ServiceCatalogAdmin
+from app.api.admin.routers.services import ServiceAdmin, ServiceCatalogAdmin, ServiceCategoryAdmin
 from app.api.admin.routers.specialists import SpecialistAdmin, SpecialistCertificateAdmin, SpecializationAdmin
 from app.api.admin.routers.updates import UpdatesAdmin
-from app.settings.db import DatabaseSettings
 from app.settings.auth import AuthSettings
+from app.settings.db import DatabaseSettings
 from utils.constants import TEMPLATES_DIR
 
 

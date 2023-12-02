@@ -1,13 +1,11 @@
 from datetime import datetime
 
 import sqlalchemy as sa
+from fastapi_storages import FileSystemStorage
+from fastapi_storages.integrations.sqlalchemy import FileType
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.adapters.storage.db.base_model import BaseModel
-from fastapi_storages.integrations.sqlalchemy import FileType
-
-
-from fastapi_storages import FileSystemStorage
 from utils.constants import MEDIA_DIR
 
 

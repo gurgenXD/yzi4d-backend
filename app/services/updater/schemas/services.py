@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator, computed_field
+from pydantic import BaseModel, Field, computed_field, field_validator
 
 
 EMPTY_GUID = "00000000-0000-0000-0000-000000000000"
@@ -53,7 +53,7 @@ class CatalogItemSchema(BaseModel):
 
     @field_validator("parent_guid", mode="before")
     @classmethod
-    def empty_str_to_none(cls, v) -> str | None:
+    def empty_str_to_none(cls, v: str) -> str | None:
         """Перевести пустую строку в None."""
         return None if v == EMPTY_GUID else v
 

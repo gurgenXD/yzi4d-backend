@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import httpx
 
-from app.services.updater.schemas.services import CatalogSchema, CatalogItemSchema, ServiceExtSchema
+from app.services.updater.schemas.services import CatalogItemSchema, CatalogSchema, ServiceExtSchema
 from app.services.updater.schemas.specialists import SourceSpecialistSchema, SpecialistImageSchema
 
 

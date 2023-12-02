@@ -1,3 +1,4 @@
+import random
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
@@ -6,14 +7,13 @@ from typing import TYPE_CHECKING
 from sqlalchemy import or_, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.orm import contains_eager
-import random
 
-from app.adapters.storage.models import Specialist, Specialization, Service, SpecialistService, Category, Catalog
+from app.adapters.storage.models import Catalog, Category, Service, Specialist, SpecialistService, Specialization
 from app.adapters.storage.pagination.query import get_query_with_meta
 from app.adapters.storage.pagination.schemas import Paginated
 from app.services.exceptions import NotFoundError
-from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
 from app.services.schemas.services import ServiceSchema
+from app.services.schemas.specialists import SpecialistSchema, SpecializationSchema
 from app.services.updater.types import CatalogType
 
 
@@ -135,8 +135,7 @@ class SpecialistsAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            specializations = [SpecializationSchema.model_validate(row) for row in rows.unique().scalars()]
-            return specializations
+            return [SpecializationSchema.model_validate(row) for row in rows.unique().scalars()]
 
     async def get_services(
         self, item_id: int, catalog_page: CatalogType, page: int, page_size: int

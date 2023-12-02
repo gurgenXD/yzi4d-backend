@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, Field, field_validator, computed_field
+from pydantic import BaseModel, Field, computed_field, field_validator
 
 
 class SpecializationSchema(BaseModel):
@@ -68,6 +68,6 @@ class SpecialistImageSchema(BaseModel):
 
     @field_validator("data", mode="before")
     @classmethod
-    def empty_str_to_none(cls, v) -> str | None:
+    def empty_str_to_none(cls, v: str) -> str | None:
         """Перевести пустую строку в None."""
         return None if v == "" else v
