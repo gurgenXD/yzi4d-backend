@@ -165,6 +165,7 @@ class SpecialistsAdapter:
                 Category.is_active.is_(True),
                 Catalog.is_active.is_(True),
             )
+            .order_by(Service.name)
         )
 
         async with self._session_factory() as session:
