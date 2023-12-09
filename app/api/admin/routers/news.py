@@ -1,6 +1,8 @@
+from fastapi import Request
 from sqladmin import ModelView
 
 from app.adapters.storage.models.news import News
+from app.api.admin.permissions import PermissionType
 
 
 class NewsAdmin(ModelView, model=News):
@@ -22,3 +24,15 @@ class NewsAdmin(ModelView, model=News):
         "photo": "Photo",
         "is_active": "Is active",
     }
+
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False

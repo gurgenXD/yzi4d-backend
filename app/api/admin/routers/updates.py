@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta
 
+from fastapi import Request
 from markupsafe import Markup
 from sqladmin import ModelView
 from sqlalchemy import Column
 
 from app.adapters.storage.models import Update
+from app.api.admin.permissions import PermissionType
 from app.services.updater.types import UpdaterStatusType
 from utils.admin.formats import datetime_format, timedelta_format
 
@@ -52,3 +54,15 @@ class UpdatesAdmin(ModelView, model=Update):
         datetime: datetime_format,
         timedelta: timedelta_format,
     }
+
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False

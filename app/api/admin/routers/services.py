@@ -1,6 +1,8 @@
+from fastapi import Request
 from sqladmin import ModelView
 
 from app.adapters.storage.models.services import Catalog, Category, Service
+from app.api.admin.permissions import PermissionType
 
 
 class ServiceAdmin(ModelView, model=Service):
@@ -8,7 +10,6 @@ class ServiceAdmin(ModelView, model=Service):
 
     name = "Service"
     name_plural = "Services"
-    category = "Services"
     icon = "fa-solid fa-syringe"
     page_size = 20
     page_size_options = [20, 50, 100]
@@ -36,13 +37,24 @@ class ServiceAdmin(ModelView, model=Service):
     column_default_sort = [("name", False)]
     column_searchable_list = ("name", "id", "guid")
 
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
 
 class ServiceCategoryAdmin(ModelView, model=Category):
     """Категории услуг в админ панели."""
 
-    name = "Category"
+    name = "Service category"
     name_plural = "Categories"
-    category = "Services"
     icon = "fa-solid fa-folder-tree"
 
     can_create = False
@@ -67,13 +79,24 @@ class ServiceCategoryAdmin(ModelView, model=Category):
     column_default_sort = [("name", False)]
     column_searchable_list = ("name", "id", "guid", "catalog.name")
 
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
 
 class ServiceCatalogAdmin(ModelView, model=Catalog):
     """Каталоги услуг в админ панели."""
 
     name = "Catalog"
     name_plural = "Catalogs"
-    category = "Services"
     icon = "fa-solid fa-list"
 
     can_edit = False
@@ -87,3 +110,15 @@ class ServiceCatalogAdmin(ModelView, model=Catalog):
     column_details_exclude_list = ("categories",)
     column_labels = {"id": "ID", "guid": "GUID", "name": "Name", "page": "Page", "is_active": "Is active"}
     column_default_sort = [("name", False)]
+
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False

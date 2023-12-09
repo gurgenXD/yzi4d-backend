@@ -1,6 +1,8 @@
+from fastapi import Request
 from sqladmin import ModelView
 
 from app.adapters.storage.models.promotions import Promotion
+from app.api.admin.permissions import PermissionType
 
 
 class PromotionsAdmin(ModelView, model=Promotion):
@@ -26,3 +28,15 @@ class PromotionsAdmin(ModelView, model=Promotion):
         "photo": "Photo",
         "on_main": "On main",
     }
+
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True

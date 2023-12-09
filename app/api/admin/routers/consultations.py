@@ -1,6 +1,7 @@
 from zoneinfo import ZoneInfo
 
 import wtforms
+from fastapi import Request
 from sqladmin import ModelView
 from sqlalchemy import Column
 
@@ -46,5 +47,13 @@ class ConsultationAdmin(ModelView, model=Consultation):
         "specialist": "Specialist",
         "created": "Created",
         "status": "Status",
-        "comments": "Commments",
+        "comments": "Comments",
     }
+
+    def is_accessible(self, _request: Request) -> bool:
+        """Права на изменение."""
+        return True
+
+    def is_visible(self, _request: Request) -> bool:
+        """Права на просмотр."""
+        return True

@@ -1,6 +1,8 @@
+from fastapi import Request
 from sqladmin import ModelView
 
 from app.adapters.storage.models.contacts import City, Department, Office
+from app.api.admin.permissions import PermissionType
 
 
 class OfficeAdmin(ModelView, model=Office):
@@ -9,7 +11,6 @@ class OfficeAdmin(ModelView, model=Office):
     name = "Office"
     name_plural = "Offices"
     icon = "fa-solid fa-hospital"
-    category = "Contacts"
 
     can_export = False
 
@@ -31,6 +32,18 @@ class OfficeAdmin(ModelView, model=Office):
         "city": "City",
     }
 
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
 
 class CityAdmin(ModelView, model=City):
     """Города в админ панели."""
@@ -38,13 +51,24 @@ class CityAdmin(ModelView, model=City):
     name = "City"
     name_plural = "Cities"
     icon = "fa-solid fa-city"
-    category = "Contacts"
 
     can_export = False
 
     column_list = ("id", "name", "is_active")
     column_details_exclude_list = ("offices",)
     column_labels = {"id": "ID", "name": "Name", "is_active": "Is active"}
+
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
 
 
 class DepartmentAdmin(ModelView, model=Department):
@@ -53,7 +77,6 @@ class DepartmentAdmin(ModelView, model=Department):
     name = "Department"
     name_plural = "Departments"
     icon = "fa-solid fa-building"
-    category = "Contacts"
 
     can_export = False
 
@@ -69,3 +92,15 @@ class DepartmentAdmin(ModelView, model=Department):
         "is_active": "Is active",
         "office": "Office",
     }
+
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False

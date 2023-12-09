@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 from fastapi.requests import Request
@@ -24,12 +24,13 @@ class AdminAuth(AuthenticationBackend):
         form = await request.form()
         username, password = form["username"], form["password"]
 
-        if self._settings.username != username or self._settings.password != password:
+        setting_password = self._settings.users.get(username)
+        if not setting_password or setting_password != password:
             return False
 
-        token = jwt.encode({"exp": datetime.now(tz=timezone.utc) + self._settings.lifetime}, self._settings.secret_key)
+        token = jwt.encode({"exp": datetime.now(tz=UTC) + self._settings.lifetime}, self._settings.secret_key)
 
-        request.session.update({"token": token})
+        request.session.update({"token": token, "permissions": self._settings.permissions[username]})
         return True
 
     async def logout(self, request: Request) -> bool:
@@ -47,7 +48,7 @@ class AdminAuth(AuthenticationBackend):
         except JWTError:
             return False
 
-        if datetime.now(tz=timezone.utc) > datetime.fromtimestamp(claims.get("exp"), tz=timezone.utc):
+        if datetime.now(tz=UTC) > datetime.fromtimestamp(claims.get("exp"), tz=UTC):
             return False
 
         return True

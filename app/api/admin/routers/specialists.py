@@ -1,6 +1,8 @@
+from fastapi import Request
 from sqladmin import ModelView
 
 from app.adapters.storage.models.specialists import Certificate, Specialist, Specialization
+from app.api.admin.permissions import PermissionType
 
 
 class SpecializationAdmin(ModelView, model=Specialization):
@@ -9,7 +11,6 @@ class SpecializationAdmin(ModelView, model=Specialization):
     name = "Specialization"
     name_plural = "Specializations"
     icon = "fa-solid fa-stethoscope"
-    category = "Specialists"
 
     can_edit = False
     can_create = False
@@ -22,6 +23,18 @@ class SpecializationAdmin(ModelView, model=Specialization):
     column_labels = {"id": "ID", "guid": "GUID", "name": "Name", "is_active": "Is active"}
     column_default_sort = [("name", False)]
 
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
 
 class SpecialistCertificateAdmin(ModelView, model=Certificate):
     """Сертификаты специалистов в админ панели."""
@@ -29,7 +42,6 @@ class SpecialistCertificateAdmin(ModelView, model=Certificate):
     name = "Certificate"
     name_plural = "Certificates"
     icon = "fa-solid fa-file-medical"
-    category = "Specialists"
 
     can_edit = False
     can_create = False
@@ -40,6 +52,18 @@ class SpecialistCertificateAdmin(ModelView, model=Certificate):
     column_details_exclude_list = ("specialist_id",)
     column_labels = {"id": "ID", "guid": "GUID", "specialist": "Specialist", "name": "Name", "file": "File"}
 
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
 
 class SpecialistAdmin(ModelView, model=Specialist):
     """Специалисты в админ панели."""
@@ -47,7 +71,6 @@ class SpecialistAdmin(ModelView, model=Specialist):
     name = "Specialist"
     name_plural = "Specialists"
     icon = "fa-solid fa-user-doctor"
-    category = "Specialists"
 
     can_edit = False
     can_create = False
@@ -79,3 +102,15 @@ class SpecialistAdmin(ModelView, model=Specialist):
         "specializations": "Specializations",
         "certificates": "Certificates",
     }
+
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False

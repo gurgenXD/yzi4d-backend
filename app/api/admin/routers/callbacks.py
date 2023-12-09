@@ -1,6 +1,8 @@
+from fastapi import Request
 from sqladmin import ModelView
 
 from app.adapters.storage.models.callbacks import Callback
+from app.api.admin.permissions import PermissionType
 
 
 class CallbackAdmin(ModelView, model=Callback):
@@ -22,3 +24,15 @@ class CallbackAdmin(ModelView, model=Callback):
         "answered": "Answered",
         "call_back_time": "Call back time",
     }
+
+    def is_accessible(self, request: Request) -> bool:
+        """Права на изменение."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
+
+    def is_visible(self, request: Request) -> bool:
+        """Права на просмотр."""
+        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
+            return True
+        return False
