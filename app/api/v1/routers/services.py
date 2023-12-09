@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from app.adapters.storage.pagination.schemas import Paginated
 from app.container import CONTAINER
@@ -15,14 +15,14 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 @router.get("/{catalog_type}/categories")
 async def get_categories(
-    catalog_type: CatalogType, category_id: int | None = None, search_query: str | None = None
+    request: Request, catalog_type: CatalogType, category_id: int | None = None, search_query: str | None = None
 ) -> list[CategorySchema]:
     """Получить категории услуг."""
     services_adapter = CONTAINER.services_adapter()
 
     match catalog_type:
         case CatalogType.MAIN:
-            return await services_adapter.get_categories_with_services(CatalogType.MAIN)
+            return await services_adapter.get_categories_with_services(request.base_url, CatalogType.MAIN)
         case _:
             return await services_adapter.get_categories(catalog_type, category_id, search_query)
 

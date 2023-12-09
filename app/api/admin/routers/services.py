@@ -45,7 +45,6 @@ class ServiceCategoryAdmin(ModelView, model=Category):
     category = "Services"
     icon = "fa-solid fa-folder-tree"
 
-    can_edit = False
     can_create = False
     can_delete = False
     can_export = False
@@ -53,6 +52,7 @@ class ServiceCategoryAdmin(ModelView, model=Category):
     column_list = ("id", "name", "parent", "catalog", "is_active")
     column_sortable_list = ("name", "id")
     column_details_exclude_list = ("parent_id", "catalog_id", "services")
+    form_columns = ("icon",)
     column_labels = {
         "id": "ID",
         "guid": "GUID",

@@ -31,6 +31,7 @@ class CategorySchema(BaseModel):
 
     id: int
     name: str
+    icon: str | None = None
 
     services: list[StrictServiceSchema] | None = None
 

@@ -44,7 +44,7 @@ class ServicesAdapter:
             rows = (await session.execute(query)).unique().all()
             return [CategorySchema.model_validate(row) for row in rows]
 
-    async def get_categories_with_services(self, catalog_type: CatalogType) -> list["CategorySchema"]:
+    async def get_categories_with_services(self, base_url: str, catalog_type: CatalogType) -> list["CategorySchema"]:
         """Получить категории услуг с услугами."""
         query = self._service_query(catalog_type).order_by(Category.name)
 
@@ -55,11 +55,11 @@ class ServicesAdapter:
                 CategorySchema(
                     id=key[0],
                     name=key[1],
+                    icon=f"{base_url}media/categories/{key[2].name}" if key[2] else None,
                     services=[StrictServiceSchema.model_validate(service) for service in services],
                 )
-                for key, services in groupby(rows, lambda row: (row.category_id, row.category_name))
+                for key, services in groupby(rows, lambda row: (row.category_id, row.category_name, row.icon))
             ]
-
 
     async def get(self, item_id: int, category_id: int, catalog_type: CatalogType) -> "ServiceSchema":
         """Получить услугу."""
@@ -134,6 +134,7 @@ class ServicesAdapter:
                 Service.description,
                 Service.preparation,
                 max_subquery,
+                Category.icon,
                 Category.id.label("category_id"),
                 Category.name.label("category_name"),
             )
