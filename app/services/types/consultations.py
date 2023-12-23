@@ -14,7 +14,7 @@ class ConsultationStatus(StatusMixin, Enum):
     """Статусы онлайн-консультаций."""
 
     PENDING = "pending", "Новая"
-    PROCCESSING = "proccesing", "В обработке"
+    PROCESSING = "processing", "В обработке"
     CANCELED = "canceled", "Отменена"
     WAITING = "waiting", "Ожидает"
     FINISHED = "finished", "Завершена"

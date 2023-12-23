@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.api import admin, middlewares, v1
+from app.api import admin, middlewares, v1, handlers
 from app.settings.api import ApiSettings
 from utils.constants import MEDIA_DIR
 
@@ -25,6 +25,9 @@ def create_app() -> "FastAPI":
     app.mount("/media", media_files, name="media")
 
     # Подключение под-приложений.
-    app.mount("/api/v1", v1.create_app(), name="api_v1")
+    app_v1 = v1.create_app()
+    app.mount("/api/v1", app_v1, name="api_v1")
+    # Добавление общих обработчиков ошибок.
+    handlers.add_all(app_v1)
 
     return app

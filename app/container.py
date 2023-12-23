@@ -14,6 +14,7 @@ from app.adapters.storage.pages import PagesAdapter
 from app.adapters.storage.promotions import PromotionsAdapter
 from app.adapters.storage.services import ServicesAdapter
 from app.adapters.storage.specialists import SpecialistsAdapter
+from app.adapters.storage.consultations import ConsultationsAdapter
 from app.adapters.storage.updater import UpdaterAdapter
 from app.services.updater.repo import RepoUpdaterService
 from app.settings.auth import AuthSettings
@@ -54,6 +55,7 @@ class Container(DeclarativeContainer):
     source_adapter: Singleton["SourceAdapter"] = Singleton(
         SourceAdapter, service_settings.provided.updater_host, service_settings.provided.timeout
     )
+    consultation_adapter: Singleton["ConsultationsAdapter"] = Singleton(ConsultationsAdapter, session_ctx.provider)
 
     repo_updater_service: Singleton["RepoUpdaterService"] = Singleton(
         RepoUpdaterService, source_adapter.provided, updater_adapter.provided, logger.provided

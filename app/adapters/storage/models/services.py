@@ -29,7 +29,7 @@ class Service(BaseModel):
     id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
     guid: Mapped[str] = mapped_column(sa.String(36), unique=True)
     name: Mapped[str] = mapped_column(sa.String(255))
-    short_description: Mapped[str | None] = mapped_column(sa.String(255))
+    short_description: Mapped[str | None] = mapped_column(sa.Text())
     description: Mapped[str | None] = mapped_column(sa.Text())
     preparation: Mapped[str | None] = mapped_column(sa.Text())
     ready_from: Mapped[int | None]

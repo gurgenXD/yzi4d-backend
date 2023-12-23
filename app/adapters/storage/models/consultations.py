@@ -17,7 +17,7 @@ class Consultation(BaseModel):
     created: Mapped[datetime]
     specialist: Mapped[str] = mapped_column(sa.String(255))
     status: Mapped[str] = mapped_column(sa.String(20))
-    comments: Mapped[str] = mapped_column(sa.Text())
+    comments: Mapped[str | None] = mapped_column(sa.Text())
 
     def __str__(self) -> str:
         return f"Онлайн консультация №: {self.id}"
