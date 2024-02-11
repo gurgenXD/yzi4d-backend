@@ -5,22 +5,22 @@ from dependency_injector.containers import DeclarativeContainer
 from dependency_injector.providers import Callable, Object, Singleton
 from loguru import logger
 
-from app.adapters.source import SourceAdapter
-from app.adapters.storage.contacts import ContactsAdapter
-from app.adapters.storage.db import engine, session
-from app.adapters.storage.documents import DocumentAdapter
-from app.adapters.storage.news import NewsAdapter
-from app.adapters.storage.pages import PagesAdapter
-from app.adapters.storage.promotions import PromotionsAdapter
-from app.adapters.storage.services import ServicesAdapter
-from app.adapters.storage.specialists import SpecialistsAdapter
-from app.adapters.storage.consultations import ConsultationsAdapter
-from app.adapters.storage.updater import UpdaterAdapter
-from app.services.updater.repo import RepoUpdaterService
-from app.settings.auth import AuthSettings
-from app.settings.db import DatabaseSettings
-from app.settings.server import ServerSettings
-from app.settings.service import ServiceSettings
+from app.domain.services.updater.repo import RepoUpdaterService
+from app.infrastructure.adapters.source import SourceAdapter
+from app.infrastructure.adapters.storage.consultations import ConsultationsAdapter
+from app.infrastructure.adapters.storage.contacts import ContactsAdapter
+from app.infrastructure.adapters.storage.db import engine, session
+from app.infrastructure.adapters.storage.documents import DocumentAdapter
+from app.infrastructure.adapters.storage.news import NewsAdapter
+from app.infrastructure.adapters.storage.pages import PagesAdapter
+from app.infrastructure.adapters.storage.promotions import PromotionsAdapter
+from app.infrastructure.adapters.storage.services import ServicesAdapter
+from app.infrastructure.adapters.storage.specialists import SpecialistsAdapter
+from app.infrastructure.adapters.storage.updater import UpdaterAdapter
+from app.infrastructure.settings.auth import AuthSettings
+from app.infrastructure.settings.db import DatabaseSettings
+from app.infrastructure.settings.server import ServerSettings
+from app.infrastructure.settings.service import ServiceSettings
 
 
 if TYPE_CHECKING:

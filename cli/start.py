@@ -1,7 +1,7 @@
 import click
 import uvicorn
 
-from app.settings.server import ServerSettings
+from app.infrastructure.settings.server import ServerSettings
 
 
 @click.group()

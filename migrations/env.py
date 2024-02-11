@@ -8,7 +8,7 @@ from sqlalchemy.future.engine import Connection
 from app.adapters.storage.db import engine
 from app.adapters.storage.db.base_model import BaseModel
 from app.adapters.storage.models import *  # noqa: F403
-from app.settings.db import DatabaseSettings
+from app.infrastructure.settings.db import DatabaseSettings
 
 
 # this is the Alembic Config object, which provides

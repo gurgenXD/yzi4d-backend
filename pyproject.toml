@@ -10,29 +10,29 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-fastapi = "0.103.2"
-uvicorn = { extras = ["standard"], version = "0.23.2" }
+fastapi = "0.109.2"
+uvicorn = { extras = ["standard"], version = "0.27.1" }
 click = "8.1.7"
-SQLAlchemy = { extras = ["asyncio"], version = "2.0.22" }
-alembic = "1.12.0"
-pydantic = { extras = ["dotenv"], version = "2.4.2" }
-asyncpg = "0.28.0"
+SQLAlchemy = { extras = ["asyncio"], version = "2.0.25" }
+alembic = "1.13.1"
+pydantic = { extras = ["dotenv"], version = "2.6.1" }
+asyncpg = "0.29.0"
 sqladmin = { extras = ["full"], version = "0.16.0" }
 dependency-injector = "4.41.0"
 loguru = "0.7.2"
-pydantic-settings = "2.0.3"
+pydantic-settings = "2.1.0"
 itsdangerous = "2.1.2"
-httpx = "0.25.0"
-fastapi-storages = "0.2.0"
+httpx = "0.26.0"
+fastapi-storages = "0.2.1"
 python-jose = "3.3.0"
-tzdata = "2023.3"
-pillow = "10.1.0"
+tzdata = "2023.4"
+pillow = "10.2.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "23.9.1"
-mypy = "1.6.0"
-ruff = "0.0.292"
-greenlet = { version = "3.0.0", markers = "sys_platform == 'darwin'" }
+black = "24.1.1"
+mypy = "1.8.0"
+ruff = "0.2.1"
+greenlet = { version = "3.0.3", markers = "sys_platform == 'darwin'" }
 
 [build-system]
 requires = ["poetry-core"]
