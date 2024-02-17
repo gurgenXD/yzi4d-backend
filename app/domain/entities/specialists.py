@@ -2,21 +2,12 @@ from datetime import date
 
 from pydantic import BaseModel, computed_field
 
+from app.domain.entities.specializations import SpecializationEntity
 from utils.template_filters.humanize import calculate_ages, humanize_age
 
 
-class SpecializationSchema(BaseModel):
-    """Схема специализации."""
-
-    id: int
-    name: str
-
-    class Config:
-        from_attributes = True
-
-
-class SpecialistCertificateSchema(BaseModel):
-    """Схема сертификатов специалиста."""
+class SpecialistCertificateEntity(BaseModel):
+    """Сущность сертификатов специалиста."""
 
     name: str
     path: str
@@ -25,8 +16,8 @@ class SpecialistCertificateSchema(BaseModel):
         from_attributes = True
 
 
-class SpecialistEducationSchema(BaseModel):
-    """Схема обучения специалиста."""
+class SpecialistEducationEntity(BaseModel):
+    """Сущность обучения специалиста."""
 
     name: str
     year: str
@@ -35,8 +26,8 @@ class SpecialistEducationSchema(BaseModel):
         from_attributes = True
 
 
-class SpecialistTitleSchema(BaseModel):
-    """Схема титула специалиста."""
+class SpecialistTitleEntity(BaseModel):
+    """Сущность титула специалиста."""
 
     name: str
 
@@ -44,8 +35,8 @@ class SpecialistTitleSchema(BaseModel):
         from_attributes = True
 
 
-class SpecialistSchema(BaseModel):
-    """Схема специалиста."""
+class SpecialistEntity(BaseModel):
+    """Сущность специалиста."""
 
     id: int
     name: str
@@ -53,16 +44,16 @@ class SpecialistSchema(BaseModel):
     patronymic: str | None
     photo: str | None
     start_work_date: date
-    education: list[SpecialistEducationSchema]
+    education: list[SpecialistEducationEntity]
     activity: str | None
     description: str | None
     short_description: str | None
-    titles: list[SpecialistTitleSchema]
+    titles: list[SpecialistTitleEntity]
     can_adult: bool
     can_child: bool
     can_online: bool
-    specializations: list[SpecializationSchema]
-    certificates: list[SpecialistCertificateSchema] = []
+    specializations: list[SpecializationEntity]
+    certificates: list[SpecialistCertificateEntity] = []
 
     @property
     def full_name(self) -> str:

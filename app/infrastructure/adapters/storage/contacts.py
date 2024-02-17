@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import select
 from sqlalchemy.orm import contains_eager
 
-from app.domain.services.schemas.contacts import CitySchema
+from app.domain.entities.contacts import CityEntity
 from app.infrastructure.adapters.storage.models import City, Office
 
 
@@ -20,7 +20,7 @@ class ContactsAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    async def get_cities(self) -> list["CitySchema"]:
+    async def get_cities(self) -> list["CityEntity"]:
         """Получить все города с контактами."""
         query = (
             select(City)
@@ -31,7 +31,7 @@ class ContactsAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [CitySchema.model_validate(row) for row in rows.unique().scalars()]
+            return [CityEntity.model_validate(row) for row in rows.unique().scalars()]
 
     async def get_offices(self) -> list[str]:
         """Получить филиалы."""

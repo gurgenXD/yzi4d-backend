@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 
-class PageSchema(BaseModel):
-    """Схема статичной страницы."""
+class PageEntity(BaseModel):
+    """Сущность статичной страницы."""
 
     slug: str
     title: str

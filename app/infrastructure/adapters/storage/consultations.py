@@ -11,7 +11,7 @@ from app.infrastructure.adapters.storage.models import Consultation
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
-    from app.domain.services.schemas.consultations import ConsultationSchema
+    from app.domain.entities.consultations import ConsultationEntity
 
 
 @dataclass
@@ -20,7 +20,7 @@ class ConsultationsAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    async def create(self, consultation: "ConsultationSchema") -> None:
+    async def create(self, consultation: "ConsultationEntity") -> None:
         """Создать заявку на консультацию."""
         query = insert(Consultation).values(**consultation.model_dump())
 

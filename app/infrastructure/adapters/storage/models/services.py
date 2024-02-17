@@ -37,10 +37,10 @@ class Service(BaseModel):
     is_active: Mapped[bool]
 
     categories: Mapped[list["Category"]] = relationship(
-        "Category", secondary=categories_services_table, back_populates="services"
+        "Category", secondary=categories_services_table, back_populates="services",
     )
     specialists_services: Mapped[list["SpecialistService"]] = relationship(
-        "SpecialistService", back_populates="service"
+        "SpecialistService", back_populates="service",
     )
 
     def __str__(self) -> str:
@@ -65,7 +65,7 @@ class Category(BaseModel):
     parent: Mapped["Category"] = relationship("Category", back_populates="children", remote_side=[id])
     catalog: Mapped["Catalog"] = relationship("Catalog", back_populates="categories")
     services: Mapped[list["Service"]] = relationship(
-        "Service", secondary=categories_services_table, back_populates="categories"
+        "Service", secondary=categories_services_table, back_populates="categories",
     )
 
     def __str__(self) -> str:

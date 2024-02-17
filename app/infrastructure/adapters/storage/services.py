@@ -8,8 +8,8 @@ from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.sql.expression import func
 
+from app.domain.entities.services import CategoryEntity, ServiceEntity, StrictServiceEntity
 from app.domain.services.exceptions import NotFoundError
-from app.domain.services.schemas.services import CategorySchema, ServiceSchema, StrictServiceSchema
 from app.domain.services.updater.types import CatalogType
 from app.infrastructure.adapters.storage.models import (
     Catalog,
@@ -34,8 +34,8 @@ class ServicesAdapter:
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
     async def get_categories(
-        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None
-    ) -> list[CategorySchema]:
+        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None,
+    ) -> list[CategoryEntity]:
         """Получить категории."""
         query = self._service_query(catalog_type).with_only_columns(Category.id, Category.name).order_by(Category.name)
 
@@ -48,9 +48,9 @@ class ServicesAdapter:
 
         async with self._session_factory() as session:
             rows = (await session.execute(query)).unique().all()
-            return [CategorySchema.model_validate(row) for row in rows]
+            return [CategoryEntity.model_validate(row) for row in rows]
 
-    async def get_categories_with_services(self, base_url: str, catalog_type: CatalogType) -> list["CategorySchema"]:
+    async def get_categories_with_services(self, base_url: str, catalog_type: CatalogType) -> list["CategoryEntity"]:
         """Получить категории услуг с услугами."""
         query = self._service_query(catalog_type).order_by(Category.name)
 
@@ -58,16 +58,16 @@ class ServicesAdapter:
             rows = (await session.execute(query)).unique().all()
 
             return [
-                CategorySchema(
+                CategoryEntity(
                     id=key[0],
                     name=key[1],
                     icon=f"{base_url}media/categories/{key[2].name}" if key[2] else None,
-                    services=[StrictServiceSchema.model_validate(service) for service in services],
+                    services=[StrictServiceEntity.model_validate(service) for service in services],
                 )
                 for key, services in groupby(rows, lambda row: (row.category_id, row.category_name, row.icon))
             ]
 
-    async def get(self, item_id: int, category_id: int, catalog_type: CatalogType) -> "ServiceSchema":
+    async def get(self, item_id: int, category_id: int, catalog_type: CatalogType) -> "ServiceEntity":
         """Получить услугу."""
         query = self._service_query(catalog_type, category_id).where(Service.id == item_id)
 
@@ -75,7 +75,7 @@ class ServicesAdapter:
             row = await session.execute(query)
 
             try:
-                service = ServiceSchema.model_validate(row.one())
+                service = ServiceEntity.model_validate(row.one())
             except NoResultFound as exc:
                 message = f"Услуга с {item_id=} не найден."
                 raise NotFoundError(message) from exc
@@ -102,8 +102,8 @@ class ServicesAdapter:
             return row.scalar()
 
     async def get_paginated(
-        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None, page: int, page_size: int
-    ) -> Paginated[ServiceSchema]:
+        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None, page: int, page_size: int,
+    ) -> Paginated[ServiceEntity]:
         """Получить услуги по категории."""
         async with self._session_factory() as session:
             if category_id == -1 and (categories := await self.get_categories(catalog_type, None, search_query)):
@@ -118,9 +118,9 @@ class ServicesAdapter:
             paginated_query, paging = await get_query_with_meta(session, query, page, page_size)
 
             rows = await session.execute(paginated_query)
-            services = [ServiceSchema.model_validate(row) for row in rows.all()]
+            services = [ServiceEntity.model_validate(row) for row in rows.all()]
 
-        return Paginated[ServiceSchema](data=services, paging=paging)
+        return Paginated[ServiceEntity](data=services, paging=paging)
 
     @staticmethod
     def _service_query(catalog_type: CatalogType, category_id: int | None = None) -> "Select":

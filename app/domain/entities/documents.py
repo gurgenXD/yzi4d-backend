@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 
-class DocumentSchema(BaseModel):
-    """Схема документа."""
+class DocumentEntity(BaseModel):
+    """Сущность документа."""
 
     name: str
     link: str
@@ -12,13 +12,13 @@ class DocumentSchema(BaseModel):
         from_attributes = True
 
 
-class DocumentCategorySchema(BaseModel):
-    """Схема категории документов."""
+class DocumentCategoryEntity(BaseModel):
+    """Сущность категории документов."""
 
     name: str
     position: int
     is_active: bool
-    documents: list[DocumentSchema] = []
+    documents: list[DocumentEntity] = []
 
     class Config:
         from_attributes = True

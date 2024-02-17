@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
 
+from app.domain.entities.pages import PageEntity
 from app.domain.services.exceptions import NotFoundError
-from app.domain.services.schemas.pages import PageSchema
 from app.infrastructure.adapters.storage.models import Page
 
 
@@ -21,7 +21,7 @@ class PagesAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    async def get(self, slug: str) -> "PageSchema":
+    async def get(self, slug: str) -> "PageEntity":
         """Получить статичную страницу."""
         query = select(Page).where(Page.slug == slug, Page.is_active.is_(True))
 
@@ -29,7 +29,7 @@ class PagesAdapter:
             row = await session.execute(query)
 
             try:
-                pages = PageSchema.model_validate(row.one()[0])
+                pages = PageEntity.model_validate(row.one()[0])
             except NoResultFound as exc:
                 message = "Страница не найдена."
                 raise NotFoundError(message) from exc

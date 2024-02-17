@@ -6,7 +6,7 @@ from markupsafe import Markup
 from sqladmin import ModelView
 from sqlalchemy import Column
 
-from app.domain.services.types.consultations import ConsultationStatus
+from app.domain.entities.consultations import ConsultationStatus
 from app.infrastructure.adapters.storage.models.consultations import Consultation
 
 

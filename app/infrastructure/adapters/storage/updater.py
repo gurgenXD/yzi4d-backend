@@ -2,7 +2,7 @@ import base64
 from collections.abc import Callable
 from contextlib import AbstractAsyncContextManager
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from io import BytesIO
 from itertools import groupby
 from typing import TYPE_CHECKING
@@ -55,9 +55,7 @@ class UpdaterAdapter:
         query = (
             insert(Update)
             .values(
-                start_update=datetime.now(tz=timezone.utc),
-                status=UpdaterStatusType.PROCESSING.value,
-                data_type=data_type.value,
+                start_update=datetime.now(tz=UTC), status=UpdaterStatusType.PROCESSING.value, data_type=data_type.value,
             )
             .returning(Update.id)
         )
@@ -66,12 +64,12 @@ class UpdaterAdapter:
             row = await session.execute(query)
             return row.one()[0]
 
-    async def finish(self, id: int, status: UpdaterStatusType, message: str | None) -> None:
+    async def finish(self, id_: int, status: UpdaterStatusType, message: str | None) -> None:
         """Обновить запись о завершении обновления."""
         query = (
             update(Update)
-            .where(Update.id == id)
-            .values(end_update=datetime.now(tz=timezone.utc), status=status.value, error_log=message)
+            .where(Update.id == id_)
+            .values(end_update=datetime.now(tz=UTC), status=status.value, error_log=message)
         )
 
         async with self._session_factory() as session:
@@ -89,7 +87,7 @@ class UpdaterAdapter:
                     .on_conflict_do_update(
                         index_elements=(Catalog.guid,),
                         set_={**catalog.model_dump(exclude={"guid"}), "page": CATALOG_MAP.get(catalog.guid)},
-                    )
+                    ),
                 )
 
     async def save_categories(self, catalog_guid: str, data: list["CatalogItemSchema"]) -> None:
@@ -119,14 +117,14 @@ class UpdaterAdapter:
                                 "catalog_id": catalog_id,
                                 "parent_id": parent_id,
                             },
-                        )
+                        ),
                     )
                 ).inserted_primary_key[0]
 
                 await session.execute(
                     delete(categories_services_table).where(
-                        categories_services_table.c["service_category_id"] == category_id
-                    )
+                        categories_services_table.c["service_category_id"] == category_id,
+                    ),
                 )
 
                 for service in category.services:
@@ -135,8 +133,8 @@ class UpdaterAdapter:
                     ).scalar_one_or_none():
                         await session.execute(
                             insert(categories_services_table).values(
-                                service_category_id=category_id, service_id=service_id
-                            )
+                                service_category_id=category_id, service_id=service_id,
+                            ),
                         )
                     else:
                         self._logger.warning(f"Service '{service.guid}' doesn't exists. Category: {category_id}")
@@ -157,12 +155,12 @@ class UpdaterAdapter:
                         .on_conflict_do_update(
                             index_elements=(Service.guid,),
                             set_=service.model_dump(exclude={"prices", "guid", "is_hidden"}),
-                        )
+                        ),
                     )
                 ).inserted_primary_key[0]
 
                 groups = groupby(
-                    sorted(service.prices, key=lambda x: x.specialist_guid), key=lambda x: x.specialist_guid
+                    sorted(service.prices, key=lambda x: x.specialist_guid), key=lambda x: x.specialist_guid,
                 )
 
                 for _, group_items in groups:
@@ -170,7 +168,7 @@ class UpdaterAdapter:
 
                     specialist_id = (
                         await session.execute(
-                            select(Specialist.id).where(Specialist.guid == specialist_service.specialist_guid)
+                            select(Specialist.id).where(Specialist.guid == specialist_service.specialist_guid),
                         )
                     ).scalar_one()
 
@@ -184,7 +182,7 @@ class UpdaterAdapter:
                         .on_conflict_do_update(
                             index_elements=(SpecialistService.service_id, SpecialistService.specialist_id),
                             set_=specialist_service.model_dump(exclude={"office_guid", "specialist_guid"}),
-                        )
+                        ),
                     )
 
                 await session.flush()
@@ -205,7 +203,7 @@ class UpdaterAdapter:
                         .on_conflict_do_update(
                             index_elements=(Specialist.guid,),
                             set_=specialist.model_dump(exclude={"specializations", "guid", "is_hidden"}),
-                        )
+                        ),
                     )
                 ).inserted_primary_key[0]
 
@@ -217,14 +215,14 @@ class UpdaterAdapter:
                             .on_conflict_do_update(
                                 index_elements=(Specialization.guid,),
                                 set_=specialization.model_dump(exclude={"guid", "is_hidden"}),
-                            )
+                            ),
                         )
                     ).inserted_primary_key[0]
 
                     await session.execute(
                         insert(specializations_specialists_table).values(
-                            specialization_id=specialization_id, specialist_id=specialist_id
-                        )
+                            specialization_id=specialization_id, specialist_id=specialist_id,
+                        ),
                     )
 
                 await session.flush()

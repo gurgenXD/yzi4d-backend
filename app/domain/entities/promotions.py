@@ -3,8 +3,8 @@ from datetime import date
 from pydantic import BaseModel
 
 
-class PromotionSchema(BaseModel):
-    """Схема акции."""
+class PromotionEntity(BaseModel):
+    """Сущность акции."""
 
     name: str
     sale: str

@@ -33,7 +33,7 @@ class Specialization(BaseModel):
     is_active: Mapped[bool]
 
     specialists: Mapped[list["Specialist"]] = relationship(
-        "Specialist", secondary=specializations_specialists_table, back_populates="specializations"
+        "Specialist", secondary=specializations_specialists_table, back_populates="specializations",
     )
 
     def __str__(self) -> str:
@@ -64,7 +64,7 @@ class Specialist(BaseModel):
     is_active: Mapped[bool]
 
     specializations: Mapped[list["Specialization"]] = relationship(
-        "Specialization", secondary=specializations_specialists_table, back_populates="specialists"
+        "Specialization", secondary=specializations_specialists_table, back_populates="specialists",
     )
     certificates: Mapped[list["Certificate"]] = relationship("Certificate", back_populates="specialist")
 
@@ -100,10 +100,10 @@ class SpecialistService(BaseModel):
     is_active: Mapped[bool]
 
     service_id: Mapped[int] = mapped_column(
-        sa.BigInteger(), sa.ForeignKey("services.id", ondelete="CASCADE"), primary_key=True
+        sa.BigInteger(), sa.ForeignKey("services.id", ondelete="CASCADE"), primary_key=True,
     )
     specialist_id: Mapped[int] = mapped_column(
-        sa.BigInteger(), sa.ForeignKey("specialists.id", ondelete="CASCADE"), primary_key=True
+        sa.BigInteger(), sa.ForeignKey("specialists.id", ondelete="CASCADE"), primary_key=True,
     )
 
     service: Mapped["Service"] = relationship("Service", back_populates="specialists_services")

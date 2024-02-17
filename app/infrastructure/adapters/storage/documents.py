@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import select
 from sqlalchemy.orm import contains_eager
 
-from app.domain.services.schemas.documents import DocumentCategorySchema
+from app.domain.entities.documents import DocumentCategoryEntity
 from app.infrastructure.adapters.storage.models import Document, DocumentCategory
 
 
@@ -20,7 +20,7 @@ class DocumentAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    async def get_all(self) -> list["DocumentCategorySchema"]:
+    async def get_all(self) -> list["DocumentCategoryEntity"]:
         """Получить все активные документы."""
         query = (
             select(DocumentCategory)
@@ -31,4 +31,4 @@ class DocumentAdapter:
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [DocumentCategorySchema.model_validate(row) for row in rows.unique().scalars()]
+            return [DocumentCategoryEntity.model_validate(row) for row in rows.unique().scalars()]

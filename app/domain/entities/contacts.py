@@ -1,8 +1,8 @@
 from pydantic import BaseModel
 
 
-class OfficeSchema(BaseModel):
-    """Схема филиала."""
+class OfficeEntity(BaseModel):
+    """Сущность филиала."""
 
     id: int
     description: str
@@ -19,12 +19,12 @@ class OfficeSchema(BaseModel):
         from_attributes = True
 
 
-class CitySchema(BaseModel):
-    """Схема города."""
+class CityEntity(BaseModel):
+    """Сущность города."""
 
     id: int
     name: str
-    offices: list[OfficeSchema]
+    offices: list[OfficeEntity]
 
     class Config:
         from_attributes = True

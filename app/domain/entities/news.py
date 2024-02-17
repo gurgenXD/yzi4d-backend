@@ -3,8 +3,8 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class NewsSchema(BaseModel):
-    """Схема новости."""
+class NewsEntity(BaseModel):
+    """Сущность новости."""
 
     title: str
     preview: str

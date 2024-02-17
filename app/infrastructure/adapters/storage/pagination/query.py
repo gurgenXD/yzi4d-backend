@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 async def get_query_with_meta(
-    session: "AsyncSession", query: "Select", page: int, page_size: int
+    session: "AsyncSession", query: "Select", page: int, page_size: int,
 ) -> tuple["Select", "PaginationSchema"]:
     """Получить запрос и мета по пагинации."""
     count_query = select(func.count()).select_from(query.subquery())

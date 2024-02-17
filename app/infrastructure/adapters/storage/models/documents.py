@@ -31,7 +31,7 @@ class Document(BaseModel):
     is_active: Mapped[bool]
 
     category_id: Mapped[str | None] = mapped_column(
-        sa.BigInteger(), sa.ForeignKey("documents_categories.id", ondelete="SET NULL")
+        sa.BigInteger(), sa.ForeignKey("documents_categories.id", ondelete="SET NULL"),
     )
 
     category: Mapped["DocumentCategory"] = relationship("DocumentCategory", back_populates="documents")

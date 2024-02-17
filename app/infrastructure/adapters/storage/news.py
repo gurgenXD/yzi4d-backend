@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
 
+from app.domain.entities.news import NewsEntity
 from app.domain.services.exceptions import NotFoundError
-from app.domain.services.schemas.news import NewsSchema
 from app.infrastructure.adapters.storage.models import News
 
 
@@ -21,25 +21,25 @@ class NewsAdapter:
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
-    async def get_all(self) -> list["NewsSchema"]:
+    async def get_all(self) -> list["NewsEntity"]:
         """Получить все активные новости."""
         query = select(News).where(News.is_active.is_(True))
 
         async with self._session_factory() as session:
             rows = await session.execute(query)
-            return [NewsSchema.model_validate(row) for row in rows.scalars()]
+            return [NewsEntity.model_validate(row) for row in rows.scalars()]
 
-    async def get(self, id: int) -> "NewsSchema":
+    async def get(self, id_: int) -> "NewsEntity":
         """Получить новость."""
-        query = select(News).where(News.id == id, News.is_active.is_(True))
+        query = select(News).where(News.id == id_, News.is_active.is_(True))
 
         async with self._session_factory() as session:
             row = await session.execute(query)
 
             try:
-                news = NewsSchema.model_validate(row.one()[0])
+                news = NewsEntity.model_validate(row.one()[0])
             except NoResultFound as exc:
-                message = f"Новость с {id=} не найдена."
+                message = f"Новость с {id_=} не найдена."
                 raise NotFoundError(message) from exc
 
         return news

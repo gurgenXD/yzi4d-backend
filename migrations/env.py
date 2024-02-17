@@ -58,6 +58,6 @@ if context.is_offline_mode():
     raise RuntimeError(message)
 
 if platform.system() == "Windows":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # type: ignore
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 asyncio.run(run_migrations_online())
