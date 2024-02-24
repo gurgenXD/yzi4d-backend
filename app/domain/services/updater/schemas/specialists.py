@@ -6,9 +6,9 @@ from pydantic import BaseModel, Field, computed_field, field_validator
 class SpecializationSchema(BaseModel):
     """Схема специальности."""
 
-    guid: str = Field(alias="SpecGuid1C")
-    name: str = Field(alias="SpecName")
-    is_hidden: bool = Field(alias="Hide")
+    guid: str = Field(validation_alias="SpecGuid1C")
+    name: str = Field(validation_alias="SpecName")
+    is_hidden: bool = Field(validation_alias="Hide")
 
     @computed_field
     @property
@@ -23,36 +23,36 @@ class SpecializationSchema(BaseModel):
 class EducationSchema(BaseModel):
     """Схема образования специалиста."""
 
-    name: str = Field(alias="EduName")
-    year: str = Field(alias="EduYear")
+    name: str = Field(validation_alias="EduName")
+    year: str = Field(validation_alias="EduYear")
 
 
 class TitleSchema(BaseModel):
     """Схема титула специалиста."""
 
-    name: str = Field(alias="AcademicDegreeName")
+    name: str = Field(validation_alias="AcademicDegreeName")
 
 
 class SourceSpecialistSchema(BaseModel):
     """Схема специалистов из источника."""
 
-    guid: str = Field(alias="Guid1C")
-    name: str = Field(alias="Name")
-    surname: str = Field(alias="Surname")
-    patronymic: str | None = Field(alias="MiddleName")
-    can_adult: bool = Field(alias="ReceptionAdult")
-    can_child: bool = Field(alias="ReceptionChild")
-    can_online: bool = Field(alias="ReceptionOnline")
-    on_main: bool = Field(alias="ShowOnMain")
-    start_work_date: datetime = Field(alias="GetStartedDate")
-    description: str = Field(alias="Description")
-    short_description: str = Field(alias="ShortDescription")
-    is_hidden: bool = Field(alias="Hide")
+    guid: str = Field(validation_alias="Guid1C")
+    name: str = Field(validation_alias="Name")
+    surname: str = Field(validation_alias="Surname")
+    patronymic: str | None = Field(validation_alias="MiddleName")
+    can_adult: bool = Field(validation_alias="ReceptionAdult")
+    can_child: bool = Field(validation_alias="ReceptionChild")
+    can_online: bool = Field(validation_alias="ReceptionOnline")
+    on_main: bool = Field(validation_alias="ShowOnMain")
+    start_work_date: datetime = Field(validation_alias="GetStartedDate")
+    description: str = Field(validation_alias="Description")
+    short_description: str = Field(validation_alias="ShortDescription")
+    is_hidden: bool = Field(validation_alias="Hide")
 
-    education: list[EducationSchema] = Field(alias="EduList")
-    titles: list[TitleSchema] = Field(alias="AcademicDegreeList")
+    education: list[EducationSchema] = Field(validation_alias="EduList")
+    titles: list[TitleSchema] = Field(validation_alias="AcademicDegreeList")
 
-    specializations: set[SpecializationSchema] = Field(alias="SpecList")
+    specializations: set[SpecializationSchema] = Field(validation_alias="SpecList")
 
     @computed_field
     @property
@@ -64,7 +64,7 @@ class SourceSpecialistSchema(BaseModel):
 class SpecialistImageSchema(BaseModel):
     """Схема фотографии специалиста."""
 
-    data: str | None = Field(alias="ImageFoto")
+    data: str | None = Field(validation_alias="ImageFoto")
 
     @field_validator("data", mode="before")
     @classmethod

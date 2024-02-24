@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class DocumentAdapter:
+class DocumentsAdapter:
     """Адаптер для доступа к данным документов."""
 
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]

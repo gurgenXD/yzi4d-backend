@@ -10,7 +10,12 @@ class ServiceSettings(BaseSettings):
 
     # Хост обновления.
     updater_host: str
+    # Время ожидания ответа от хоста обновления.
+    updater_timeout: float = 60
     # Пустой GUID.
     empty_guid: str
-    # Время ожидания ответа от хоста обновления.
-    timeout: float = 60
+
+    # Хост личного кабинета.
+    profile_host: str
+    # Время ожидания ответа от хоста личного кабинета.
+    profile_timeout: float = 5

@@ -7,24 +7,24 @@ EMPTY_GUID = "00000000-0000-0000-0000-000000000000"
 class ServicePriceSchema(BaseModel):
     """Схема цены услуги."""
 
-    office_guid: str = Field(alias="DivisionGuid1C")
-    specialist_guid: str = Field(alias="SpecGuid1C")
-    price: int = Field(alias="Price")
+    office_guid: str = Field(validation_alias="DivisionGuid1C")
+    specialist_guid: str = Field(validation_alias="SpecGuid1C")
+    price: int = Field(validation_alias="Price")
     is_active: bool = True
 
 
 class ServiceExtSchema(BaseModel):
     """Расширенная схема услуги."""
 
-    guid: str = Field(alias="Guid1C")
-    name: str = Field(alias="ProductName")
-    ready_from: int | None = Field(alias="ReadyFrom")
-    ready_to: int | None = Field(alias="ReadyTo")
-    description: str | None = Field(alias="Description")
-    short_description: str | None = Field(alias="ShortDescription")
-    preparation: str | None = Field(alias="Preparation")
-    prices: list[ServicePriceSchema] = Field(alias="ProductPrice")
-    is_hidden: bool = Field(alias="Hide")
+    guid: str = Field(validation_alias="Guid1C")
+    name: str = Field(validation_alias="ProductName")
+    ready_from: int | None = Field(validation_alias="ReadyFrom")
+    ready_to: int | None = Field(validation_alias="ReadyTo")
+    description: str | None = Field(validation_alias="Description")
+    short_description: str | None = Field(validation_alias="ShortDescription")
+    preparation: str | None = Field(validation_alias="Preparation")
+    prices: list[ServicePriceSchema] = Field(validation_alias="ProductPrice")
+    is_hidden: bool = Field(validation_alias="Hide")
 
     @computed_field
     @property
@@ -36,7 +36,7 @@ class ServiceExtSchema(BaseModel):
 class ServiceSchema(BaseModel):
     """Схема услуги."""
 
-    guid: str = Field(alias="Guid1C")
+    guid: str = Field(validation_alias="Guid1C")
 
     class Config:
         frozen = True
@@ -45,10 +45,10 @@ class ServiceSchema(BaseModel):
 class CatalogItemSchema(BaseModel):
     """Схема элемента каталога."""
 
-    guid: str = Field(alias="Guid1C")
-    name: str = Field(alias="CatalogName")
-    parent_guid: str | None = Field(alias="ParentGuid1C")
-    services: set[ServiceSchema] = Field(alias="ProductList")
+    guid: str = Field(validation_alias="Guid1C")
+    name: str = Field(validation_alias="CatalogName")
+    parent_guid: str | None = Field(validation_alias="ParentGuid1C")
+    services: set[ServiceSchema] = Field(validation_alias="ProductList")
     is_active: bool = True
 
     @field_validator("parent_guid", mode="before")
@@ -61,6 +61,6 @@ class CatalogItemSchema(BaseModel):
 class CatalogSchema(BaseModel):
     """Схема каталога."""
 
-    guid: str = Field(alias="Guid1C")
-    name: str = Field(alias="CatalogName")
+    guid: str = Field(validation_alias="Guid1C")
+    name: str = Field(validation_alias="CatalogName")
     is_active: bool = True

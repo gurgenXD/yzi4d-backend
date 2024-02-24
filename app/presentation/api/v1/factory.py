@@ -6,6 +6,7 @@ from app.presentation.api.v1.routers import (
     contacts,
     documents,
     news,
+    patients,
     promotions,
     services,
     specialists,
@@ -31,5 +32,6 @@ def create_app() -> "FastAPI":
     app.include_router(promotions.router)
     app.include_router(documents.router)
     app.include_router(consultations.router)
+    app.include_router(patients.router)
 
     return app
