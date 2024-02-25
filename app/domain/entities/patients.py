@@ -40,6 +40,12 @@ class PatientEntity(BaseModel):
     members: list[MemberEntitiy] = Field(validation_alias="FamilyMember")
     discount: list[DicountEntitiy] = Field(validation_alias="DiscountData")
 
+    @field_validator("members", mode="before")
+    @classmethod
+    def empty_members(cls, value: Any) -> list:
+        """Обрабатывать пустую строку."""
+        return value or []
+
     class Config:
         from_attributes = True
 
@@ -47,7 +53,6 @@ class PatientEntity(BaseModel):
 class PatientVisitServiceEntity(BaseModel):
     """Сущность услуги визита пациента."""
 
-    id: str = Field(validation_alias="ServiceGUID")
     name: str = Field(validation_alias="ServiceNAME")
     price: int = Field(validation_alias="SumService")
 
@@ -56,9 +61,8 @@ class PatientVisitServiceEntity(BaseModel):
 
 
 class PatientPlannedVisitEntity(BaseModel):
-    """Сущность визита пациента."""
+    """Сущность запланированного визита пациента."""
 
-    id: str = Field(validation_alias="PacientID")
     date_start: str = Field(validation_alias="DateTime")
     specialist: str = Field(validation_alias="SpecialistNAME")
     address: str = Field(validation_alias="BranchNAME")
@@ -69,8 +73,27 @@ class PatientPlannedVisitEntity(BaseModel):
     @classmethod
     def convert_datetime(cls, value: str) -> str:
         """Конвертировать дату в другой формат."""
-        # 21 февраля, 9:00
         return datetime.strptime(value, "%d.%m.%Y %H:%M:%S").strftime("%d.%m.%Y %H:%M")
+
+    class Config:
+        from_attributes = True
+
+
+class PatientFinishedVisitEntity(BaseModel):
+    """Сущность завершенного визита пациента."""
+
+    date_receipt: str = Field(validation_alias="dateReceipt")
+    service: str = Field(validation_alias="service")
+    file_path: str = Field(validation_alias="storagePath")
+    specialist: str = Field(validation_alias="specialist")
+    service_type: str = Field(validation_alias="researchType")
+    header: str
+
+    @field_validator("date_receipt", mode="before")
+    @classmethod
+    def convert_datetime(cls, value: str) -> str:
+        """Конвертировать дату в другой формат."""
+        return datetime.strptime(value, "%d.%m.%Y %H:%M:%S").strftime("%d.%m.%Y")
 
     class Config:
         from_attributes = True

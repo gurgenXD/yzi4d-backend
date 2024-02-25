@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Path
+from fastapi import APIRouter, Path, Query
 
 from app.container import CONTAINER
-from app.domain.entities.patients import PatientEntity, PatientPlannedVisitEntity
+from app.domain.entities.patients import PatientEntity, PatientFinishedVisitEntity, PatientPlannedVisitEntity
 
 
 TAG = "patients"
@@ -19,7 +19,23 @@ async def get_patient(id_: str = Path(alias="id")) -> PatientEntity:
 
 
 @router.get("/{id}/planned-visits")
-async def get_patient_planned_visits(id_: str = Path(alias="id")) -> list[PatientPlannedVisitEntity]:
+async def get_planned_visits(id_: str = Path(alias="id")) -> list[PatientPlannedVisitEntity]:
     """Получить информацию о запланированных визитах пациента."""
     adapter = CONTAINER.patients_adapter()
     return await adapter.get_planned_visits(id_)
+
+
+@router.get("/{id}/finished-visits")
+async def get_finished_visits(
+    id_: str = Path(alias="id"), type_: str = Query(alias="type"),
+) -> list[PatientFinishedVisitEntity]:
+    """Получить информацию о завершенных визитах пациента."""
+    adapter = CONTAINER.patients_adapter()
+    return await adapter.get_finished_visits(id_, type_)
+
+
+@router.get("/{id}/file")
+async def get_file(file_path: str, id_: str = Path(alias="id")) -> str:
+    """Получить файл."""
+    adapter = CONTAINER.patients_adapter()
+    return await adapter.get_file(id_, file_path)
