@@ -58,7 +58,11 @@ class Container(DeclarativeContainer):
     promotions_adapter: Provider["PromotionsAdapter"] = Singleton(PromotionsAdapter, session_ctx.provider)
     updater_adapter: Provider["UpdaterAdapter"] = Singleton(UpdaterAdapter, session_ctx.provider, logger.provided)
     source_adapter: Provider["SourceAdapter"] = Singleton(
-        SourceAdapter, service_settings.provided.source_host, service_settings.provided.updater_timeout,
+        SourceAdapter,
+        service_settings.provided.source_host,
+        service_settings.provided.source_username,
+        service_settings.provided.source_password,
+        service_settings.provided.updater_timeout,
     )
     consultation_adapter: Provider["ConsultationsAdapter"] = Singleton(ConsultationsAdapter, session_ctx.provider)
     patients_adapter: Provider["PatientsAdapter"] = Singleton(
