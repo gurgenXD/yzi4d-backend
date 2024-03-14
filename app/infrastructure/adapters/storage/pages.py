@@ -31,7 +31,6 @@ class PagesAdapter:
             try:
                 pages = PageEntity.model_validate(row.one()[0])
             except NoResultFound as exc:
-                message = "Страница не найдена."
-                raise NotFoundError(message) from exc
+                raise NotFoundError("Страница не найдена.") from exc
 
         return pages

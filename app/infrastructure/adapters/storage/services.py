@@ -77,8 +77,7 @@ class ServicesAdapter:
             try:
                 service = ServiceEntity.model_validate(row.one())
             except NoResultFound as exc:
-                message = f"Услуга с {item_id=} не найден."
-                raise NotFoundError(message) from exc
+                raise NotFoundError(f"Услуга с {item_id=} не найдена.") from exc
 
         return service
 

@@ -1,14 +1,15 @@
-from fastapi import APIRouter, Path, Query
+from fastapi import APIRouter, Depends, Path, Query
 
 from app.container import CONTAINER
 from app.domain.entities.patients import PatientEntity, PatientFinishedVisitEntity, PatientPlannedVisitEntity
+from app.presentation.api.auth.dependecies import get_token
 
 
 TAG = "patients"
 PREFIX = f"/{TAG}"
 
 
-router = APIRouter(prefix=PREFIX, tags=[TAG])
+router = APIRouter(prefix=PREFIX, tags=[TAG], dependencies=[Depends(get_token)])
 
 
 @router.get("/{id}")

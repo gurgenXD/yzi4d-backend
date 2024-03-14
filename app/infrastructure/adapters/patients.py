@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import httpx
 
 from app.domain.entities.patients import PatientEntity, PatientFinishedVisitEntity, PatientPlannedVisitEntity
-from app.domain.services.exceptions import NotFoundError
+from app.domain.services.exceptions import CredentialsError, NotFoundError
 
 
 @dataclass
@@ -21,6 +21,21 @@ class PatientsAdapter:
         """Аутентификация."""
         return httpx.BasicAuth(username=self._username, password=self._password)
 
+    async def get_patient_id(self, username: str, password: str) -> str:
+        """Получить ID пациента."""
+        async with httpx.AsyncClient(auth=self._auth) as client:
+            response = await client.get(
+                f"{self._host}/lk/Authorization",
+                params={"login": username, "password": password},
+                timeout=self._timeout,
+            )
+            data = response.json()
+
+            if not data["result"]:
+                raise CredentialsError("Wrong credentials.")
+
+            return data["idPacient"]
+
     async def get_info(self, id_: str) -> "PatientEntity":
         """Получить информацию о пациентах."""
         async with httpx.AsyncClient(auth=self._auth) as client:
@@ -28,22 +43,20 @@ class PatientsAdapter:
                 f"{self._host}/lk/GetPacientData", params={"PacientID": id_}, timeout=self._timeout,
             )
 
-            try:
-                return PatientEntity.model_validate(response.json())
-            except ValueError as exc:
-                message = f"Patient with id={id_} not found."
-                raise NotFoundError(message) from exc
+            if response.status_code == httpx.codes.NOT_FOUND:
+                raise NotFoundError("Patient not found.")
+
+            return PatientEntity.model_validate(response.json())
 
     async def get_planned_visits(self, id_: str) -> list["PatientPlannedVisitEntity"]:
         """Получить запланированные визиты."""
         async with httpx.AsyncClient(auth=self._auth) as client:
             response = await client.get(f"{self._host}/lk/GetPlanned", params={"PacientID": id_}, timeout=self._timeout)
 
-            try:
-                return [PatientPlannedVisitEntity.model_validate(item) for item in response.json()]
-            except ValueError as exc:
-                message = f"Patient with id={id_} not found."
-                raise NotFoundError(message) from exc
+            if response.status_code == httpx.codes.NOT_FOUND:
+                raise NotFoundError("Patient not found.")
+
+            return [PatientPlannedVisitEntity.model_validate(item) for item in response.json()]
 
     async def get_finished_visits(self, id_: str, type_: str) -> list["PatientFinishedVisitEntity"]:
         """Получить завершенных визиты."""
@@ -52,15 +65,14 @@ class PatientsAdapter:
         async with httpx.AsyncClient(auth=self._auth) as client:
             response = await client.get(f"{self._host}/lk/GetEMR", params={"PacientID": id_}, timeout=self._timeout)
 
-            try:
-                return [
-                    PatientFinishedVisitEntity.model_validate(item)
-                    for item in response.json()
-                    if filter_operator(item["researchType"], "Анализы")
-                ]
-            except TypeError as exc:
-                message = f"Patient with id={id_} not found."
-                raise NotFoundError(message) from exc
+            if response.status_code == httpx.codes.NOT_FOUND:
+                raise NotFoundError("Patient not found.")
+
+            return [
+                PatientFinishedVisitEntity.model_validate(item)
+                for item in response.json()
+                if filter_operator(item["researchType"], "Анализы")
+            ]
 
     async def get_file(self, id_: str, file_path: str) -> str:
         """Получить файл."""
@@ -71,8 +83,7 @@ class PatientsAdapter:
                 timeout=self._timeout,
             )
 
-            if data := response.json().get("Protocol"):
-                return data
+            if response.status_code == httpx.codes.NOT_FOUND or not (data := response.json().get("Protocol")):
+                raise NotFoundError("Patient not found.")
 
-            message = f"Patient with id={id_} not found."
-            raise NotFoundError(message)
+            return data

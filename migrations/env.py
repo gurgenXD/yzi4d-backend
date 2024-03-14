@@ -5,9 +5,9 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy.future.engine import Connection
 
-from app.adapters.storage.db import engine
-from app.adapters.storage.db.base_model import BaseModel
-from app.adapters.storage.models import *  # noqa: F403
+from app.infrastructure.adapters.storage.db import engine
+from app.infrastructure.adapters.storage.db.base_model import BaseModel
+from app.infrastructure.adapters.storage.models import *  # noqa: F403
 from app.infrastructure.settings.db import DatabaseSettings
 
 

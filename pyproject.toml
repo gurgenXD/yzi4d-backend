@@ -24,7 +24,7 @@ pydantic-settings = "2.1.0"
 itsdangerous = "2.1.2"
 httpx = "0.26.0"
 fastapi-storages = "0.2.1"
-python-jose = "3.3.0"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 tzdata = "2023.4"
 pillow = "10.2.0"
 
@@ -78,6 +78,11 @@ ignore = [
     "ANN102",
 
     "G004",
+
+    "TRY003",
+
+    "EM101",
+    "EM102"
 ]
 
 [tool.ruff.lint.per-file-ignores]

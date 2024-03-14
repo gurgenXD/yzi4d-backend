@@ -39,7 +39,6 @@ class NewsAdapter:
             try:
                 news = NewsEntity.model_validate(row.one()[0])
             except NoResultFound as exc:
-                message = f"Новость с {id_=} не найдена."
-                raise NotFoundError(message) from exc
+                raise NotFoundError(f"Новость с {id_=} не найдена.") from exc
 
         return news

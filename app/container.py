@@ -23,6 +23,7 @@ from app.infrastructure.settings.auth import AuthSettings
 from app.infrastructure.settings.db import DatabaseSettings
 from app.infrastructure.settings.server import ServerSettings
 from app.infrastructure.settings.service import ServiceSettings
+from app.presentation.api.auth.security import AuthSecurity
 
 
 if TYPE_CHECKING:
@@ -76,6 +77,8 @@ class Container(DeclarativeContainer):
     repo_updater_service: Provider["RepoUpdaterService"] = Singleton(
         RepoUpdaterService, source_adapter.provided, updater_adapter.provided, logger.provided,
     )
+
+    auth_security: Provider["AuthSecurity"] = Singleton(AuthSecurity, auth_settings.provided)
 
 
 CONTAINER = Container()

@@ -131,8 +131,7 @@ class SpecialistsAdapter:
                 specialist = SpecialistEntity.model_validate(row_data)
                 specialist.photo = f"{base_url}media/specialists/{row_data.photo.name}" if row_data.photo else None
             except NoResultFound as exc:
-                message = f"Специалист с {item_id=} не найден."
-                raise NotFoundError(message) from exc
+                raise NotFoundError(f"Специалист с {item_id=} не найден.") from exc
 
         return specialist
 
