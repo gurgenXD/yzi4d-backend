@@ -24,7 +24,7 @@ class PatientsAdapter:
     async def get_patient_id(self, username: str, password: str) -> str:
         """Получить ID пациента."""
         async with httpx.AsyncClient(auth=self._auth) as client:
-            response = await client.get(
+            response = await client.post(
                 f"{self._host}/lk/Authorization",
                 params={"login": username, "password": password},
                 timeout=self._timeout,

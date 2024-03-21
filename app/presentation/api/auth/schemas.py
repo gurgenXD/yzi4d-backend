@@ -8,3 +8,4 @@ class TokenSchema(BaseModel):
 
     access_token: str
     expires_in: datetime
+    user_id: str

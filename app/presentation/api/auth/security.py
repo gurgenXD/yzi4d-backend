@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from typing import TYPE_CHECKING
 
 from jose import jwt
@@ -20,10 +20,14 @@ class AuthSecurity:
 
     def generate_token(self, user_id: str) -> TokenSchema:
         """Сгенерировать токен."""
-        expires_in = datetime.now(tz=UTC) + timedelta(minutes=1)
+        expires_in = datetime.now(tz=UTC) + self._settings.lifetime
         claims = {"user_id": user_id, "exp": expires_in}
 
-        return TokenSchema(access_token=jwt.encode(claims=claims, key=self._settings.secret_key), expires_in=expires_in)
+        return TokenSchema(
+            access_token=jwt.encode(claims=claims, key=self._settings.secret_key),
+            expires_in=expires_in,
+            user_id=user_id,
+        )
 
     def validate_token(self, token: str) -> None:
         """Провалидировать токен."""
