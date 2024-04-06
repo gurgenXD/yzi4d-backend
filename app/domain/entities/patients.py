@@ -26,7 +26,7 @@ class DiscountEntity(BaseModel):
 class PatientEntity(BaseModel):
     """Сущность пациента."""
 
-    id: str = Field(validation_alias="middleName")
+    id: str = Field(validation_alias="PacientID")
     name: str
     surname: str
     patronymic: str | None = Field(validation_alias="middleName")
@@ -36,6 +36,15 @@ class PatientEntity(BaseModel):
     phone: str
     members: list[MemberEntity] = Field(validation_alias="FamilyMember")
     discount: DiscountEntity | None = Field(validation_alias="DiscountData")
+
+    @field_validator("discount", mode="before")
+    @classmethod
+    def discount_validate(cls, value: dict) -> DiscountEntity | None:
+        """Валидация скидок."""
+        if not value:
+            return None
+
+        return DiscountEntity(**value)
 
     class Config:
         from_attributes = True

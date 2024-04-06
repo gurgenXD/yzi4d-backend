@@ -21,4 +21,6 @@ async def generate_token(credentials: Annotated[OAuth2PasswordRequestForm, Depen
     security = CONTAINER.auth_security()
 
     patient_id = await adapter.get_patient_id(credentials.username, credentials.password)
-    return security.generate_token(patient_id)
+    patient = await adapter.get_info(patient_id)
+
+    return security.generate_token(patient)

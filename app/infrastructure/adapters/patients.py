@@ -87,3 +87,25 @@ class PatientsAdapter:
                 raise NotFoundError("Patient not found.")
 
             return data
+
+    async def generate_password(self, username: str) -> None:
+        """Сгенерировать пароль."""
+        async with httpx.AsyncClient(auth=self._auth) as client:
+            response = await client.post(
+                f"{self._host}/lk/GetNewUser", params={"login": username}, timeout=self._timeout,
+            )
+
+            if not response.json().get("result"):
+                raise NotFoundError("Patient not found.")
+
+    async def change_password(self, id_: str, password: str, new_password: str) -> None:
+        """Изменить пароль."""
+        async with httpx.AsyncClient(auth=self._auth) as client:
+            response = await client.post(
+                f"{self._host}/lk/changePassword",
+                params={"PacientID": id_, "password": password, "newpassword": new_password},
+                timeout=self._timeout,
+            )
+
+            if not response.json().get("result"):
+                raise CredentialsError("Wrong credentials.")
