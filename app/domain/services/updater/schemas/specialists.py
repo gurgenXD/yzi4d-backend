@@ -47,6 +47,7 @@ class SourceSpecialistSchema(BaseModel):
     start_work_date: datetime = Field(validation_alias="GetStartedDate")
     description: str = Field(validation_alias="Description")
     short_description: str = Field(validation_alias="ShortDescription")
+    seo_description: str | None = Field("seo_desciption")
     is_hidden: bool = Field(validation_alias="Hide")
 
     education: list[EducationSchema] = Field(validation_alias="EduList")

@@ -89,6 +89,7 @@ class SpecialistAdmin(ModelView, model=Specialist):
         "patronymic": "Patronymic",
         "description": "Description",
         "short_description": "Short description",
+        "seo_description": "SEO_Description",
         "education": "Education",
         "activity": "Activity",
         "titles": "Titles",

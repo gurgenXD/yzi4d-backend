@@ -48,6 +48,7 @@ class SpecialistEntity(BaseModel):
     activity: str | None
     description: str | None
     short_description: str | None
+    seo_description: str | None
     titles: list[SpecialistTitleEntity]
     can_adult: bool
     can_child: bool
