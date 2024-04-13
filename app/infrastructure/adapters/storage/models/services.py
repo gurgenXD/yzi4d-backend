@@ -31,6 +31,7 @@ class Service(BaseModel):
     name: Mapped[str] = mapped_column(sa.String(255))
     short_description: Mapped[str | None] = mapped_column(sa.Text())
     description: Mapped[str | None] = mapped_column(sa.Text())
+    seo_description: Mapped[str | None] = mapped_column(sa.Text())
     preparation: Mapped[str | None] = mapped_column(sa.Text())
     ready_from: Mapped[int | None]
     ready_to: Mapped[int | None]

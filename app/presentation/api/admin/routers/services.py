@@ -28,6 +28,7 @@ class ServiceAdmin(ModelView, model=Service):
         "name": "Name",
         "short_description": "Short description",
         "description": "Description",
+        "seo_description": "SEO_description",
         "preparation": "Preparation",
         "ready_from": "Ready from",
         "ready_to": "Ready to",

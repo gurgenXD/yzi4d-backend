@@ -57,6 +57,7 @@ class Specialist(BaseModel):
     titles: Mapped[list[dict[str, Any]] | None] = mapped_column(sa.JSON())
     description: Mapped[str | None] = mapped_column(sa.Text())
     short_description: Mapped[str | None] = mapped_column(sa.String(250))
+    seo_description: Mapped[str | None] = mapped_column(sa.Text())
     can_adult: Mapped[bool]
     can_child: Mapped[bool]
     can_online: Mapped[bool]

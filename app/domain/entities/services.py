@@ -20,6 +20,7 @@ class ServiceEntity(StrictServiceEntity):
     category_name: str
     old_price: int | None = None
     description: str | None
+    seo_description: str | None
     preparation: str | None
 
     class Config:
