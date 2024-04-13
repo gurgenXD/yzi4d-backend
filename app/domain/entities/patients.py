@@ -85,3 +85,14 @@ class PatientFinishedVisitEntity(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class PatientChangePasswordEntity(BaseModel):
+    """Сущность смены пароля."""
+
+    current_password: str
+    new_password: str
+    confirm_new_password: str
+
+    class Config:
+        from_attributes = True

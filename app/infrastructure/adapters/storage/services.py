@@ -138,6 +138,7 @@ class ServicesAdapter:
                 Service.short_description,
                 Service.description,
                 Service.preparation,
+                Service.seo_description,
                 max_subquery,
                 Category.icon,
                 Category.id.label("category_id"),

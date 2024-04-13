@@ -72,12 +72,12 @@ class SpecialistAdmin(ModelView, model=Specialist):
     name_plural = "Specialists"
     icon = "fa-solid fa-user-doctor"
 
-    can_edit = False
     can_create = False
     can_delete = False
     can_export = False
 
     column_list = ("id", "surname", "name", "patronymic", "on_main", "is_active")
+    form_columns = ("seo_description",)
     column_sortable_list = ("surname", "id", "on_main", "is_active")
     column_default_sort = [("surname", False)]
     column_searchable_list = ("surname", "name", "patronymic", "id", "guid")
@@ -89,7 +89,7 @@ class SpecialistAdmin(ModelView, model=Specialist):
         "patronymic": "Patronymic",
         "description": "Description",
         "short_description": "Short description",
-        "seo_description": "SEO_description",
+        "seo_description": "SEO description",
         "education": "Education",
         "activity": "Activity",
         "titles": "Titles",
@@ -106,12 +106,12 @@ class SpecialistAdmin(ModelView, model=Specialist):
 
     def is_accessible(self, request: Request) -> bool:
         """Права на изменение."""
-        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
-            return True
-        return False
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True
 
     def is_visible(self, request: Request) -> bool:
         """Права на просмотр."""
-        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
-            return True
-        return False
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True

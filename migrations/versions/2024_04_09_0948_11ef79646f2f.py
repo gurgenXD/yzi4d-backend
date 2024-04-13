@@ -1,12 +1,13 @@
-"""SEO_description services and specialists
+"""SEO description services and specialists.
 
 Revision ID: 11ef79646f2f
 Revises: 82105c470f83
 Create Date: 2024-04-09 09:48:43.260381
 
 """
-from alembic import op
+
 import sqlalchemy as sa
+from alembic import op
 
 
 # revision identifiers, used by Alembic.

@@ -14,12 +14,12 @@ class ServiceAdmin(ModelView, model=Service):
     page_size = 20
     page_size_options = [20, 50, 100]
 
-    can_edit = False
     can_create = False
     can_delete = False
     can_export = False
 
     column_list = ("id", "name", "is_active")
+    form_columns = ("seo_description",)
     column_sortable_list = ("name", "id")
     column_details_exclude_list = ("specialists_services",)
     column_labels = {
@@ -28,7 +28,7 @@ class ServiceAdmin(ModelView, model=Service):
         "name": "Name",
         "short_description": "Short description",
         "description": "Description",
-        "seo_description": "SEO_description",
+        "seo_description": "SEO description",
         "preparation": "Preparation",
         "ready_from": "Ready from",
         "ready_to": "Ready to",
@@ -40,15 +40,15 @@ class ServiceAdmin(ModelView, model=Service):
 
     def is_accessible(self, request: Request) -> bool:
         """Права на изменение."""
-        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
-            return True
-        return False
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True
 
     def is_visible(self, request: Request) -> bool:
         """Права на просмотр."""
-        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
-            return True
-        return False
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True
 
 
 class ServiceCategoryAdmin(ModelView, model=Category):
