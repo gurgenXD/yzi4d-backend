@@ -15,6 +15,8 @@ class AuthSettings(BaseSettings):
     secret_key: str
     # Время жизни токена.
     lifetime: timedelta = timedelta(days=7)
+    # Время предварительного протухания токена.
+    lifetime_delta: timedelta = timedelta(minutes=5)
 
     # Логин администратора.
     admin_username: str

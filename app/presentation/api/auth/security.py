@@ -31,7 +31,7 @@ class AuthSecurity:
 
         return TokenSchema(
             access_token=jwt.encode(claims=claims, key=self._settings.secret_key),
-            expires_in=expires_in,
+            expires_in=expires_in - self._settings.lifetime_delta,
             user_id=patient.id,
         )
 
