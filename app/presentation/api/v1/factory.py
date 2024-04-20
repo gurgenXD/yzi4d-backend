@@ -4,6 +4,7 @@ from app.presentation.api.v1 import handlers
 from app.presentation.api.v1.routers import (
     auth,
     consultations,
+    callbacks,
     contacts,
     documents,
     news,
@@ -33,6 +34,7 @@ def create_app() -> "FastAPI":
     app.include_router(promotions.router)
     app.include_router(documents.router)
     app.include_router(consultations.router)
+    app.include_router(callbacks.router)
     app.include_router(patients.router)
     app.include_router(auth.router)
 

@@ -9,6 +9,7 @@ from app.domain.services.updater.repo import RepoUpdaterService
 from app.infrastructure.adapters.patients import PatientsAdapter
 from app.infrastructure.adapters.source import SourceAdapter
 from app.infrastructure.adapters.storage.consultations import ConsultationsAdapter
+from app.infrastructure.adapters.storage.callbacks import CallbacksAdapter
 from app.infrastructure.adapters.storage.contacts import ContactsAdapter
 from app.infrastructure.adapters.storage.db import engine, session
 from app.infrastructure.adapters.storage.documents import DocumentsAdapter
@@ -66,6 +67,7 @@ class Container(DeclarativeContainer):
         service_settings.provided.updater_timeout,
     )
     consultation_adapter: Provider["ConsultationsAdapter"] = Singleton(ConsultationsAdapter, session_ctx.provider)
+    callback_adapter: Provider["CallbacksAdapter"] = Singleton(CallbacksAdapter, session_ctx.provider)
     patients_adapter: Provider["PatientsAdapter"] = Singleton(
         PatientsAdapter,
         service_settings.provided.source_host,
