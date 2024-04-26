@@ -14,3 +14,4 @@ from app.infrastructure.adapters.storage.models.specialists import (
     specializations_specialists_table,
 )
 from app.infrastructure.adapters.storage.models.updates import Update
+from app.infrastructure.adapters.storage.models.vacancies import Vacancy, VacancyCategory

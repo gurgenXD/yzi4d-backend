@@ -4,37 +4,36 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.infrastructure.adapters.storage.db.base_model import BaseModel
 
 
-class DocumentCategory(BaseModel):
-    """Категория документов."""
+class VacancyCategory(BaseModel):
+    """Категория вакансии."""
 
-    __tablename__ = "documents_categories"
+    __tablename__ = "vacancies_categories"
 
     id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(sa.String(255))
     position: Mapped[int]
     is_active: Mapped[bool]
 
-    documents: Mapped[list["Document"]] = relationship("Document", back_populates="category")
+    vacancies: Mapped[list["Vacancy"]] = relationship("Vacancy", back_populates="category")
 
     def __str__(self) -> str:
         return self.name
 
 
-class Document(BaseModel):
-    """Документ."""
+class Vacancy(BaseModel):
+    """Вакансия."""
 
-    __tablename__ = "documents"
+    __tablename__ = "vacancies"
 
     id: Mapped[int] = mapped_column(sa.BigInteger(), primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(sa.String(255))
-    link: Mapped[str] = mapped_column(sa.String(255))
     is_active: Mapped[bool]
 
     category_id: Mapped[str | None] = mapped_column(
-        sa.BigInteger(), sa.ForeignKey("documents_categories.id", ondelete="SET NULL")
+        sa.BigInteger(), sa.ForeignKey("vacancies_categories.id", ondelete="SET NULL")
     )
 
-    category: Mapped["DocumentCategory"] = relationship("DocumentCategory", back_populates="documents")
+    category: Mapped["VacancyCategory"] = relationship("VacancyCategory", back_populates="vacancies")
 
     def __str__(self) -> str:
         return self.name

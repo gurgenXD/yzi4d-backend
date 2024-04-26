@@ -10,6 +10,7 @@ from app.presentation.api.admin.routers.callbacks import CallbackAdmin
 from app.presentation.api.admin.routers.consultations import ConsultationAdmin
 from app.presentation.api.admin.routers.contacts import CityAdmin, DepartmentAdmin, OfficeAdmin
 from app.presentation.api.admin.routers.documents import DocumentAdmin, DocumentCategoryAdmin
+from app.presentation.api.admin.routers.vacancies import VacancyAdmin, VacancyCategoryAdmin
 from app.presentation.api.admin.routers.news import NewsAdmin
 from app.presentation.api.admin.routers.pages import PagesAdmin
 from app.presentation.api.admin.routers.promotions import PromotionsAdmin
@@ -57,6 +58,8 @@ def create_app(app: "FastAPI") -> None:
     admin.add_view(DepartmentAdmin)
     admin.add_view(DocumentAdmin)
     admin.add_view(DocumentCategoryAdmin)
+    admin.add_view(VacancyAdmin)
+    admin.add_view(VacancyCategoryAdmin)
     admin.add_view(NewsAdmin)
     admin.add_view(PagesAdmin)
     admin.add_view(CallbackAdmin)

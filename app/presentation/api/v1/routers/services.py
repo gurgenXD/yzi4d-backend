@@ -15,7 +15,7 @@ router = APIRouter(prefix=PREFIX, tags=[TAG])
 
 @router.get("/{catalog_type}/categories")
 async def get_categories(
-    request: Request, catalog_type: CatalogType, category_id: int | None = None, search_query: str | None = None,
+    request: Request, catalog_type: CatalogType, category_id: int | None = None, search_query: str | None = None
 ) -> list[CategoryEntity]:
     """Получить категории услуг."""
     services_adapter = CONTAINER.services_adapter()
@@ -29,7 +29,7 @@ async def get_categories(
 
 @router.get("/{catalog_type}/services")
 async def get_services(
-    catalog_type: CatalogType, category_id: int | None = None, search_query: str | None = None, page: int = 1,
+    catalog_type: CatalogType, category_id: int | None = None, search_query: str | None = None, page: int = 1
 ) -> Paginated[ServiceEntity]:
     """Получить услуги."""
     services_adapter = CONTAINER.services_adapter()
