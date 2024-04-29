@@ -1,6 +1,7 @@
+from zoneinfo import ZoneInfo
+
 from fastapi import Request
 from sqladmin import ModelView
-from zoneinfo import ZoneInfo
 from sqlalchemy import Column
 
 from app.infrastructure.adapters.storage.models.callbacks import Callback
