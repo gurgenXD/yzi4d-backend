@@ -14,7 +14,7 @@ def get_http_basic() -> HTTPBasic:
 
 def get_api_key_cookie() -> APIKeyCookie:
     """Получить схему безопасности для APIKeyCookie."""
-    return APIKeyCookie(name="session")
+    return APIKeyCookie(name="accessToken")
 
 
 async def get_user_id(credentials: Annotated[HTTPBasicCredentials, Depends(get_http_basic())]) -> str:
@@ -30,7 +30,7 @@ def get_token(response: Response, id_: str = Path(alias="id"), token: str = Depe
     try:
         security.validate_token(id_, token)
     except jwt.JWTError:
-        response.delete_cookie("session")
+        response.delete_cookie("accessToken")
         raise
 
     return token

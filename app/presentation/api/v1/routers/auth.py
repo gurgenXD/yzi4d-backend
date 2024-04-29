@@ -23,7 +23,7 @@ async def set_auth_cookie(response: Response, user_id: Annotated[str, Depends(ge
     patient = await adapter.get_info(user_id)
     token = security.generate_token(patient)
 
-    response.set_cookie("session", token.access_token, expires=token.expires_in, httponly=True)
+    response.set_cookie("accessToken", token.access_token, expires=token.expires_in, httponly=True)
 
     return AuthSchema(user_id=token.user_id)
 
@@ -31,5 +31,5 @@ async def set_auth_cookie(response: Response, user_id: Annotated[str, Depends(ge
 @router.delete("/token/{id}", responses={status.HTTP_403_FORBIDDEN: {"description": "Forbidden."}})
 async def remove_auth_cookie(response: Response, _token: Annotated[str, Depends(get_token)]) -> None:
     """Удалить cookie аутентификации."""
-    response.delete_cookie("session", httponly=True)
+    response.delete_cookie("accessToken", httponly=True)
     return
