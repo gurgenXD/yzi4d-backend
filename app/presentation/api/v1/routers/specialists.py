@@ -61,5 +61,5 @@ async def get_specialist_services(item_id: int, catalog_page: CatalogType, page:
     """Получить услуги специалиста."""
     adapter = CONTAINER.specialists_adapter()
     return await adapter.get_services(
-        item_id=item_id, catalog_page=catalog_page, page=page, page_size=SPECIALIST_SERVICES_PAGE_SIZE,
+        item_id=item_id, catalog_page=catalog_page, page=page, page_size=SPECIALIST_SERVICES_PAGE_SIZE
     )

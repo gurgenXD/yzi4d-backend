@@ -45,12 +45,12 @@ class Container(DeclarativeContainer):
 
     async_engine: Provider["AsyncEngine"] = Singleton(engine.get_async, db_settings.provided)
     session_ctx: Provider[AbstractAsyncContextManager["AsyncSession"]] = Callable(
-        session.get_context, engine=async_engine.provided,
+        session.get_context, engine=async_engine.provided
     )
 
     specialists_adapter: Provider["SpecialistsAdapter"] = Singleton(SpecialistsAdapter, session_ctx.provider)
     specializations_adapter: Provider["SpecializationsAdapter"] = Singleton(
-        SpecializationsAdapter, session_ctx.provider,
+        SpecializationsAdapter, session_ctx.provider
     )
     services_adapter: Provider["ServicesAdapter"] = Singleton(ServicesAdapter, session_ctx.provider)
     contacts_adapter: Provider["ContactsAdapter"] = Singleton(ContactsAdapter, session_ctx.provider)
@@ -77,7 +77,7 @@ class Container(DeclarativeContainer):
     )
 
     repo_updater_service: Provider["RepoUpdaterService"] = Singleton(
-        RepoUpdaterService, source_adapter.provided, updater_adapter.provided, logger.provided,
+        RepoUpdaterService, source_adapter.provided, updater_adapter.provided, logger.provided
     )
 
     auth_security: Provider["AuthSecurity"] = Singleton(AuthSecurity, auth_settings.provided)

@@ -9,3 +9,9 @@ class TokenSchema(BaseModel):
     access_token: str
     expires_in: datetime
     user_id: str
+
+
+class AuthSchema(BaseModel):
+    """Схема аутентификации."""
+
+    user_id: str

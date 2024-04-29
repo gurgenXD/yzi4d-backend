@@ -40,7 +40,7 @@ class PatientsAdapter:
         """Получить информацию о пациентах."""
         async with httpx.AsyncClient(auth=self._auth) as client:
             response = await client.get(
-                f"{self._host}/lk/GetPacientData", params={"PacientID": id_}, timeout=self._timeout,
+                f"{self._host}/lk/GetPacientData", params={"PacientID": id_}, timeout=self._timeout
             )
 
             if response.status_code == httpx.codes.NOT_FOUND:
@@ -92,7 +92,7 @@ class PatientsAdapter:
         """Сгенерировать пароль."""
         async with httpx.AsyncClient(auth=self._auth) as client:
             response = await client.post(
-                f"{self._host}/lk/GetNewUser", params={"login": username}, timeout=self._timeout,
+                f"{self._host}/lk/GetNewUser", params={"login": username}, timeout=self._timeout
             )
 
             if not response.json().get("result"):

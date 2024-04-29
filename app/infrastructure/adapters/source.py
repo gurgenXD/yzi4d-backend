@@ -36,7 +36,7 @@ class SourceAdapter:
         """Получить содержимое каталога."""
         async with httpx.AsyncClient(auth=self._auth) as client:
             response = await client.get(
-                f"{self._host}/product/GetCatalogContentByID", params={"CatalogID": guid}, timeout=self._timeout,
+                f"{self._host}/product/GetCatalogContentByID", params={"CatalogID": guid}, timeout=self._timeout
             )
 
         return [CatalogItemSchema(**item) for item in response.json()]
@@ -52,6 +52,6 @@ class SourceAdapter:
         """Получить фотографию."""
         async with httpx.AsyncClient(auth=self._auth) as client:
             response = await client.get(
-                f"{self._host}/doctor/GetFotoDoctorById", params={"DoctorID": guid}, timeout=self._timeout,
+                f"{self._host}/doctor/GetFotoDoctorById", params={"DoctorID": guid}, timeout=self._timeout
             )
             return SpecialistImageSchema(**response.json()[0])

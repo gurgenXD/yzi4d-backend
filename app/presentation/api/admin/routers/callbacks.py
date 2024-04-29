@@ -28,12 +28,7 @@ class CallbackAdmin(ModelView, model=Callback):
 
     form_excluded_columns = ("phone", "created")
     column_list = ("id", "phone", "created", "answered")
-    column_labels = {
-        "id": "ID",
-        "phone": "Phone",
-        "created": "Created",
-        "answered": "Answered",
-    }
+    column_labels = {"id": "ID", "phone": "Phone", "created": "Created", "answered": "Answered"}
 
     def is_accessible(self, request: Request) -> bool:
         """Права на изменение."""

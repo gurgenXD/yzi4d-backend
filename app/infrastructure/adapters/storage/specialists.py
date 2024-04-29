@@ -61,12 +61,12 @@ class SpecialistsAdapter:
         if search_query:
             search_query = search_query.strip()
             query = query.where(
-                or_(Specialist.surname.ilike(f"%{search_query}%"), Specialist.name.ilike(f"%{search_query}%")),
+                or_(Specialist.surname.ilike(f"%{search_query}%"), Specialist.name.ilike(f"%{search_query}%"))
             )
 
         if specialization_id:
             query = query.join(Specialist.specializations, isouter=True).where(
-                Specialization.id == specialization_id, Specialization.is_active.is_(True),
+                Specialization.id == specialization_id, Specialization.is_active.is_(True)
             )
 
         async with self._session_factory() as session:
@@ -136,7 +136,7 @@ class SpecialistsAdapter:
         return specialist
 
     async def get_services(
-        self, item_id: int, catalog_page: CatalogType, page: int, page_size: int,
+        self, item_id: int, catalog_page: CatalogType, page: int, page_size: int
     ) -> Paginated[ServiceEntity]:
         """Получить услуги специалиста."""
         query = (

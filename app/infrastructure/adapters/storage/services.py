@@ -34,7 +34,7 @@ class ServicesAdapter:
     _session_factory: Callable[[], AbstractAsyncContextManager["AsyncSession"]]
 
     async def get_categories(
-        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None,
+        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None
     ) -> list[CategoryEntity]:
         """Получить категории."""
         query = self._service_query(catalog_type).with_only_columns(Category.id, Category.name).order_by(Category.name)
@@ -101,7 +101,7 @@ class ServicesAdapter:
             return row.scalar()
 
     async def get_paginated(
-        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None, page: int, page_size: int,
+        self, catalog_type: CatalogType, category_id: int | None, search_query: str | None, page: int, page_size: int
     ) -> Paginated[ServiceEntity]:
         """Получить услуги по категории."""
         async with self._session_factory() as session:

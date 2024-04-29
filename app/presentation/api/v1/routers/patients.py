@@ -33,7 +33,7 @@ async def get_planned_visits(id_: str = Path(alias="id")) -> list[PatientPlanned
 
 @router.get("/{id}/finished-visits")
 async def get_finished_visits(
-    id_: str = Path(alias="id"), type_: str = Query(alias="type"),
+    id_: str = Path(alias="id"), type_: str = Query(alias="type")
 ) -> list[PatientFinishedVisitEntity]:
     """Получить информацию о завершенных визитах пациента."""
     adapter = CONTAINER.patients_adapter()
