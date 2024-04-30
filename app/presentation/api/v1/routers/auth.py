@@ -23,7 +23,7 @@ async def set_auth_cookie(response: Response, user_id: Annotated[str, Depends(ge
     patient = await adapter.get_info(user_id)
     token = security.generate_token(patient)
 
-    response.set_cookie("accessToken", token.access_token, expires=token.expires_in, httponly=True)
+    response.set_cookie("accessToken", token.access_token, expires=token.expires_in, httponly=True, domain="yzi4d.ru")
 
     return AuthSchema(user_id=token.user_id)
 
