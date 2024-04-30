@@ -29,8 +29,8 @@ class Vacancy(BaseModel):
     name: Mapped[str] = mapped_column(sa.String(255))
     is_active: Mapped[bool]
 
-    category_id: Mapped[str | None] = mapped_column(
-        sa.BigInteger(), sa.ForeignKey("vacancies_categories.id", ondelete="SET NULL")
+    category_id: Mapped[str] = mapped_column(
+        sa.BigInteger(), sa.ForeignKey("vacancies_categories.id", ondelete="CASCADE")
     )
 
     category: Mapped["VacancyCategory"] = relationship("VacancyCategory", back_populates="vacancies")

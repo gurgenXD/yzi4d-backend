@@ -1,12 +1,7 @@
 from fastapi import APIRouter, Depends, Path, Query
 
 from app.container import CONTAINER
-from app.domain.entities.patients import (
-    PatientChangePasswordEntity,
-    PatientEntity,
-    PatientFinishedVisitEntity,
-    PatientPlannedVisitEntity,
-)
+from app.domain.entities.patients import PatientEntity, PatientFinishedVisitEntity, PatientPlannedVisitEntity
 from app.presentation.api.auth.dependecies import get_token
 
 
@@ -45,11 +40,3 @@ async def get_file(file_path: str, id_: str = Path(alias="id")) -> str:
     """Получить файл."""
     adapter = CONTAINER.patients_adapter()
     return await adapter.get_file(id_, file_path)
-
-
-@router.post("/{id}/change-password")
-async def change_password(credentials: PatientChangePasswordEntity, id_: str = Path(alias="id")) -> None:
-    """Сменить пароль."""
-    print(id_)
-    print(credentials)
-    # TODO: доделать

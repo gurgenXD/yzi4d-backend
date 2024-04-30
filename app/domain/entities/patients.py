@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ValidationInfo
+from password_validator import PasswordValidator
 
 
 class MemberEntity(BaseModel):
@@ -87,12 +88,28 @@ class PatientFinishedVisitEntity(BaseModel):
         from_attributes = True
 
 
-class PatientChangePasswordEntity(BaseModel):
+class ChangePasswordEntity(BaseModel):
     """Сущность смены пароля."""
 
     current_password: str
     new_password: str
-    confirm_new_password: str
 
-    class Config:
-        from_attributes = True
+    @field_validator("new_password")
+    @classmethod
+    def validate_password(cls, value: str, info: ValidationInfo) -> str:
+        """Валидация пароля."""
+        schema = PasswordValidator().letters().digits().uppercase().lowercase().min(6)
+
+        if not schema.validate(value):
+            raise ValueError("Password is not strong.")
+
+        if value == info.data["current_password"]:
+            raise ValueError("Enter another new password.")
+
+        return value
+
+
+class GeneratePasswordEntity(BaseModel):
+    """Сущность генерации пароля."""
+
+    username: str

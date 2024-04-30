@@ -92,11 +92,11 @@ class PatientsAdapter:
         """Сгенерировать пароль."""
         async with httpx.AsyncClient(auth=self._auth) as client:
             response = await client.post(
-                f"{self._host}/lk/GetNewUser", params={"login": username}, timeout=self._timeout
+                f"{self._host}/lk/GetNewPassword", params={"login": username}, timeout=self._timeout
             )
 
             if not response.json().get("result"):
-                raise NotFoundError("Patient not found.")
+                raise CredentialsError("Wrong credentials.")
 
     async def change_password(self, id_: str, password: str, new_password: str) -> None:
         """Изменить пароль."""

@@ -1,8 +1,8 @@
-"""Added Vacancy.
+"""Added vacancies.
 
-Revision ID: 333ea772d30b
+Revision ID: b5e916142ee2
 Revises: cc26a3e9bfb6
-Create Date: 2024-04-26 10:53:26.478383
+Create Date: 2024-04-30 11:59:50.223742
 
 """
 
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = "333ea772d30b"
+revision = "b5e916142ee2"
 down_revision = "cc26a3e9bfb6"
 branch_labels = None
 depends_on = None
@@ -32,8 +32,8 @@ def upgrade() -> None:
         sa.Column("id", sa.BigInteger(), autoincrement=True, nullable=False),
         sa.Column("name", sa.String(length=255), nullable=False),
         sa.Column("is_active", sa.Boolean(), nullable=False),
-        sa.Column("category_id", sa.BigInteger(), nullable=True),
-        sa.ForeignKeyConstraint(["category_id"], ["vacancies_categories.id"], ondelete="SET NULL"),
+        sa.Column("category_id", sa.BigInteger(), nullable=False),
+        sa.ForeignKeyConstraint(["category_id"], ["vacancies_categories.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
     )
     op.drop_column("callbacks", "call_back_time")

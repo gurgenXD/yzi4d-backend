@@ -1,11 +1,11 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, status, Response
+from fastapi import APIRouter, Depends, status, Response, Path
 
 from app.container import CONTAINER
 from app.presentation.api.auth.schemas import AuthSchema
 from app.presentation.api.auth.dependecies import get_user_id, get_token
-
+from app.domain.entities.patients import ChangePasswordEntity, GeneratePasswordEntity
 
 TAG = "auth"
 PREFIX = f"/{TAG}"
@@ -33,3 +33,19 @@ async def remove_auth_cookie(response: Response, _token: Annotated[str, Depends(
     """Удалить cookie аутентификации."""
     response.delete_cookie("accessToken", httponly=True)
     return
+
+
+@router.post("/change-password/{id}")
+async def change_password(
+    credentials: ChangePasswordEntity, _token: Annotated[str, Depends(get_token)], id_: str = Path(alias="id")
+) -> None:
+    """Сменить пароль."""
+    adapter = CONTAINER.patients_adapter()
+    return await adapter.change_password(id_, credentials.current_password, credentials.new_password)
+
+
+@router.post("/generate-password")
+async def generate_password(credentials: GeneratePasswordEntity) -> None:
+    """Сгенерировать пароль."""
+    adapter = CONTAINER.patients_adapter()
+    return await adapter.generate_password(credentials.username)

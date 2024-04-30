@@ -27,6 +27,7 @@ fastapi-storages = "0.2.1"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 tzdata = "2023.4"
 pillow = "10.2.0"
+password-validator = "^1.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "24.1.1"

@@ -20,15 +20,15 @@ class VacancyAdmin(ModelView, model=Vacancy):
 
     def is_accessible(self, request: Request) -> bool:
         """Права на изменение."""
-        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
-            return True
-        return False
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True
 
     def is_visible(self, request: Request) -> bool:
         """Права на просмотр."""
-        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
-            return True
-        return False
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True
 
 
 class VacancyCategoryAdmin(ModelView, model=VacancyCategory):
@@ -46,12 +46,12 @@ class VacancyCategoryAdmin(ModelView, model=VacancyCategory):
 
     def is_accessible(self, request: Request) -> bool:
         """Права на изменение."""
-        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
-            return True
-        return False
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True
 
     def is_visible(self, request: Request) -> bool:
         """Права на просмотр."""
-        if (permissions := request.session.get("permissions")) and PermissionType.ADMIN.value in permissions:
-            return True
-        return False
+        if (permissions := request.session.get("permissions")) and PermissionType.OPERATOR.value in permissions:
+            return False
+        return True
