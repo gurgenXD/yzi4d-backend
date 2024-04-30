@@ -19,11 +19,14 @@ async def set_auth_cookie(response: Response, user_id: Annotated[str, Depends(ge
     """Проставить cookie аутентификации."""
     adapter = CONTAINER.patients_adapter()
     security = CONTAINER.auth_security()
+    settings = CONTAINER.auth_settings()
 
     patient = await adapter.get_info(user_id)
     token = security.generate_token(patient)
 
-    response.set_cookie("accessToken", token.access_token, expires=token.expires_in, httponly=True, domain="yzi4d.ru")
+    response.set_cookie(
+        "accessToken", token.access_token, expires=token.expires_in, httponly=True, domain=settings.domain
+    )
 
     return AuthSchema(user_id=token.user_id)
 
@@ -31,7 +34,9 @@ async def set_auth_cookie(response: Response, user_id: Annotated[str, Depends(ge
 @router.delete("/token/{id}", responses={status.HTTP_403_FORBIDDEN: {"description": "Forbidden."}})
 async def remove_auth_cookie(response: Response, _token: Annotated[str, Depends(get_token)]) -> None:
     """Удалить cookie аутентификации."""
-    response.delete_cookie("accessToken", httponly=True)
+    settings = CONTAINER.auth_settings()
+
+    response.delete_cookie("accessToken", httponly=True, domain=settings.domain)
     return
 
 

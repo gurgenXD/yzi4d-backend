@@ -17,6 +17,8 @@ class AuthSettings(BaseSettings):
     lifetime: timedelta = timedelta(days=7)
     # Время предварительного протухания токена.
     lifetime_delta: timedelta = timedelta(minutes=5)
+    # Cookies domain.
+    domain: str | None = None
 
     # Логин администратора.
     admin_username: str

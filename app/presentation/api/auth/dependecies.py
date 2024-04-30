@@ -26,11 +26,12 @@ async def get_user_id(credentials: Annotated[HTTPBasicCredentials, Depends(get_h
 def get_token(response: Response, id_: str = Path(alias="id"), token: str = Depends(get_api_key_cookie())) -> str:
     """Получить токен."""
     security = CONTAINER.auth_security()
+    settings = CONTAINER.auth_settings()
 
     try:
         security.validate_token(id_, token)
     except jwt.JWTError:
-        response.delete_cookie("accessToken")
+        response.delete_cookie("accessToken", domain=settings.domain)
         raise
 
     return token
