@@ -31,9 +31,9 @@ def get_token(response: Response, id_: str = Path(alias="id"), token: str = Depe
 
     try:
         security.validate_token(id_, token)
-    except jwt.ExpiredSignatureError:
-        response.delete_cookie("accessToken", domain=settings.domain)
-    except jwt.JWTError as exc:
+    except jwt.JWTClaimsError as exc:
         raise InvalidTokenError("Invalid token.") from exc
+    except jwt.JWTError:
+        response.delete_cookie("accessToken", domain=settings.domain)
 
     return token
