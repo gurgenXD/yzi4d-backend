@@ -14,7 +14,7 @@ class AuthSettings(BaseSettings):
     # Секретный ключ.
     secret_key: str
     # Время жизни токена.
-    lifetime: timedelta = timedelta(days=7)
+    lifetime: timedelta = timedelta(hours=4)
     # Время предварительного протухания токена.
     lifetime_delta: timedelta = timedelta(minutes=5)
     # Cookies domain.
