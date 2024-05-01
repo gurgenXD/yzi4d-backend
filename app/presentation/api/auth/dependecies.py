@@ -3,6 +3,7 @@ from typing import Annotated
 from fastapi import Depends, Path, Response
 from fastapi.security import APIKeyCookie, HTTPBasicCredentials, HTTPBasic
 from jose import jwt
+from app.domain.services.exceptions import InvalidTokenError
 
 from app.container import CONTAINER
 
@@ -30,8 +31,9 @@ def get_token(response: Response, id_: str = Path(alias="id"), token: str = Depe
 
     try:
         security.validate_token(id_, token)
-    except jwt.JWTError:
+    except jwt.ExpiredSignatureError:
         response.delete_cookie("accessToken", domain=settings.domain)
-        raise
+    except jwt.JWTError as exc:
+        raise InvalidTokenError("Invalid token.") from exc
 
     return token

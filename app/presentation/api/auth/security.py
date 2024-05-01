@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 
 from jose import jwt
 
-from app.domain.services.exceptions import InvalidTokenError
 from app.presentation.api.auth.schemas import TokenSchema
 
 
@@ -37,13 +36,10 @@ class AuthSecurity:
 
     def validate_token(self, user_id: str, token: str) -> None:
         """Провалидировать токен."""
-        try:
-            decoded_claims = jwt.decode(token=token, key=self._settings.secret_key)
+        decoded_claims = jwt.decode(token=token, key=self._settings.secret_key)
 
-            if user_id != decoded_claims["user_id"] and user_id not in decoded_claims["members"]:
-                raise jwt.JWTClaimsError("Invalid user_id.")
+        if user_id != decoded_claims["user_id"] and user_id not in decoded_claims["members"]:
+            raise jwt.JWTClaimsError("Invalid user_id.")
 
-            if datetime.fromtimestamp(decoded_claims["exp"], tz=UTC) <= datetime.now(tz=UTC):
-                raise jwt.ExpiredSignatureError("Token was expired.")
-        except jwt.JWTError as exc:
-            raise InvalidTokenError("Invalid token.") from exc
+        if datetime.fromtimestamp(decoded_claims["exp"], tz=UTC) <= datetime.now(tz=UTC):
+            raise jwt.ExpiredSignatureError("Token was expired.")
