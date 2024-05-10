@@ -12,3 +12,6 @@ class ApiSettings(BaseSettings):
     title: str = "Yzi4D"
     # Задержка ответа.
     delay: float = 0.0
+
+    # CORS.
+    allow_origins: list[str] = ["*"]
